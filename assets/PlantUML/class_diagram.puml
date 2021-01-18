@@ -1,0 +1,93 @@
+@startuml
+
+' title CoolStore Class Diagram
+
+' package "Shared Kernel" {
+'   abstract class EntityBase
+'   abstract class ValueObject
+'   interface IAggregateRoot
+' }
+
+package "Product Management" {
+  class Product
+  class ProductCode
+  class Return
+  enum ReturnReason
+
+  ' EntityBase <|-- Product
+  ' EntityBase <|-- ProductCode
+  ' EntityBase <|-- Return
+
+  ' IAggregateRoot <|.. Product
+  ' IAggregateRoot <|.. ProductCode
+
+  ProductCode --* Product
+  Return -left-* Product
+  Return *-- ReturnReason
+}
+
+package "Customer Management" {
+  class Customer
+  class CreditCard
+  class CustomerPurchaseHistoryReadModel
+
+  ' EntityBase <|-- Customer
+  ' EntityBase <|-- CreditCard
+
+  ' IAggregateRoot <|.. CreditCard
+
+  Customer *-- CreditCard
+  Customer <.. CustomerPurchaseHistoryReadModel
+}
+
+package "Cart Management" {
+  class Cart
+  class CartProduct
+  class Purchase
+  class PurchasedProduct
+  class Money
+  enum CheckOutIssue
+
+  ' EntityBase <|-- Cart
+  ' EntityBase <|-- CartProduct
+  ' EntityBase <|-- Purchase
+  ' EntityBase <|-- PurchasedProduct
+
+  ' IAggregateRoot <|.. Cart
+  ' IAggregateRoot <|.. Purchase
+
+  ' ValueObject <|-- Money
+
+  Cart *-- CartProduct
+  Purchase *-- PurchasedProduct
+  Purchase *-- Money
+  Purchase *-- CheckOutIssue
+
+  Cart ..> Customer
+  CartProduct ..> Customer
+  Purchase ..> Customer
+}
+
+package "Settings Management" {
+  class Settings
+  class Country
+  class CountryTax
+  enum TaxType
+
+  ' EntityBase <|-- Country
+  ' EntityBase <|-- CountryTax
+
+  ' IAggregateRoot <|.. Country
+  ' IAggregateRoot <|.. CountryTax
+
+  Settings *-- Country
+  CountryTax *-- TaxType
+  Country *-- CountryTax
+}
+
+Return <.. Customer
+Customer <.. Country
+CartProduct ..> Product
+PurchasedProduct ..> Product
+
+@enduml
