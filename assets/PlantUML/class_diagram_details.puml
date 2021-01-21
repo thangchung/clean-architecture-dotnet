@@ -2,14 +2,21 @@
 
 ' title <b>eCommerce Class Diagram</b>
 
-' package "Shared Kernel" {
-  ' abstract class EntityBase
-  ' abstract class ValueObject
-  ' interface IAggregateRoot
-  ' abstract class Repository
-' }
+package "Shared Kernel" {
+  abstract class EntityBase
+  abstract class ValueObject
+  interface IAggregateRoot
+  abstract class Repository
+  abstract class Service
+  abstract class DomainService
+  abstract class ApplicationService
+  abstract class InfrastructureService
+}
 
-' Repository --> IAggregateRoot
+Repository --> IAggregateRoot
+DomainService --|> Service
+ApplicationService --|> Service
+InfrastructureService --|> Service
 
 package "Product Management" {
   class Product
@@ -17,12 +24,12 @@ package "Product Management" {
   class Return
   enum ReturnReason
 
-  ' EntityBase <|-- Product
-  ' EntityBase <|-- ProductCode
-  ' EntityBase <|-- Return
+  EntityBase <|-- Product
+  EntityBase <|-- ProductCode
+  EntityBase <|-- Return
 
-  ' IAggregateRoot <|.. Product
-  ' IAggregateRoot <|.. ProductCode
+  IAggregateRoot <|.. Product
+  IAggregateRoot <|.. ProductCode
 
   ProductCode --* Product
   Return -left-* Product
@@ -34,10 +41,10 @@ package "Customer Management" {
   class CreditCard
   class CustomerPurchaseHistoryReadModel
 
-  ' EntityBase <|-- Customer
-  ' EntityBase <|-- CreditCard
+  EntityBase <|-- Customer
+  EntityBase <|-- CreditCard
 
-  ' IAggregateRoot <|.. CreditCard
+  IAggregateRoot <|.. CreditCard
 
   Customer *-- CreditCard
   Customer <.. CustomerPurchaseHistoryReadModel
@@ -51,15 +58,15 @@ package "Cart Management" {
   class Money
   enum CheckOutIssue
 
-  ' EntityBase <|-- Cart
-  ' EntityBase <|-- CartProduct
-  ' EntityBase <|-- Purchase
-  ' EntityBase <|-- PurchasedProduct
+  EntityBase <|-- Cart
+  EntityBase <|-- CartProduct
+  EntityBase <|-- Purchase
+  EntityBase <|-- PurchasedProduct
 
-  ' IAggregateRoot <|.. Cart
-  ' IAggregateRoot <|.. Purchase
+  IAggregateRoot <|.. Cart
+  IAggregateRoot <|.. Purchase
 
-  ' ValueObject <|-- Money
+  ValueObject <|-- Money
 
   Cart *-- CartProduct
   Purchase *-- PurchasedProduct
@@ -78,13 +85,13 @@ package "Settings Management" {
   class HistoryData
   enum TaxType
 
-  ' EntityBase <|-- Country
-  ' EntityBase <|-- CountryTax
-  ' EntityBase <|-- HistoryData
+  EntityBase <|-- Country
+  EntityBase <|-- CountryTax
+  EntityBase <|-- HistoryData
 
-  ' IAggregateRoot <|.. Country
-  ' IAggregateRoot <|.. CountryTax
-  ' IAggregateRoot <|.. HistoryData
+  IAggregateRoot <|.. Country
+  IAggregateRoot <|.. CountryTax
+  IAggregateRoot <|.. HistoryData
 
   Settings *-- Country
   Settings *-- HistoryData

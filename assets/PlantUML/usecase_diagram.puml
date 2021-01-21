@@ -1,0 +1,43 @@
+@startuml
+
+' title <b>eCommerce Use case Diagram</b>
+
+left to right direction
+skinparam packageStyle rect
+
+actor customer
+actor admin
+
+rectangle "Product Management" {
+  admin --> (Add Product)
+  customer --> (Get Product)
+  customer --> (Return Product)
+  (Get Product) <-- admin
+}
+
+rectangle "Customer Management" {
+  admin --> (Add Customer)
+  admin --> (Check Email Available)
+  admin --> (Get Customer)
+  admin --> (Remove Customer)
+  admin --> (Update Customer)
+
+  (Check Email Available) <-- customer
+  (Get Customer) <-- customer
+  (Update Customer) <-- customer
+}
+
+rectangle "Cart Management" {
+  customer --> (Add Product to Cart for Customer)
+  customer --> (Get Cart for Customer)
+  customer --> (Remove Product of Customer)
+  customer --> (Checkout)
+}
+
+rectangle "Settings Management" {
+  admin --> (Get History Data)
+  customer --> (Get Country)
+  (Get History Data) <-- customer
+}
+
+@enduml

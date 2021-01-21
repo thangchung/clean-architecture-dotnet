@@ -1,0 +1,108 @@
+@startuml
+
+' title <b>eCommerce Class Diagram</b>
+
+' package "Shared Kernel" {
+  ' abstract class EntityBase
+  ' abstract class ValueObject
+  ' interface IAggregateRoot
+  ' abstract class Repository
+' }
+
+' Repository --> IAggregateRoot
+
+package "Product Service" {
+  ' class Product
+  ' class ProductCode
+  ' class Return
+  ' enum ReturnReason
+
+  ' EntityBase <|-- Product
+  ' EntityBase <|-- ProductCode
+  ' EntityBase <|-- Return
+
+  ' IAggregateRoot <|.. Product
+  ' IAggregateRoot <|.. ProductCode
+
+  ' ProductCode --* Product
+  ' Return -left-* Product
+  ' Return *-- ReturnReason
+}
+
+package "Customer Service" {
+  ' class Customer
+  ' class CreditCard
+  ' class CustomerPurchaseHistoryReadModel
+
+  ' EntityBase <|-- Customer
+  ' EntityBase <|-- CreditCard
+
+  ' IAggregateRoot <|.. CreditCard
+
+  ' Customer *-- CreditCard
+  ' Customer <.. CustomerPurchaseHistoryReadModel
+}
+
+package "Cart Service" {
+  ' class Cart
+  ' class CartProduct
+  ' class Purchase
+  ' class PurchasedProduct
+  ' class Money
+  ' enum CheckOutIssue
+
+  ' EntityBase <|-- Cart
+  ' EntityBase <|-- CartProduct
+  ' EntityBase <|-- Purchase
+  ' EntityBase <|-- PurchasedProduct
+
+  ' IAggregateRoot <|.. Cart
+  ' IAggregateRoot <|.. Purchase
+
+  ' ValueObject <|-- Money
+
+  ' Cart *-- CartProduct
+  ' Purchase *-- PurchasedProduct
+  ' CartProduct *-left- Money
+  ' Purchase *-- CheckOutIssue
+
+  ' Cart ..> Customer
+  ' CartProduct ..> Customer
+  ' Purchase ..> Customer
+}
+
+package "Settings Service" {
+  ' class Settings
+  ' class Country
+  ' class CountryTax
+  ' class HistoryData
+  ' enum TaxType
+
+  ' EntityBase <|-- Country
+  ' EntityBase <|-- CountryTax
+  ' EntityBase <|-- HistoryData
+
+  ' IAggregateRoot <|.. Country
+  ' IAggregateRoot <|.. CountryTax
+  ' IAggregateRoot <|.. HistoryData
+
+  ' Settings *-- Country
+  ' Settings *-- HistoryData
+  ' CountryTax *-left- TaxType
+  ' Country *-left- CountryTax
+}
+
+package "... Service" {
+
+}
+
+package ".... Service" {
+
+}
+
+' Return <.. Customer
+' Customer <.. Country
+' CartProduct ..> Product
+' PurchasedProduct ..> Product
+
+@enduml

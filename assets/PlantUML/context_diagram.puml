@@ -1,0 +1,56 @@
+@startuml
+
+' title <b>eCommerce Context Diagram</b>
+
+hide class circle
+hide enum circle
+
+class Product
+class ProductCode
+class Return
+enum ReturnReason
+
+ProductCode -- Product
+Return -left- Product
+Return -- ReturnReason
+
+class Customer
+class CreditCard
+class CustomerPurchaseHistoryReadModel
+
+Customer -- CreditCard
+Customer .. CustomerPurchaseHistoryReadModel
+
+class Cart
+class CartProduct
+class Purchase
+class PurchasedProduct
+class Money
+enum CheckOutIssue
+
+Cart -left- CartProduct
+Purchase -- PurchasedProduct
+CartProduct -left- Money
+Purchase -- CheckOutIssue
+
+Cart .. Customer
+CartProduct .. Customer
+Purchase .. Customer
+
+class Settings
+class Country
+class CountryTax
+class HistoryData
+enum TaxType
+
+Settings -- Country
+CountryTax -right- TaxType
+Country -- CountryTax
+Settings -left- HistoryData
+
+Return .. Customer
+Customer .. Country
+CartProduct .. Product
+PurchasedProduct .. Product
+
+@enduml
