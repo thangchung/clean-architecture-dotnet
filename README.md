@@ -2,9 +2,15 @@
 
 The practical repository uses coolstore domain which is mainly borrowed from `https://github.com/zkavtaskin/Domain-Driven-Design-Example` to demonstrate how to apply Domain Driven Design seamlessly with Clean Architecture.
 
+# Business usecases
+
+![](assets/usecase_diagram.png)
+
 # High level context
 
-![](assets/draft_entity_boundary.png)
+![](assets/context_diagram.png)
+
+# ERD
 
 ![](assets/class_diagram.png)
 
