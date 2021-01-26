@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using N8T.Core.Specification;
+using ProductService.Core.Entities;
 
-namespace ProductService.Core.Domain
+namespace ProductService.Core.Specifications
 {
     public class ProductReturnReasonSpec : SpecificationBase<Product>
     {

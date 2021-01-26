@@ -18,7 +18,7 @@ namespace N8T.Infrastructure.Auth
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    config.Bind("Authn", options);
+                    config.Bind("Auth", options);
                     configureOptions?.Invoke(options);
                 });
 

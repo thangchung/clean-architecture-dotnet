@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using N8T.Core.Domain;
+using ProductService.Core.Events;
 
-namespace ProductService.Core.Domain
+namespace ProductService.Core.Entities
 {
     public class Product : EntityBase, IAggregateRoot
     {

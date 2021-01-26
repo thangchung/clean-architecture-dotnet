@@ -1,6 +1,7 @@
 using N8T.Core.Domain;
+using ProductService.Core.Entities;
 
-namespace ProductService.Core.Domain
+namespace ProductService.Core.Events
 {
     public class ProductCreated : DomainEventBase
     {

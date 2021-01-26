@@ -1,7 +1,8 @@
 using System;
 using N8T.Core.Domain;
+using ProductService.Core.Events;
 
-namespace ProductService.Core.Domain
+namespace ProductService.Core.Entities
 {
     public class ProductCode : EntityBase, IAggregateRoot
     {

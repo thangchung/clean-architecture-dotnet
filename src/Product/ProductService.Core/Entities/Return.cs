@@ -1,7 +1,7 @@
 using System;
 using N8T.Core.Domain;
 
-namespace ProductService.Core.Domain
+namespace ProductService.Core.Entities
 {
     public class Return : EntityBase
     {

@@ -34,7 +34,7 @@ namespace N8T.Infrastructure.Auth
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            if (!(request is IAuthRequest))
+            if (request is not IAuthRequest)
             {
                 return await next();
             }

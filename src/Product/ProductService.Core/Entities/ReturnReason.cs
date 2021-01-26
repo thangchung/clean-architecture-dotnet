@@ -1,4 +1,4 @@
-﻿namespace ProductService.Core.Domain
+﻿namespace ProductService.Core.Entities
 {
     public enum ReturnReason
     {

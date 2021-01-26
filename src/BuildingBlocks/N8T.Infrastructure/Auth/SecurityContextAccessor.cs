@@ -40,12 +40,7 @@ namespace N8T.Infrastructure.Auth
             get
             {
                 var isAuthenticated = _httpContextAccessor.HttpContext?.User?.Identities?.FirstOrDefault()?.IsAuthenticated;
-                if (!isAuthenticated.HasValue)
-                {
-                    return false;
-                }
-
-                return isAuthenticated.Value;
+                return isAuthenticated.HasValue && isAuthenticated.Value;
             }
         }
 

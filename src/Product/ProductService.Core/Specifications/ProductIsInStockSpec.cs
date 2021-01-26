@@ -1,8 +1,9 @@
 using System;
 using System.Linq.Expressions;
 using N8T.Core.Specification;
+using ProductService.Core.Entities;
 
-namespace ProductService.Core.Domain
+namespace ProductService.Core.Specifications
 {
     public class ProductIsInStockSpec : SpecificationBase<Product>
     {

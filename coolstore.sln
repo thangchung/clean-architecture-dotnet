@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Infrastructure.OTel", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Core", "src\BuildingBlocks\N8T.Core\N8T.Core.csproj", "{42928BD7-FE47-43EE-A75E-765E469782B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService.Application", "src\Product\ProductService.Application\ProductService.Application.csproj", "{C4F658E6-EE63-4378-94B6-7E18D02E51F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{42928BD7-FE47-43EE-A75E-765E469782B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42928BD7-FE47-43EE-A75E-765E469782B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42928BD7-FE47-43EE-A75E-765E469782B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F658E6-EE63-4378-94B6-7E18D02E51F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F658E6-EE63-4378-94B6-7E18D02E51F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F658E6-EE63-4378-94B6-7E18D02E51F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F658E6-EE63-4378-94B6-7E18D02E51F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{0836619C-1F06-4321-8957-5606275590A8} = {B17CF9E5-E4A8-42B4-A669-7BC41D314D5F}
 		{BF32EAF6-F507-4CBC-B3C5-DE2F7E84113E} = {B17CF9E5-E4A8-42B4-A669-7BC41D314D5F}
 		{42928BD7-FE47-43EE-A75E-765E469782B2} = {B17CF9E5-E4A8-42B4-A669-7BC41D314D5F}
+		{C4F658E6-EE63-4378-94B6-7E18D02E51F2} = {26B30655-87DA-471F-8CE5-132B4281791F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B983152-0931-4714-9EDE-BD7DE35C758E}
