@@ -16,3 +16,4 @@ The practical repository uses coolstore domain which is mainly borrowed from `ht
 
 # Refs
 - [C4 PlaintUML Model](https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/samples/C4CoreDiagrams.md)
+- [Real world PlantUML](https://real-world-plantuml.com)
