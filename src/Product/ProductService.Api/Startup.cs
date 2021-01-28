@@ -1,24 +1,42 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using N8T.Infrastructure;
+using N8T.Infrastructure.Dapr;
+using N8T.Infrastructure.EfCore;
+using N8T.Infrastructure.Tye;
+using ProductService.Infrastructure.Data;
 
-namespace ProductCatalogService.Api
+namespace ProductService.Api
 {
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration config, IWebHostEnvironment env)
         {
+            Config = config;
+            Env = env;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        private IConfiguration Config { get; }
+        private IWebHostEnvironment Env { get; }
+        private bool IsRunOnTye => Config.IsRunOnTye();
+
+        public void ConfigureServices(IServiceCollection services)
         {
-            if (env.IsDevelopment())
+            services.AddCore(new[] {typeof(Application.Anchor)})
+                .AddPostgresDbContext<MainDbContext, Infrastructure.Anchor>(
+                    Config.GetConnectionString("postgres"),
+                    svc => svc.AddScoped(typeof(IExRepository<>), typeof(ExRepository<>)))
+                .AddCustomDaprClient()
+                .AddControllers()
+                .AddDapr();
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            if (Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -27,10 +45,7 @@ namespace ProductCatalogService.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

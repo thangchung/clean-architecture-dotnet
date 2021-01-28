@@ -1,0 +1,34 @@
+name: coolstore
+
+# extensions:
+# - name: dapr
+#   log-level: debug
+#   config: appconfig
+#   components-path: "./components/local/"
+# - name: zipkin
+# - name: elastic
+#   logPath: ./.logs
+
+services:
+
+- name: postgres
+  image:  postgres
+  env:
+  - name: POSTGRES_PASSWORD
+    value: "P@ssw0rd"
+  bindings:
+  - port: 5432
+    connectionString: Server=${host};Port=${port};User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+
+- name: redis
+  image: redis
+  bindings:
+  - port: 6379
+
+# - name: productserviceapp
+#   project: src/Product/ProductService.Api/ProductService.Api.csproj
+#   env:
+#   - name: ConnectionStrings__postgres
+#     value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
+#   bindings:
+#   - port: 5002

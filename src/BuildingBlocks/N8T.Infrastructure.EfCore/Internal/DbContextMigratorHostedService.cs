@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
-namespace N8T.Infrastructure.EfCore
+namespace N8T.Infrastructure.EfCore.Internal
 {
-    public class DbContextMigratorHostedService : IHostedService
+    internal class DbContextMigratorHostedService : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<DbContextMigratorHostedService> _logger;

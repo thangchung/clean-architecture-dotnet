@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using N8T.Infrastructure.App.Dtos;
+using N8T.Infrastructure.EfCore;
+using ProductService.Core.Entities;
 
 namespace ProductService.Application.Queries
 {
@@ -20,9 +22,20 @@ namespace ProductService.Application.Queries
 
         internal class GetProductByIdRequestHandler : IRequestHandler<GetProductByIdRequest, ProductDto>
         {
+            private readonly IExRepository<Product> _productRepository;
+
+            public GetProductByIdRequestHandler(IExRepository<Product> productRepository)
+            {
+                _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            }
+
             public Task<ProductDto> Handle(GetProductByIdRequest request, CancellationToken cancellationToken)
             {
-                throw new System.NotImplementedException();
+                if (request == null) throw new ArgumentNullException(nameof(request));
+
+                var product = _productRepository.FindById(request.ProductId);
+
+                return Task.FromResult(new ProductDto());
             }
         }
     }

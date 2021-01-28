@@ -10,12 +10,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Core.Domain;
+using N8T.Infrastructure.EfCore.Internal;
 
 namespace N8T.Infrastructure.EfCore
 {
     public static class Extensions
     {
-        public static IServiceCollection AddCustomDbContext<TDbContext, TType>(this IServiceCollection services, string connString)
+        public static IServiceCollection AddPostgresDbContext<TDbContext, TType>(this IServiceCollection services, string connString, Action<IServiceCollection> doMoreActions = null)
             where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
         {
             services.AddPooledDbContextFactory<TDbContext>(options =>
@@ -30,7 +31,11 @@ namespace N8T.Infrastructure.EfCore
             services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<IDbContextFactory<TDbContext>>()!.CreateDbContext());
             services.AddScoped<IDomainEventContext>(provider => provider.GetService<IDbContextFactory<TDbContext>>()!.CreateDbContext());
 
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TxBehavior<,>));
+
             services.AddHostedService<DbContextMigratorHostedService>();
+
+            doMoreActions?.Invoke(services);
 
             return services;
         }
@@ -73,7 +78,7 @@ namespace N8T.Infrastructure.EfCore
         {
             var assembly = Assembly.GetCallingAssembly();
             var files = assembly.GetManifestResourceNames();
-            var filePrefix = $"{assembly.GetName().Name}.Infrastructure.Data.Scripts."; //IMPORTANT
+            var filePrefix = $"{assembly.GetName().Name}.Data.Scripts."; //IMPORTANT
 
             foreach (var file in files
                 .Where(f => f.StartsWith(filePrefix) && f.EndsWith(".sql"))

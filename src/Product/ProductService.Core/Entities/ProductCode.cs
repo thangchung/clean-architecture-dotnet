@@ -6,7 +6,6 @@ namespace ProductService.Core.Entities
 {
     public class ProductCode : EntityBase, IAggregateRoot
     {
-        public Guid Id { get; private init; }
         public string Name { get; private init; } = default!;
 
         public static ProductCode Create(string name)

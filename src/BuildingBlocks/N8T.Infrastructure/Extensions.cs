@@ -14,11 +14,24 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        [DebuggerStepThrough]
-        public static IServiceCollection AddCustomMediatR<TType>(this IServiceCollection services,
+        public static IServiceCollection AddCore(this IServiceCollection services, Type[] types = null,
             Action<IServiceCollection> doMoreActions = null)
         {
-            services.AddMediatR(typeof(TType))
+            services.AddCustomMediatR(types);
+            services.AddCustomValidators(types);
+
+            doMoreActions?.Invoke(services);
+
+            return services;
+        }
+
+        [DebuggerStepThrough]
+        public static IServiceCollection AddCustomMediatR(this IServiceCollection services, Type[] types = null,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            services.AddHttpContextAccessor();
+
+            services.AddMediatR(types)
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 

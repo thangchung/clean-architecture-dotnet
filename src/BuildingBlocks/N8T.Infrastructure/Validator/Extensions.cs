@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
@@ -24,10 +25,10 @@ namespace N8T.Infrastructure.Validator
             }
         }
 
-        public static IServiceCollection AddCustomValidators<TType>(this IServiceCollection services)
+        public static IServiceCollection AddCustomValidators(this IServiceCollection services, Type[] types)
         {
             return services.Scan(scan => scan
-                .FromAssemblyOf<TType>()
+                .FromAssembliesOf(types)
                 .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());

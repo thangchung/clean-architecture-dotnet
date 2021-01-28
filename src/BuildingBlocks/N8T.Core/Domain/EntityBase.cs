@@ -5,17 +5,18 @@ namespace N8T.Core.Domain
 {
     public abstract class EntityBase
     {
-        public DateTime Created { get; protected set; } = DateTime.UtcNow;
+        public Guid Id { get; protected init; } = Guid.NewGuid();
+        public DateTime Created { get; protected init; } = DateTime.UtcNow;
         public DateTime? Updated { get; protected set; }
         public HashSet<DomainEventBase> DomainEvents { get; private set; }
 
-        public void AddDomainEvent(DomainEventBase eventItem)
+        protected void AddDomainEvent(DomainEventBase eventItem)
         {
             DomainEvents ??= new HashSet<DomainEventBase>();
             DomainEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(DomainEventBase eventItem)
+        protected void RemoveDomainEvent(DomainEventBase eventItem)
         {
             DomainEvents?.Remove(eventItem);
         }

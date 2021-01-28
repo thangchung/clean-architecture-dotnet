@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{CCCD3B2A-9EE2-
 		LICENSE = LICENSE
 		nuget.config = nuget.config
 		README.md = README.md
+		tye.yaml = tye.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{B17CF9E5-E4A8-42B4-A669-7BC41D314D5F}"
@@ -23,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Core", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Api", "src\Product\ProductService.Api\ProductService.Api.csproj", "{DD53DA16-07B0-43FE-AB75-151691E46723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService.Infrastructure", "src\Product\ProductService.Infrastructure\ProductService.Infrastructure.csproj", "{73BD59B3-DB37-4501-A742-8F4D286DF795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Infrastructure", "src\Product\ProductService.Infrastructure\ProductService.Infrastructure.csproj", "{73BD59B3-DB37-4501-A742-8F4D286DF795}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Infrastructure", "src\BuildingBlocks\N8T.Infrastructure\N8T.Infrastructure.csproj", "{FEE450A9-7F98-4869-82C8-9A9F2D862B79}"
 EndProject
@@ -35,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Infrastructure.OTel", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Core", "src\BuildingBlocks\N8T.Core\N8T.Core.csproj", "{42928BD7-FE47-43EE-A75E-765E469782B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService.Application", "src\Product\ProductService.Application\ProductService.Application.csproj", "{C4F658E6-EE63-4378-94B6-7E18D02E51F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Application", "src\Product\ProductService.Application\ProductService.Application.csproj", "{C4F658E6-EE63-4378-94B6-7E18D02E51F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,11 +9,11 @@ namespace ProductService.Core.Entities
     {
         private readonly List<Return> _returns = new();
 
-        public Guid Id { get; private init; }
         public string Name { get; private init; } = default!;
         public bool Active { get; private init; }
         public int Quantity { get; private init; }
         public decimal Cost { get; private init; }
+        public Guid ProductCodeId { get; private init; }
         public ProductCode Code { get; private init; } = default!;
 
         public IEnumerable<Return> Returns
