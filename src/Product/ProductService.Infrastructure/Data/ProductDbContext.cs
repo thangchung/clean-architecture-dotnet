@@ -5,13 +5,6 @@ using ProductService.Core.Entities;
 
 namespace ProductService.Infrastructure.Data
 {
-    public class ExRepository<TEntity> : RepositoryBase<MainDbContext, TEntity> where TEntity : EntityBase, IAggregateRoot
-    {
-        public ExRepository(IDbContextFactory<MainDbContext> dbContextFactory) : base(dbContextFactory)
-        {
-        }
-    }
-
     public class MainDbContext : AppDbContextBase
     {
         private const string Schema = "prod";
@@ -47,6 +40,7 @@ namespace ProductService.Infrastructure.Data
                 .HasDefaultValueSql(Consts.UuidAlgorithm);
 
             modelBuilder.Entity<ProductCode>().Property(x => x.Created).HasDefaultValueSql(Consts.DateAlgorithm);
+            modelBuilder.Entity<ProductCode>().Property(x => x.Name).HasMaxLength(5);
 
             modelBuilder.Entity<ProductCode>().HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<ProductCode>().Ignore(x => x.DomainEvents);
@@ -72,10 +66,14 @@ namespace ProductService.Infrastructure.Data
                 .IsRequired();
 
             modelBuilder.Entity<Product>()
-                .HasMany(x => x.Returns)
-                .WithOne()
-                .HasForeignKey(x => x.ProductId)
-                .IsRequired();
+                .HasMany(x => x.Returns);
+        }
+    }
+
+    public class Repository<TEntity> : RepositoryBase<MainDbContext, TEntity> where TEntity : EntityBase, IAggregateRoot
+    {
+        public Repository(IDbContextFactory<MainDbContext> dbContextFactory) : base(dbContextFactory)
+        {
         }
     }
 

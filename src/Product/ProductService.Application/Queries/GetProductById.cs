@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using N8T.Core.Repository;
 using N8T.Infrastructure.App.Dtos;
 using N8T.Infrastructure.EfCore;
 using ProductService.Core.Entities;
@@ -22,9 +23,9 @@ namespace ProductService.Application.Queries
 
         internal class GetProductByIdRequestHandler : IRequestHandler<GetProductByIdRequest, ProductDto>
         {
-            private readonly IExRepository<Product> _productRepository;
+            private readonly IRepository<Product> _productRepository;
 
-            public GetProductByIdRequestHandler(IExRepository<Product> productRepository)
+            public GetProductByIdRequestHandler(IRepository<Product> productRepository)
             {
                 _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             }

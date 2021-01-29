@@ -14,6 +14,16 @@ The practical repository uses coolstore domain which is mainly borrowed from `ht
 
 ![](assets/class_diagram.png)
 
+# Testing Application
+
+```
+> http://localhost:5002/api/products/40082527-807c-4c39-92f9-b5d83bc1f9b7
+```
+
+```
+> http://localhost:5002/api/products?quantity=1500&page=1&pageSize=15
+```
+
 # Refs
 - [C4 PlaintUML Model](https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/samples/C4CoreDiagrams.md)
 - [Real world PlantUML](https://real-world-plantuml.com)

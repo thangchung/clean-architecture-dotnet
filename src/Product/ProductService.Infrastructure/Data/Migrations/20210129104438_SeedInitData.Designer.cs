@@ -10,8 +10,8 @@ using ProductService.Infrastructure.Data;
 namespace ProductService.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20210128094725_InitialProductionDb")]
-    partial class InitialProductionDb
+    [Migration("20210129104438_SeedInitData")]
+    partial class SeedInitData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,7 +90,8 @@ namespace ProductService.Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
                         .HasColumnName("name");
 
                     b.Property<DateTime?>("Updated")
@@ -134,10 +135,6 @@ namespace ProductService.Infrastructure.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("product_id");
 
-                    b.Property<Guid?>("ProductId1")
-                        .HasColumnType("uuid")
-                        .HasColumnName("product_id1");
-
                     b.Property<int>("Reason")
                         .HasColumnType("integer")
                         .HasColumnName("reason");
@@ -156,9 +153,6 @@ namespace ProductService.Infrastructure.Data.Migrations
                     b.HasIndex("ProductId")
                         .HasDatabaseName("ix_returns_product_id");
 
-                    b.HasIndex("ProductId1")
-                        .HasDatabaseName("ix_returns_product_id1");
-
                     b.ToTable("returns", "prod");
                 });
 
@@ -176,17 +170,12 @@ namespace ProductService.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ProductService.Core.Entities.Return", b =>
                 {
-                    b.HasOne("ProductService.Core.Entities.Product", null)
+                    b.HasOne("ProductService.Core.Entities.Product", "Product")
                         .WithMany("Returns")
                         .HasForeignKey("ProductId")
                         .HasConstraintName("fk_returns_products_product_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ProductService.Core.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId1")
-                        .HasConstraintName("fk_returns_products_product_id1");
 
                     b.Navigation("Product");
                 });

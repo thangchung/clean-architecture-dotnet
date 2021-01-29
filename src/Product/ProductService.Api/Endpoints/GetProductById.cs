@@ -10,11 +10,9 @@ namespace ProductService.Api.Endpoints
 {
     public class GetProductById : BaseAsyncEndpoint<Guid, ProductDto>
     {
-        [HttpGet("/api/product/{id:guid}")]
+        [HttpGet("/api/products/{id:guid}")]
         public override async Task<ActionResult<ProductDto>> HandleAsync(Guid id,
-            CancellationToken cancellationToken = new())
-        {
-            return Ok(await Mediator.Send(new GetProductByIdRequest {ProductId = id}, cancellationToken));
-        }
+            CancellationToken cancellationToken = new()) =>
+            Ok(await Mediator.Send(new GetProductByIdRequest {ProductId = id}, cancellationToken));
     }
 }

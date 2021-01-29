@@ -7,9 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Scripts\20210129104438_SeedInitData.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="..\ProductService.Api\appsettings.json" Link="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Scripts\20210129104438_SeedInitData.sql">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>20210129104438_SeedInitData.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Scripts\" />
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +40,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

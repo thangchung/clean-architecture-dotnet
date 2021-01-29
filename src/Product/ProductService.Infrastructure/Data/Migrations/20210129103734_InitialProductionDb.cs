@@ -19,7 +19,7 @@ namespace ProductService.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
                     created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
                     updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -61,7 +61,6 @@ namespace ProductService.Infrastructure.Data.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     product_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    product_id1 = table.Column<Guid>(type: "uuid", nullable: true),
                     customer_id = table.Column<Guid>(type: "uuid", nullable: false),
                     reason = table.Column<int>(type: "integer", nullable: false),
                     note = table.Column<string>(type: "text", nullable: false),
@@ -78,13 +77,6 @@ namespace ProductService.Infrastructure.Data.Migrations
                         principalTable: "products",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_returns_products_product_id1",
-                        column: x => x.product_id1,
-                        principalSchema: "prod",
-                        principalTable: "products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -119,12 +111,6 @@ namespace ProductService.Infrastructure.Data.Migrations
                 schema: "prod",
                 table: "returns",
                 column: "product_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_returns_product_id1",
-                schema: "prod",
-                table: "returns",
-                column: "product_id1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

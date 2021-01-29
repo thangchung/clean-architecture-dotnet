@@ -16,13 +16,8 @@ namespace ProductService.Core.Specifications
             _quantity = quantity;
         }
 
-        public override Expression<Func<Product, bool>> SpecExpression
-        {
-            get
-            {
-                return product => product.Id == _productId && product.Active
-                                                           && product.Quantity >= _quantity;
-            }
-        }
+        public override Expression<Func<Product, bool>> Criteria =>
+            product => product.Id == _productId && product.Active
+                                                && product.Quantity >= _quantity;
     }
 }

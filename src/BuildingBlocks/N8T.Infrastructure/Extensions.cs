@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -93,11 +94,11 @@ namespace N8T.Infrastructure
             return model;
         }
 
-        public static int Run(this IHostBuilder hostBuilder, bool isRunOnTye = true)
+        public static async Task<int> RunAsync(this IHostBuilder hostBuilder, bool isRunOnTye = true)
         {
             try
             {
-                hostBuilder.Build().Run();
+                await hostBuilder.Build().RunAsync();
                 return 0;
             }
             catch (Exception exception)

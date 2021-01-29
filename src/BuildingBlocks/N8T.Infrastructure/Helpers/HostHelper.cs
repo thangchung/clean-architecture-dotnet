@@ -7,7 +7,7 @@ using Serilog;
 
 namespace N8T.Infrastructure.Helpers
 {
-    public class HostHelper
+    public static class HostHelper
     {
         public static (IHostBuilder, bool) CreateHostBuilder<TStartup>(string[] args) where TStartup : class
         {

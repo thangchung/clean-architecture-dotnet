@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using N8T.Core.Repository;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.EfCore;
@@ -28,7 +29,7 @@ namespace ProductService.Api
             services.AddCore(new[] {typeof(Application.Anchor)})
                 .AddPostgresDbContext<MainDbContext, Infrastructure.Anchor>(
                     Config.GetConnectionString("postgres"),
-                    svc => svc.AddScoped(typeof(IExRepository<>), typeof(ExRepository<>)))
+                    svc => svc.AddScoped(typeof(IRepository<>), typeof(Repository<>)))
                 .AddCustomDaprClient()
                 .AddControllers()
                 .AddDapr();

@@ -5,16 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
+using N8T.Core.Specification;
 
 namespace N8T.Infrastructure.EfCore
 {
-    public interface IExRepository<TEntity> : IRepository<TEntity> where TEntity : EntityBase, IAggregateRoot
-    {
-        Task<TEntity> FindOneAsync(IExSpecification<TEntity> spec);
-        Task<List<TEntity>> FindAsync(IExSpecification<TEntity> spec);
-    }
-
-    public class RepositoryBase<TDbContext, TEntity> : IExRepository<TEntity>
+    public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>
         where TEntity : EntityBase, IAggregateRoot
         where TDbContext : DbContext
     {
@@ -32,18 +27,20 @@ namespace N8T.Infrastructure.EfCore
             return dbContext.Set<TEntity>().SingleOrDefault(e => e.Id == id);
         }
 
-        public Task<TEntity> FindOneAsync(IExSpecification<TEntity> spec)
+        public async Task<TEntity> FindOneAsync(ISpecification<TEntity> spec)
         {
-            using var dbContext = _dbContextFactory.CreateDbContext();
+            await using var dbContext = _dbContextFactory.CreateDbContext();
 
-            return dbContext.Set<TEntity>().Where(spec.SpecExpression).SingleOrDefaultAsync();
+            return await dbContext.Set<TEntity>().Where(spec.Criteria).SingleOrDefaultAsync();
         }
 
-        public Task<List<TEntity>> FindAsync(IExSpecification<TEntity> spec)
+        public async Task<List<TEntity>> FindAsync(ISpecification<TEntity> spec)
         {
-            using var dbContext = _dbContextFactory.CreateDbContext();
+            await using var dbContext = _dbContextFactory.CreateDbContext();
 
-            return dbContext.Set<TEntity>().Where(spec.SpecExpression).ToListAsync();
+            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+
+            return await specificationResult.ToListAsync();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
@@ -56,13 +53,50 @@ namespace N8T.Infrastructure.EfCore
             return entity;
         }
 
-        public Task RemoveAsync(TEntity entity)
+        public async Task RemoveAsync(TEntity entity)
         {
-            using var dbContext = _dbContextFactory.CreateDbContext();
+            await using var dbContext = _dbContextFactory.CreateDbContext();
 
             dbContext.Set<TEntity>().Remove(entity);
 
-            return dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
+        }
+
+        private static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery,
+            ISpecification<TEntity> specification)
+        {
+            var query = inputQuery;
+
+            if (specification.Criteria != null)
+            {
+                query = query.Where(specification.Criteria);
+            }
+
+            query = specification.Includes.Aggregate(query, (current, include) => current.Include(include));
+
+            query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+
+            if (specification.OrderBy != null)
+            {
+                query = query.OrderBy(specification.OrderBy);
+            }
+            else if (specification.OrderByDescending != null)
+            {
+                query = query.OrderByDescending(specification.OrderByDescending);
+            }
+
+            if (specification.GroupBy != null)
+            {
+                query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
+            }
+
+            if (specification.IsPagingEnabled)
+            {
+                query = query.Skip(specification.Skip)
+                    .Take(specification.Take);
+            }
+
+            return query;
         }
     }
 }

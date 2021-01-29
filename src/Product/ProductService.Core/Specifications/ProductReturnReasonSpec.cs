@@ -15,12 +15,7 @@ namespace ProductService.Core.Specifications
             _returnReason = returnReason;
         }
 
-        public override Expression<Func<Product, bool>> SpecExpression
-        {
-            get
-            {
-                return product => product.Returns.ToList().Exists(returns => returns.Reason == _returnReason);
-            }
-        }
+        public override Expression<Func<Product, bool>> Criteria =>
+            product => product.Returns.ToList().Exists(returns => returns.Reason == _returnReason);
     }
 }
