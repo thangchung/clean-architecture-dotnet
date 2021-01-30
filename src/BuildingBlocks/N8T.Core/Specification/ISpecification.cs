@@ -11,6 +11,7 @@ namespace N8T.Core.Specification
     public interface ISpecification<T>
     {
         Expression<Func<T, bool>> Criteria  { get; }
+        List<Expression<Func<T, bool>>> Criterias  { get; }
         List<Expression<Func<T, object>>> Includes { get; }
         List<string> IncludeStrings { get; }
         Expression<Func<T, object>> OrderBy { get; }

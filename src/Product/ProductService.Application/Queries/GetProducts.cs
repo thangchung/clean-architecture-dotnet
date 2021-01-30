@@ -38,7 +38,7 @@ namespace ProductService.Application.Queries
             {
                 if (request == null) throw new ArgumentNullException(nameof(request));
 
-                var spec = new ProductsSpec(request.Quantity, request.Page, request.PageSize);
+                var spec = new ProductsSpec("Quantity", ">", $"{request.Quantity}", request.Page, request.PageSize);
 
                 var products = await _productRepository.FindAsync(spec);
 

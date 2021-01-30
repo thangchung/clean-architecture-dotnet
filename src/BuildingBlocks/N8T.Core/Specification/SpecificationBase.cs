@@ -8,6 +8,7 @@ namespace N8T.Core.Specification
     public abstract class SpecificationBase<T> : ISpecification<T>
     {
         public abstract Expression<Func<T, bool>> Criteria { get; }
+        public virtual List<Expression<Func<T, bool>>> Criterias { get; } = new();
         public List<Expression<Func<T, object>>> Includes { get; } = new();
         public List<string> IncludeStrings { get; } = new();
         public Expression<Func<T, object>> OrderBy { get; private set; }

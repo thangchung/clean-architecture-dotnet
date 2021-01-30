@@ -1,25 +1,35 @@
 using System;
 using System.Linq.Expressions;
 using N8T.Core.Specification;
+using N8T.Infrastructure.LambdaExpression;
 using ProductService.Core.Entities;
 
 namespace ProductService.Core.Specifications
 {
-    public class ProductsSpec : SpecificationBase<Product>
+    public sealed class ProductsSpec : SpecificationBase<Product>
     {
-        private readonly int _quantity;
+        private readonly string _filterFieldName;
+        private readonly string _filterComparision;
+        private readonly string _filterValue;
 
-        public ProductsSpec(int quantity, int page, int pageSize)
+        public ProductsSpec(string filterFieldName, string filterComparision, string filterValue, int page,
+            int pageSize)
         {
-            _quantity = quantity;
+            _filterFieldName = filterFieldName;
+            _filterComparision = filterComparision;
+            _filterValue = filterValue;
+
             AddInclude(x => x.Returns);
             AddInclude(x => x.Code);
 
             ApplySorting("nameDesc");
-
             ApplyPaging(page, pageSize);
+
+            Criterias.Add(PredicateBuilder.Build<Product>(_filterFieldName, _filterComparision, $"{_filterValue}"));
+            Criterias.Add(PredicateBuilder.Build<Product>("Name", "Contains", $"a"));
         }
 
-        public override Expression<Func<Product, bool>> Criteria => p => p.Quantity < _quantity;
+        public override Expression<Func<Product, bool>> Criteria =>
+            PredicateBuilder.Build<Product>(_filterFieldName, _filterComparision, $"{_filterValue}");
     }
 }

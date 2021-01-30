@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
 using N8T.Core.Specification;
+using N8T.Infrastructure.LambdaExpression;
 
 namespace N8T.Infrastructure.EfCore
 {
@@ -31,7 +32,7 @@ namespace N8T.Infrastructure.EfCore
         {
             await using var dbContext = _dbContextFactory.CreateDbContext();
 
-            return await dbContext.Set<TEntity>().Where(spec.Criteria).SingleOrDefaultAsync();
+            return await dbContext.Set<TEntity>().Where(spec.Criterias.FirstOrDefault()!).SingleOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> FindAsync(ISpecification<TEntity> spec)
@@ -67,9 +68,15 @@ namespace N8T.Infrastructure.EfCore
         {
             var query = inputQuery;
 
-            if (specification.Criteria != null)
+            if (specification.Criterias != null && specification.Criterias.Count > 0)
             {
-                query = query.Where(specification.Criteria);
+                var expr = specification.Criterias.First();
+                for (var i = 1; i < specification.Criterias.Count; i++)
+                {
+                    expr = expr.And(specification.Criterias[i]);
+                }
+
+                query = query.Where(expr);
             }
 
             query = specification.Includes.Aggregate(query, (current, include) => current.Include(include));
