@@ -14,4 +14,10 @@ namespace N8T.Core.Repository
         Task<TEntity> AddAsync(TEntity entity);
         Task RemoveAsync(TEntity entity);
     }
+
+    public interface IGridRepository<TEntity> where TEntity : EntityBase, IAggregateRoot
+    {
+        ValueTask<long> CountAsync(IGridSpecification<TEntity> spec);
+        Task<List<TEntity>> FindAsync(IGridSpecification<TEntity> spec);
+    }
 }

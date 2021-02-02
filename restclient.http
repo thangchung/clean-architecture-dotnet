@@ -1,0 +1,22 @@
+###
+@host = http://localhost:5002
+GET {{host}}/api/products HTTP/1.1
+content-type: {{contentType}}
+
+{
+  "filters": [
+    {
+      "fieldName": "Quantity",
+      "comparision": ">",
+      "fieldValue": "1000"
+    },
+    {
+      "fieldName": "Name",
+      "comparision": "Contains",
+      "fieldValue": "adipiscing"
+    }
+  ],
+  "sorts": ["nameDesc"],
+  "page": 1,
+  "pageSize": 20
+}

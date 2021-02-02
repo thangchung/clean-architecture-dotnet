@@ -4,9 +4,8 @@ using System.Linq.Expressions;
 
 namespace N8T.Core.Specification
 {
-    public abstract class SpecificationBase<T> : ISpecification<T>
+    public abstract class GridSpecificationBase<T> : IGridSpecification<T>
     {
-        public abstract Expression<Func<T, bool>> Criteria { get; }
         public virtual List<Expression<Func<T, bool>>> Criterias { get; } = new();
         public List<Expression<Func<T, object>>> Includes { get; } = new();
         public List<string> IncludeStrings { get; } = new();
@@ -16,7 +15,7 @@ namespace N8T.Core.Specification
 
         public int Take { get; private set; }
         public int Skip { get; private set; }
-        public bool IsPagingEnabled { get; private set; }
+        public bool IsPagingEnabled { get; set; }
 
         protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {

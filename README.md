@@ -16,13 +16,32 @@ The practical repository uses coolstore domain which is mainly borrowed from `ht
 
 # Testing Application
 
+Starting the web application
+
 ```
-> http://localhost:5002/api/products/40082527-807c-4c39-92f9-b5d83bc1f9b7
+$ cd src\Web
+$ npm i
+$ npm run dev
+```
+
+Starting the Api
+
+```
+$ tye run
 ```
 
 ```
-> http://localhost:5002/api/products?quantity=1500&page=1&pageSize=15
+$ cd src\Product\ProductService.Api\
+$ dotnet run
 ```
+
+> Frontend: [http://localhost:3000/products](http://localhost:3000/products)
+> 
+> Backend: [http://localhost:5002](http://localhost:5002)
+> 
+> Tye Dashboard: [http://localhost:8000](http://localhost:8000)
+
+![](assets/products_screen.png)
 
 # Refs
 - [C4 PlaintUML Model](https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/samples/C4CoreDiagrams.md)

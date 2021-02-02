@@ -26,10 +26,22 @@ namespace ProductService.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("api", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddCore(new[] {typeof(Application.Anchor)})
                 .AddPostgresDbContext<MainDbContext, Infrastructure.Anchor>(
                     Config.GetConnectionString("postgres"),
-                    svc => svc.AddScoped(typeof(IRepository<>), typeof(Repository<>)))
+                    svc =>
+                    {
+                        svc.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+                        svc.AddScoped(typeof(IGridRepository<>), typeof(Repository<>));
+                    })
                 .AddCustomDaprClient()
                 .AddControllers()
                 .AddDapr();
@@ -41,6 +53,8 @@ namespace ProductService.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("api");
 
             app.UseRouting();
 

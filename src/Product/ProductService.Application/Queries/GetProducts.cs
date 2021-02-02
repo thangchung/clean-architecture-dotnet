@@ -12,11 +12,17 @@ using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Queries
 {
-    public class GetProductsRequest: IRequest<List<ProductDto>>
+    public class GridResultModel<T>
     {
-        public int Quantity { get; init; } = 1000;
+        public List<T> Items { get; init; } = new();
+        public long TotalItems { get; init; } = 0;
         public int Page { get; init; } = 1;
         public int PageSize { get; init; } = 20;
+    }
+
+    public class GetProductsRequest: IRequest<GridResultModel<ProductDto>>
+    {
+        public GridQueryModel QueryModel { get; init; } = new();
 
         internal class GetProductsRequestValidator : AbstractValidator<GetProductsRequest>
         {
@@ -25,24 +31,25 @@ namespace ProductService.Application.Queries
             }
         }
 
-        internal class GetProductsRequestHandler : IRequestHandler<GetProductsRequest, List<ProductDto>>
+        internal class GetProductsRequestHandler : IRequestHandler<GetProductsRequest, GridResultModel<ProductDto>>
         {
-            private readonly IRepository<Product> _productRepository;
+            private readonly IGridRepository<Product> _productRepository;
 
-            public GetProductsRequestHandler(IRepository<Product> productRepository)
+            public GetProductsRequestHandler(IGridRepository<Product> productRepository)
             {
                 _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             }
 
-            public async Task<List<ProductDto>> Handle(GetProductsRequest request, CancellationToken cancellationToken)
+            public async Task<GridResultModel<ProductDto>> Handle(GetProductsRequest request,
+                CancellationToken cancellationToken)
             {
                 if (request == null) throw new ArgumentNullException(nameof(request));
 
-                var spec = new ProductsSpec("Quantity", ">", $"{request.Quantity}", request.Page, request.PageSize);
+                var spec = new ProductsSpec(request.QueryModel);
 
                 var products = await _productRepository.FindAsync(spec);
 
-                return products.Select(x => new ProductDto
+                var productModels = products.Select(x => new ProductDto
                 {
                     Id = x.Id,
                     ProductCodeId = x.ProductCodeId,
@@ -54,6 +61,18 @@ namespace ProductService.Application.Queries
                     Created = x.Created,
                     Modified = x.Updated
                 }).ToList();
+
+                var totalProducts = await _productRepository.CountAsync(spec);
+
+                var resultModel = new GridResultModel<ProductDto>
+                {
+                    Page = request.QueryModel.Page,
+                    PageSize = request.QueryModel.PageSize,
+                    Items = productModels,
+                    TotalItems = totalProducts
+                };
+
+                return resultModel;
             }
         }
     }

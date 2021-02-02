@@ -10,7 +10,7 @@ using N8T.Infrastructure.LambdaExpression;
 
 namespace N8T.Infrastructure.EfCore
 {
-    public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>
+    public class RepositoryBase<TDbContext, TEntity> : IRepository<TEntity>, IGridRepository<TEntity>
         where TEntity : EntityBase, IAggregateRoot
         where TDbContext : DbContext
     {
@@ -32,10 +32,29 @@ namespace N8T.Infrastructure.EfCore
         {
             await using var dbContext = _dbContextFactory.CreateDbContext();
 
-            return await dbContext.Set<TEntity>().Where(spec.Criterias.FirstOrDefault()!).SingleOrDefaultAsync();
+            return await dbContext.Set<TEntity>().Where(spec.Criteria).SingleOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> FindAsync(ISpecification<TEntity> spec)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+
+            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+
+            return await specificationResult.ToListAsync();
+        }
+
+        public async ValueTask<long> CountAsync(IGridSpecification<TEntity> spec)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+
+            spec.IsPagingEnabled = false;
+            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+
+            return specificationResult.LongCount();
+        }
+
+        public async Task<List<TEntity>> FindAsync(IGridSpecification<TEntity> spec)
         {
             await using var dbContext = _dbContextFactory.CreateDbContext();
 
@@ -68,7 +87,44 @@ namespace N8T.Infrastructure.EfCore
         {
             var query = inputQuery;
 
-            if (specification.Criterias != null && specification.Criterias.Count > 0)
+            if (specification.Criteria is not null)
+            {
+                query = query.Where(specification.Criteria);
+            }
+
+            query = specification.Includes.Aggregate(query, (current, include) => current.Include(include));
+
+            query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+
+            if (specification.OrderBy is not null)
+            {
+                query = query.OrderBy(specification.OrderBy);
+            }
+            else if (specification.OrderByDescending is not null)
+            {
+                query = query.OrderByDescending(specification.OrderByDescending);
+            }
+
+            if (specification.GroupBy is not null)
+            {
+                query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
+            }
+
+            if (specification.IsPagingEnabled)
+            {
+                query = query.Skip(specification.Skip)
+                    .Take(specification.Take);
+            }
+
+            return query;
+        }
+
+        private static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery,
+            IGridSpecification<TEntity> specification)
+        {
+            var query = inputQuery;
+
+            if (specification.Criterias is not null && specification.Criterias.Count > 0)
             {
                 var expr = specification.Criterias.First();
                 for (var i = 1; i < specification.Criterias.Count; i++)
@@ -83,16 +139,16 @@ namespace N8T.Infrastructure.EfCore
 
             query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
 
-            if (specification.OrderBy != null)
+            if (specification.OrderBy is not null)
             {
                 query = query.OrderBy(specification.OrderBy);
             }
-            else if (specification.OrderByDescending != null)
+            else if (specification.OrderByDescending is not null)
             {
                 query = query.OrderByDescending(specification.OrderByDescending);
             }
 
-            if (specification.GroupBy != null)
+            if (specification.GroupBy is not null)
             {
                 query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
             }
