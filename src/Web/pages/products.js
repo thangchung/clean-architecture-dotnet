@@ -13,10 +13,17 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, {
   textFilter,
   numberFilter,
+  dateFilter,
 } from "react-bootstrap-table2-filter";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import _ from "lodash";
 import axios from "axios";
+import moment from "moment";
+
+const ApiUrl = "http://localhost:5002/api/products";
 
 const Products = (props) => {
   const [page, setPage] = useState(1);
@@ -36,36 +43,54 @@ const Products = (props) => {
         pageSize: sizePerPage,
       };
 
+      var fts = [];
+
       for (const dataField in filters) {
         const { filterVal, filterType, comparator } = filters[dataField];
-
         if (filterType === "TEXT") {
-          queryModel = _.assign(queryModel, {
-            filters: [
-              {
-                fieldName: _.startCase(_.toLower(dataField)),
-                comparision: "Contains",
-                fieldValue: filterVal,
-              },
-            ],
+          fts.push({
+            fieldName: _.startCase(_.toLower(dataField)),
+            comparision: "Contains",
+            fieldValue: filterVal,
           });
+        } else if (filterType === "NUMBER" && filterVal.number != null) {
+          if (!filterVal.comparator == "") {
+            fts.push({
+              fieldName: _.startCase(_.toLower(dataField)),
+              comparision:
+                filterVal.comparator === "=" ? "==" : filterVal.comparator,
+              fieldValue: filterVal.number,
+            });
+          }
+        } else if (filterType === "DATE" && filterVal.date != null) {
+          if (!(filterVal.comparator == "" || filterVal.comparator == null)) {
+            fts.push({
+              fieldName: _.startCase(_.toLower(dataField)),
+              comparision:
+                filterVal.comparator === "=" ? "==" : filterVal.comparator,
+              fieldValue: filterVal.date,
+            });
+          }
         }
       }
 
-      axios
-        .post("http://localhost:5002/api/products", queryModel)
-        .then((response) => {
-          setProducts(response.data.items);
-          setPage(response.data.page);
-          setSizePerPage(response.data.pageSize);
-          setTotalSize(response.data.totalItems);
+      if (fts.length > 0) {
+        queryModel = _.assign(queryModel, {
+          filters: fts,
         });
+      }
+
+      axios.post(ApiUrl, queryModel).then((response) => {
+        setProducts(response.data.items);
+        setPage(response.data.page);
+        setSizePerPage(response.data.pageSize);
+        setTotalSize(response.data.totalItems);
+      });
     },
     []
   );
 
   const rowSelect = (row, isSelect) => {
-    // console.log(row);
     setSelectedProduct(row);
   };
 
@@ -75,6 +100,21 @@ const Products = (props) => {
 
   const handleDelete = () => {
     console.log(selectedProduct);
+  };
+
+  const handleClearFilters = () => {
+    if (nameFilter != undefined || _.isFunction(nameFilter)) {
+      nameFilter("");
+    }
+    if (priceFilter != undefined || _.isFunction(priceFilter)) {
+      priceFilter("");
+    }
+    if (quantityFilter != undefined || _.isFunction(quantityFilter)) {
+      quantityFilter("");
+    }
+    if (createdFilter != undefined || _.isFunction(createdFilter)) {
+      createdFilter();
+    }
   };
 
   const selectRow = {
@@ -93,17 +133,23 @@ const Products = (props) => {
           <Card.Header as="h3">
             <b>Product Management</b>
             <ButtonGroup aria-label="Basic example" className="float-right">
-              <Button variant="primary">Create</Button>
-              <Button variant="secondary" onClick={handleEdit}>
-                Update
+              <Button variant="primary">
+                <FontAwesomeIcon icon={faPlus} /> Create
+              </Button>
+              <Button variant="warning" onClick={handleEdit}>
+                <FontAwesomeIcon icon={faEdit} /> Update
+              </Button>
+              <Button variant="danger" onClick={handleDelete}>
+                <FontAwesomeIcon icon={faTrash} /> Delete
               </Button>
               <DropdownButton
                 as={ButtonGroup}
                 id="bg-nested-dropdown"
-                variant="secondary"
+                variant="outline-secondary"
+                title=""
               >
-                <Dropdown.Item eventKey="1" onClick={handleDelete}>
-                  Delete
+                <Dropdown.Item eventKey="1" onClick={handleClearFilters}>
+                  Clear filters
                 </Dropdown.Item>
                 <Dropdown.Item eventKey="2">Export</Dropdown.Item>
               </DropdownButton>
@@ -125,6 +171,11 @@ const Products = (props) => {
   );
 };
 
+let nameFilter;
+let priceFilter;
+let quantityFilter;
+let createdFilter;
+
 const columns = [
   {
     dataField: "id",
@@ -135,24 +186,48 @@ const columns = [
     dataField: "name",
     text: "Product name",
     filter: textFilter({
-      defaultValue: "",
+      getFilter: (filter) => {
+        nameFilter = filter;
+      },
     }),
     sort: true,
   },
   {
     dataField: "cost",
     text: "Product price",
-    filter: numberFilter(),
+    filter: numberFilter({
+      getFilter: (filter) => {
+        priceFilter = filter;
+      },
+    }),
+    sort: true,
+  },
+  {
+    dataField: "quantity",
+    text: "Quantity",
+    filter: numberFilter({
+      getFilter: (filter) => {
+        quantityFilter = filter;
+      },
+    }),
+    sort: true,
+  },
+  {
+    dataField: "created",
+    text: "Created",
+    formatter: (cell, row) => {
+      return moment(cell).format("l");
+    },
+    filter: dateFilter({
+      getFilter: (filter) => {
+        createdFilter = filter;
+      },
+    }),
     sort: true,
   },
   {
     dataField: "productCodeName",
     text: "Product Code",
-  },
-  {
-    dataField: "quantity",
-    text: "Quantity",
-    sort: true,
   },
 ];
 

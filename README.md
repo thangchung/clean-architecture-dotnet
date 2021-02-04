@@ -16,7 +16,13 @@ The practical repository uses coolstore domain which is mainly borrowed from `ht
 
 # Testing Application
 
-Starting the web application
+- Starting the Api
+
+```
+$ tye run
+```
+
+- Starting the web application
 
 ```
 $ cd src\Web
@@ -24,16 +30,7 @@ $ npm i
 $ npm run dev
 ```
 
-Starting the Api
-
-```
-$ tye run
-```
-
-```
-$ cd src\Product\ProductService.Api\
-$ dotnet run
-```
+- Public Apis:
 
 > Frontend: [http://localhost:3000/products](http://localhost:3000/products)
 > 

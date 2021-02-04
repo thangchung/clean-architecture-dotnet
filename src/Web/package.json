@@ -8,12 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "next": "10.0.6",
     "next-images": "^1.7.0",
     "nprogress": "^0.2.0",

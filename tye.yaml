@@ -25,10 +25,10 @@ services:
   bindings:
   - port: 6379
 
-# - name: productserviceapp
-#   project: src/Product/ProductService.Api/ProductService.Api.csproj
-#   env:
-#   - name: ConnectionStrings__postgres
-#     value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
-#   bindings:
-#   - port: 5002
+- name: productserviceapp
+  project: src/Product/ProductService.Api/ProductService.Api.csproj
+  env:
+  - name: ConnectionStrings__postgres
+    value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  bindings:
+  - port: 5002

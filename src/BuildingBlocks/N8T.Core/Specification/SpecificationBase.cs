@@ -7,7 +7,6 @@ namespace N8T.Core.Specification
     public abstract class SpecificationBase<T> : ISpecification<T>
     {
         public abstract Expression<Func<T, bool>> Criteria { get; }
-        public virtual List<Expression<Func<T, bool>>> Criterias { get; } = new();
         public List<Expression<Func<T, object>>> Includes { get; } = new();
         public List<string> IncludeStrings { get; } = new();
         public Expression<Func<T, object>> OrderBy { get; private set; }
@@ -47,42 +46,6 @@ namespace N8T.Core.Specification
         protected void ApplySorting(string sort)
         {
             this.ApplySorting(sort, nameof(ApplyOrderBy), nameof(ApplyOrderByDescending));
-
-            /*if (string.IsNullOrEmpty(sort)) return;
-
-            const string descendingSuffix = "Desc";
-
-            var descending = sort.EndsWith(descendingSuffix, StringComparison.Ordinal);
-            var propertyName = sort.Substring(0, 1).ToUpperInvariant() +
-                               sort.Substring(1, sort.Length - 1 - (descending ? descendingSuffix.Length : 0));
-
-            var specificationType = GetType().BaseType;
-            var targetType = specificationType?.GenericTypeArguments[0];
-            var property = targetType!.GetRuntimeProperty(propertyName) ??
-                           throw new InvalidOperationException($"Because the property {propertyName} does not exist it cannot be sorted.");
-
-            var lambdaParamX = Expression.Parameter(targetType, "x");
-
-            var propertyReturningExpression = Expression.Lambda(
-                Expression.Convert(
-                    Expression.Property(lambdaParamX, property),
-                    typeof(object)),
-                lambdaParamX);
-
-            if (descending)
-            {
-                specificationType?.GetMethod(
-                        nameof(ApplyOrderByDescending),
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    ?.Invoke(this, new object[]{propertyReturningExpression});
-            }
-            else
-            {
-                specificationType?.GetMethod(
-                        nameof(ApplyOrderBy),
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    ?.Invoke(this, new object[]{propertyReturningExpression});
-            }*/
         }
     }
 }
