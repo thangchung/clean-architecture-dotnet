@@ -1,4 +1,7 @@
 import React, { useCallback, useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
 import {
   Container,
   Card,
@@ -17,7 +20,11 @@ import filterFactory, {
 } from "react-bootstrap-table2-filter";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faEraser,
+  faFileExcel,
+} from "@fortawesome/free-solid-svg-icons";
 
 import _ from "lodash";
 import axios from "axios";
@@ -26,11 +33,17 @@ import moment from "moment";
 const ApiUrl = "http://localhost:5002/api/products";
 
 const Products = (props) => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [sizePerPage, setSizePerPage] = useState(10);
   const [products, setProducts] = useState([]);
   const [totalSize, setTotalSize] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState({});
+
+  let nameFilter;
+  let priceFilter;
+  let quantityFilter;
+  let createdFilter;
 
   const fetchData = useCallback(
     async (type, { page, sizePerPage, filters, sortField, sortOrder }) => {
@@ -94,12 +107,18 @@ const Products = (props) => {
     setSelectedProduct(row);
   };
 
-  const handleEdit = () => {
-    console.log(selectedProduct);
-  };
-
-  const handleDelete = () => {
-    console.log(selectedProduct);
+  const rowEdit = (cell, row, rowIndex, formatExtraData) => {
+    return (
+      <>
+        <Link href={`product/${row.id}`}>
+          <Button variant="outline-warning" size="sm">Edit</Button>
+        </Link>
+        &nbsp;
+        <Link href={`product/${row.id}`}>
+          <Button variant="outline-danger" size="sm">Delete</Button>
+        </Link>
+      </>
+    );
   };
 
   const handleClearFilters = () => {
@@ -125,6 +144,79 @@ const Products = (props) => {
     onSelect: rowSelect,
   };
 
+  const columns = [
+    {
+      dataField: "id",
+      text: "Product id",
+      hidden: true,
+    },
+    {
+      dataField: "name",
+      text: "Product name",
+      filter: textFilter({
+        getFilter: (filter) => {
+          nameFilter = filter;
+        },
+      }),
+      sort: true,
+    },
+    {
+      dataField: "cost",
+      text: "Product price",
+      filter: numberFilter({
+        getFilter: (filter) => {
+          priceFilter = filter;
+        },
+      }),
+      sort: true,
+    },
+    {
+      dataField: "quantity",
+      text: "Quantity",
+      filter: numberFilter({
+        getFilter: (filter) => {
+          quantityFilter = filter;
+        },
+      }),
+      sort: true,
+    },
+    {
+      dataField: "created",
+      text: "Created",
+      headerStyle: (colum, colIndex) => {
+        return { width: "220px", textAlign: "center" };
+      },
+      formatter: (cell, row) => {
+        return moment(cell).format("l");
+      },
+      filter: dateFilter({
+        getFilter: (filter) => {
+          createdFilter = filter;
+        },
+      }),
+      sort: true,
+    },
+    {
+      dataField: "productCodeName",
+      text: "Product Code",
+    },
+    {
+      dataField: "actions",
+      text: "",
+      headerStyle: (colum, colIndex) => {
+        return { width: "130px", textAlign: "center" };
+      },
+      formatter: rowEdit,
+    },
+  ];
+
+  const defaultSorted = [
+    {
+      dataField: "name",
+      order: "desc",
+    },
+  ];
+
   return (
     <>
       <br></br>
@@ -134,13 +226,10 @@ const Products = (props) => {
             <b>Product Management</b>
             <ButtonGroup aria-label="Basic example" className="float-right">
               <Button variant="primary">
-                <FontAwesomeIcon icon={faPlus} /> Create
+                <FontAwesomeIcon icon={faPlus} /> <b>Create</b>
               </Button>
-              <Button variant="warning" onClick={handleEdit}>
-                <FontAwesomeIcon icon={faEdit} /> Update
-              </Button>
-              <Button variant="danger" onClick={handleDelete}>
-                <FontAwesomeIcon icon={faTrash} /> Delete
+              <Button variant="warning" onClick={handleClearFilters}>
+                <FontAwesomeIcon icon={faEraser} /> <b>Clear Filters</b>{" "}
               </Button>
               <DropdownButton
                 as={ButtonGroup}
@@ -148,21 +237,25 @@ const Products = (props) => {
                 variant="outline-secondary"
                 title=""
               >
-                <Dropdown.Item eventKey="1" onClick={handleClearFilters}>
-                  Clear filters
+                <Dropdown.Item eventKey="1">
+                  <FontAwesomeIcon icon={faFileExcel} /> <b>Export</b>{" "}
                 </Dropdown.Item>
-                <Dropdown.Item eventKey="2">Export</Dropdown.Item>
               </DropdownButton>
             </ButtonGroup>
           </Card.Header>
           <Card.Body>
-            <RemoteAll
+            <BootstrapTable
+              bootstrap4
+              striped
+              hover
+              remote
+              keyField="id"
               data={products}
-              page={page}
-              sizePerPage={sizePerPage}
-              totalSize={totalSize}
+              columns={columns}
+              defaultSorted={defaultSorted}
+              filter={filterFactory()}
+              pagination={paginationFactory({ page, sizePerPage, totalSize })}
               onTableChange={fetchData}
-              selectRow={selectRow}
             />
           </Card.Body>
         </Card>
@@ -170,96 +263,5 @@ const Products = (props) => {
     </>
   );
 };
-
-let nameFilter;
-let priceFilter;
-let quantityFilter;
-let createdFilter;
-
-const columns = [
-  {
-    dataField: "id",
-    text: "Product id",
-    hidden: true,
-  },
-  {
-    dataField: "name",
-    text: "Product name",
-    filter: textFilter({
-      getFilter: (filter) => {
-        nameFilter = filter;
-      },
-    }),
-    sort: true,
-  },
-  {
-    dataField: "cost",
-    text: "Product price",
-    filter: numberFilter({
-      getFilter: (filter) => {
-        priceFilter = filter;
-      },
-    }),
-    sort: true,
-  },
-  {
-    dataField: "quantity",
-    text: "Quantity",
-    filter: numberFilter({
-      getFilter: (filter) => {
-        quantityFilter = filter;
-      },
-    }),
-    sort: true,
-  },
-  {
-    dataField: "created",
-    text: "Created",
-    formatter: (cell, row) => {
-      return moment(cell).format("l");
-    },
-    filter: dateFilter({
-      getFilter: (filter) => {
-        createdFilter = filter;
-      },
-    }),
-    sort: true,
-  },
-  {
-    dataField: "productCodeName",
-    text: "Product Code",
-  },
-];
-
-const defaultSorted = [
-  {
-    dataField: "name",
-    order: "desc",
-  },
-];
-
-const RemoteAll = ({
-  data,
-  page,
-  sizePerPage,
-  onTableChange,
-  selectRow,
-  totalSize,
-}) => (
-  <BootstrapTable
-    bootstrap4
-    striped
-    hover
-    remote
-    keyField="id"
-    data={data}
-    columns={columns}
-    defaultSorted={defaultSorted}
-    filter={filterFactory()}
-    pagination={paginationFactory({ page, sizePerPage, totalSize })}
-    onTableChange={onTableChange}
-    selectRow={selectRow}
-  />
-);
 
 export default Products;
