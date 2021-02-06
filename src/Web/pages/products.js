@@ -2,14 +2,21 @@ import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import MainLayout from "../layout/MainLayout";
+import HeadDefault from "../layout/head/HeadDefault";
+
 import {
   Container,
   Card,
+  CardHeader,
+  CardBody,
   ButtonGroup,
   Button,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
+  UncontrolledButtonDropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownToggle,
+} from "reactstrap";
 
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -20,11 +27,6 @@ import filterFactory, {
 } from "react-bootstrap-table2-filter";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faEraser,
-  faFileExcel,
-} from "@fortawesome/free-solid-svg-icons";
 
 import _ from "lodash";
 import axios from "axios";
@@ -111,11 +113,15 @@ const Products = (props) => {
     return (
       <>
         <Link href={`product/${row.id}`}>
-          <Button variant="outline-warning" size="sm">Edit</Button>
+          <Button outline color="warning" size="sm">
+            Edit
+          </Button>
         </Link>
         &nbsp;
         <Link href={`product/${row.id}`}>
-          <Button variant="outline-danger" size="sm">Delete</Button>
+          <Button outline color="danger" size="sm">
+            Delete
+          </Button>
         </Link>
       </>
     );
@@ -137,11 +143,20 @@ const Products = (props) => {
   };
 
   const selectRow = {
-    mode: "radio",
+    mode: "checkbox",
     clickToSelect: true,
-    hideSelectAll: true,
-    bgColor: "#6c757d",
-    onSelect: rowSelect,
+    bgColor: "#FFFFCC",
+    onSelect: (row, isSelect, rowIndex, e) => {
+      console.log(row.id);
+      console.log(isSelect);
+      console.log(rowIndex);
+      console.log(e);
+    },
+    onSelectAll: (isSelect, rows, e) => {
+      console.log(isSelect);
+      console.log(rows);
+      console.log(e);
+    },
   };
 
   const columns = [
@@ -183,8 +198,8 @@ const Products = (props) => {
     {
       dataField: "created",
       text: "Created",
-      headerStyle: (colum, colIndex) => {
-        return { width: "220px", textAlign: "center" };
+      headerStyle: () => {
+        return { width: "220px" };
       },
       formatter: (cell, row) => {
         return moment(cell).format("l");
@@ -198,13 +213,16 @@ const Products = (props) => {
     },
     {
       dataField: "productCodeName",
-      text: "Product Code",
+      text: "Code",
+      headerStyle: () => {
+        return { width: "80px", textAlign: "center" };
+      },
     },
     {
       dataField: "actions",
       text: "",
-      headerStyle: (colum, colIndex) => {
-        return { width: "130px", textAlign: "center" };
+      headerStyle: () => {
+        return { width: "150px", textAlign: "center" };
       },
       formatter: rowEdit,
     },
@@ -219,47 +237,69 @@ const Products = (props) => {
 
   return (
     <>
-      <br></br>
-      <Container fluid>
-        <Card>
-          <Card.Header as="h3">
-            <b>Product Management</b>
-            <ButtonGroup aria-label="Basic example" className="float-right">
-              <Button variant="primary">
-                <FontAwesomeIcon icon={faPlus} /> <b>Create</b>
-              </Button>
-              <Button variant="warning" onClick={handleClearFilters}>
-                <FontAwesomeIcon icon={faEraser} /> <b>Clear Filters</b>{" "}
-              </Button>
-              <DropdownButton
-                as={ButtonGroup}
-                id="bg-nested-dropdown"
-                variant="outline-secondary"
-                title=""
-              >
-                <Dropdown.Item eventKey="1">
-                  <FontAwesomeIcon icon={faFileExcel} /> <b>Export</b>{" "}
-                </Dropdown.Item>
-              </DropdownButton>
-            </ButtonGroup>
-          </Card.Header>
-          <Card.Body>
-            <BootstrapTable
-              bootstrap4
-              striped
-              hover
-              remote
-              keyField="id"
-              data={products}
-              columns={columns}
-              defaultSorted={defaultSorted}
-              filter={filterFactory()}
-              pagination={paginationFactory({ page, sizePerPage, totalSize })}
-              onTableChange={fetchData}
-            />
-          </Card.Body>
-        </Card>
-      </Container>
+      <HeadDefault
+        title="Product Page | eCommerce"
+        description="Product page of eCommerce."
+      />
+      <MainLayout>
+        <h3>Product Page</h3>
+        <Container fluid>
+          <Card>
+            <CardHeader tag="h3">
+              <ButtonGroup>
+                <UncontrolledButtonDropdown>
+                  <DropdownToggle outline caret color="info">
+                    Action
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header>
+                      <a href="#">
+                        <FontAwesomeIcon icon="trash" /> <b>Delete</b>{" "}
+                      </a>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledButtonDropdown>
+                <Button outline color="primary">
+                  <FontAwesomeIcon icon="sync-alt" size="xs" /> <b>Refresh</b>
+                </Button>
+              </ButtonGroup>
+              <ButtonGroup className="float-right">
+                <Button outline color="secondary">
+                  <FontAwesomeIcon icon="plus" /> <b>New</b>
+                </Button>
+                <Button outline color="primary" onClick={handleClearFilters}>
+                  <FontAwesomeIcon icon="filter" /> <b>Filter</b>
+                </Button>
+                <UncontrolledButtonDropdown>
+                  <DropdownToggle outline caret color="info"></DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem header>
+                      <a href="#">
+                        <FontAwesomeIcon icon="file-excel" /> <b>Export</b>{" "}
+                      </a>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledButtonDropdown>
+              </ButtonGroup>
+            </CardHeader>
+            <CardBody>
+              <BootstrapTable
+                bootstrap4
+                hover
+                remote
+                keyField="id"
+                data={products}
+                columns={columns}
+                defaultSorted={defaultSorted}
+                filter={filterFactory()}
+                pagination={paginationFactory({ page, sizePerPage, totalSize })}
+                selectRow={selectRow}
+                onTableChange={fetchData}
+              />
+            </CardBody>
+          </Card>
+        </Container>
+      </MainLayout>
     </>
   );
 };

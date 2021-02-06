@@ -1,0 +1,32 @@
+// Theme fonts
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700,800,900&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-weight: 600;
+}
+
+footer[class=footer-main] {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+    text-align: center;
+    background-color: aliceblue;
+    ul {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 16px;
+        margin: 0;
+        > li {
+            display: flex;
+            padding: 6px 8px;
+            > a {
+                color: #067df7;
+                text-decoration: none;
+                font-size: 13px;
+            }
+        }
+    }
+}
