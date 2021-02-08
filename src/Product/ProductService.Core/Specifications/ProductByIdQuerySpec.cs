@@ -8,17 +8,17 @@ namespace ProductService.Core.Specifications
 {
     public sealed class ProductByIdQuerySpec : SpecificationBase<Product>
     {
-        private readonly IItemQueryModel<Guid> _queryModel;
+        private readonly IItemQueryInput<Guid> _queryInput;
 
-        public ProductByIdQuerySpec(IItemQueryModel<Guid> queryModel)
+        public ProductByIdQuerySpec(IItemQueryInput<Guid> queryInput)
         {
-            _queryModel = queryModel ?? throw new ArgumentNullException(nameof(queryModel));
-            foreach (var include in queryModel.Includes)
+            _queryInput = queryInput ?? throw new ArgumentNullException(nameof(queryInput));
+            foreach (var include in queryInput.Includes)
             {
                 AddInclude(include);
             }
         }
 
-        public override Expression<Func<Product, bool>> Criteria => p => p.Id == _queryModel.Id;
+        public override Expression<Func<Product, bool>> Criteria => p => p.Id == _queryInput.Id;
     }
 }

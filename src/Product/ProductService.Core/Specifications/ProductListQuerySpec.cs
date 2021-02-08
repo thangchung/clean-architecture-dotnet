@@ -7,24 +7,24 @@ namespace ProductService.Core.Specifications
 {
     public sealed class ProductListQuerySpec : GridSpecificationBase<Product>
     {
-        public ProductListQuerySpec(IListQueryModel gridQueryModel)
+        public ProductListQuerySpec(IListQueryInput gridQueryInput)
         {
-            foreach (var include in gridQueryModel.Includes)
+            foreach (var include in gridQueryInput.Includes)
             {
                 AddInclude(include);
             }
 
-            foreach (var (fieldName, comparision, fieldValue) in gridQueryModel.Filters)
+            foreach (var (fieldName, comparision, fieldValue) in gridQueryInput.Filters)
             {
                 Criterias.Add(PredicateBuilder.Build<Product>(fieldName, comparision, fieldValue));
             }
 
-            foreach (var sort in gridQueryModel.Sorts)
+            foreach (var sort in gridQueryInput.Sorts)
             {
                 ApplySorting(sort);
             }
 
-            ApplyPaging(gridQueryModel.Page, gridQueryModel.PageSize);
+            ApplyPaging(gridQueryInput.Page, gridQueryInput.PageSize);
         }
     }
 }

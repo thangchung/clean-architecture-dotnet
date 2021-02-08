@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 namespace N8T.Core.Domain
 {
-    public interface ICrudModel
+    public interface ICrudInput
     {
     }
 
-    public interface ICreateModel<T> : ICrudModel
-    {
-        public T Model { get; init; }
-    }
-
-    public interface IUpdateModel<T> : ICrudModel
+    public interface ICreateInput<T> : ICrudInput
     {
         public T Model { get; init; }
     }
 
-    public interface IDeleteModel<TId> : ICrudModel where TId : struct
+    public interface IUpdateInput<T> : ICrudInput
+    {
+        public T Model { get; init; }
+    }
+
+    public interface IDeleteInput<TId> : ICrudInput where TId : struct
     {
         public TId Id { get; init; }
     }
 
-    public interface IListQueryModel : ICrudModel
+    public interface IListQueryInput : ICrudInput
     {
         public List<string> Includes { get; init; }
         public List<FilterModel> Filters { get; init; }
@@ -31,7 +31,7 @@ namespace N8T.Core.Domain
         public int PageSize { get; init; }
     }
 
-    public interface IItemQueryModel<TId> : ICrudModel where TId : struct
+    public interface IItemQueryInput<TId> : ICrudInput where TId : struct
     {
         public List<string> Includes { get; init; }
         public TId Id { get; init; }

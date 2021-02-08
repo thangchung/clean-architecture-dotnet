@@ -12,51 +12,55 @@ using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Queries
 {
-    public record GetProductByIdRequest : IQuery<ResultModel<ProductDto>>, IItemQueryModel<Guid>
+    public class GetProductById
     {
-        public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});
-        public Guid Id { get; init; }
-
-        internal class GetProductByIdRequestValidator : AbstractValidator<GetProductByIdRequest>
+        public record Query : IItemQueryInput<Guid>, IQuery<ProductDto>
         {
-            public GetProductByIdRequestValidator()
-            {
-            }
-        }
+            public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});
+            public Guid Id { get; init; }
 
-        internal class GetProductByIdRequestHandler : IRequestHandler<GetProductByIdRequest, ResultModel<ProductDto>>
-        {
-            private readonly IRepository<Product> _productRepository;
-
-            public GetProductByIdRequestHandler(IRepository<Product> productRepository)
+            internal class Validator : AbstractValidator<Query>
             {
-                _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+                public Validator()
+                {
+                }
             }
 
-            public async Task<ResultModel<ProductDto>> Handle(GetProductByIdRequest request,
-                CancellationToken cancellationToken)
+            internal class Handler : IRequestHandler<Query, ResultModel<ProductDto>>
             {
-                if (request == null) throw new ArgumentNullException(nameof(request));
+                private readonly IRepository<Product> _productRepository;
 
-                var spec = new ProductByIdQuerySpec(request);
+                public Handler(IRepository<Product> productRepository)
+                {
+                    _productRepository =
+                        productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+                }
 
-                var product = await _productRepository.FindOneAsync(spec);
+                public async Task<ResultModel<ProductDto>> Handle(Query request,
+                    CancellationToken cancellationToken)
+                {
+                    if (request == null) throw new ArgumentNullException(nameof(request));
 
-                return new ResultModel<ProductDto>
-                (
-                    new ProductDto
-                    {
-                        Id = product.Id,
-                        ProductCodeId = product.ProductCodeId,
-                        Active = product.Active,
-                        Cost = product.Cost,
-                        Name = product.Name,
-                        Quantity = product.Quantity,
-                        ProductCodeName = product.Code.Name,
-                        Created = product.Created,
-                        Modified = product.Updated
-                    }
-                );
+                    var spec = new ProductByIdQuerySpec(request);
+
+                    var product = await _productRepository.FindOneAsync(spec);
+
+                    return new ResultModel<ProductDto>
+                    (
+                        new ProductDto
+                        {
+                            Id = product.Id,
+                            ProductCodeId = product.ProductCodeId,
+                            Active = product.Active,
+                            Cost = product.Cost,
+                            Name = product.Name,
+                            Quantity = product.Quantity,
+                            ProductCodeName = product.Code.Name,
+                            Created = product.Created,
+                            Modified = product.Updated
+                        }
+                    );
+                }
             }
         }
     }
