@@ -2,7 +2,7 @@ using System;
 
 namespace N8T.Infrastructure.App.Dtos
 {
-    public class ProductDto
+    public record ProductDto
     {
         public Guid Id { get; init; }
         public string Name { get; init; } = default!;

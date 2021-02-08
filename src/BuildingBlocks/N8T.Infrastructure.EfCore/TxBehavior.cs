@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -11,6 +12,9 @@ using N8T.Core.Domain;
 
 namespace N8T.Infrastructure.EfCore
 {
+    public interface ITxRequest { }
+
+    //[DebuggerStepThrough]
     public class TxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : notnull, IRequest<TResponse>
         where TResponse : notnull

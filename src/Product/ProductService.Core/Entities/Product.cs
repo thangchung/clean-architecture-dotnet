@@ -39,7 +39,7 @@ namespace ProductService.Core.Entities
                 Created = DateTime.Now,
                 Active = true,
                 Cost = cost,
-                Code = productCode
+                ProductCodeId = productCode.Id
             };
 
             product.AddDomainEvent(new ProductCreated {Product = product});

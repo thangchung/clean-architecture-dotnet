@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using N8T.Core.Domain;
 using N8T.Core.Repository;
 using N8T.Infrastructure.App.Dtos;
 using ProductService.Core.Entities;
@@ -12,17 +13,15 @@ using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Queries
 {
-    public class GridResultModel<T>
+    public record GetProductsRequest : IQuery<ResultModel<GetProductsRequest.ListResponseModel<ProductDto>>>, IListQueryModel
     {
-        public List<T> Items { get; init; } = new();
-        public long TotalItems { get; init; } = 0;
+        public List<string> Includes { get; init; } = new();
+        public List<FilterModel> Filters { get; init; } = new();
+        public List<string> Sorts { get; init; } = new();
         public int Page { get; init; } = 1;
         public int PageSize { get; init; } = 20;
-    }
 
-    public class GetProductsRequest: IRequest<GridResultModel<ProductDto>>
-    {
-        public GridQueryModel QueryModel { get; init; } = new();
+        internal record ListResponseModel<T>(List<T> Items, long TotalItems, int Page, int PageSize);
 
         internal class GetProductsRequestValidator : AbstractValidator<GetProductsRequest>
         {
@@ -31,7 +30,7 @@ namespace ProductService.Application.Queries
             }
         }
 
-        internal class GetProductsRequestHandler : IRequestHandler<GetProductsRequest, GridResultModel<ProductDto>>
+        internal class GetProductsRequestHandler : IRequestHandler<GetProductsRequest, ResultModel<ListResponseModel<ProductDto>>>
         {
             private readonly IGridRepository<Product> _productRepository;
 
@@ -40,12 +39,12 @@ namespace ProductService.Application.Queries
                 _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             }
 
-            public async Task<GridResultModel<ProductDto>> Handle(GetProductsRequest request,
+            public async Task<ResultModel<ListResponseModel<ProductDto>>> Handle(GetProductsRequest request,
                 CancellationToken cancellationToken)
             {
                 if (request == null) throw new ArgumentNullException(nameof(request));
 
-                var spec = new ProductsSpec(request.QueryModel);
+                var spec = new ProductListQuerySpec(request);
 
                 var products = await _productRepository.FindAsync(spec);
 
@@ -60,19 +59,14 @@ namespace ProductService.Application.Queries
                     ProductCodeName = x.Code.Name,
                     Created = x.Created,
                     Modified = x.Updated
-                }).ToList();
+                });
 
                 var totalProducts = await _productRepository.CountAsync(spec);
 
-                var resultModel = new GridResultModel<ProductDto>
-                {
-                    Page = request.QueryModel.Page,
-                    PageSize = request.QueryModel.PageSize,
-                    Items = productModels,
-                    TotalItems = totalProducts
-                };
+                var resultModel =
+                    new ListResponseModel<ProductDto>(productModels.ToList(), totalProducts, request.Page, request.PageSize);
 
-                return resultModel;
+                return new ResultModel<ListResponseModel<ProductDto>>(resultModel);
             }
         }
     }

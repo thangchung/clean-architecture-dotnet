@@ -32,7 +32,7 @@ import _ from "lodash";
 import axios from "axios";
 import moment from "moment";
 
-const ApiUrl = "http://localhost:5002/api/products";
+const ApiUrl = "http://localhost:5002/api/products-query";
 
 const Products = (props) => {
   const router = useRouter();
@@ -56,6 +56,7 @@ const Products = (props) => {
             : [`${sortField}${_.startCase(_.toLower(sortOrder))}`],
         page: page,
         pageSize: sizePerPage,
+        includes: ["Returns", "Code"]
       };
 
       var fts = [];
@@ -96,10 +97,10 @@ const Products = (props) => {
       }
 
       axios.post(ApiUrl, queryModel).then((response) => {
-        setProducts(response.data.items);
-        setPage(response.data.page);
-        setSizePerPage(response.data.pageSize);
-        setTotalSize(response.data.totalItems);
+        setProducts(response.data.data.items);
+        setPage(response.data.data.page);
+        setSizePerPage(response.data.data.pageSize);
+        setTotalSize(response.data.data.totalItems);
       });
     },
     []

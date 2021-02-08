@@ -32,7 +32,9 @@ namespace N8T.Infrastructure.EfCore
         {
             await using var dbContext = _dbContextFactory.CreateDbContext();
 
-            return await dbContext.Set<TEntity>().Where(spec.Criteria).SingleOrDefaultAsync();
+            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+
+            return await specificationResult.FirstOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> FindAsync(ISpecification<TEntity> spec)
@@ -112,7 +114,7 @@ namespace N8T.Infrastructure.EfCore
 
             if (specification.IsPagingEnabled)
             {
-                query = query.Skip(specification.Skip)
+                query = query.Skip(specification.Skip - 1)
                     .Take(specification.Take);
             }
 
@@ -155,7 +157,7 @@ namespace N8T.Infrastructure.EfCore
 
             if (specification.IsPagingEnabled)
             {
-                query = query.Skip(specification.Skip)
+                query = query.Skip(specification.Skip - 1)
                     .Take(specification.Take);
             }
 

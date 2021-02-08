@@ -33,6 +33,6 @@
     "react-hook-form": "^6.15.1",
     "reactstrap": "^8.9.0",
     "styled-components": "^5.2.1",
-    "html-webpack-plugin": "^5.0.0",
+    "html-webpack-plugin": "^5.0.0"
   }
 }

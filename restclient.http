@@ -1,22 +1,37 @@
-###
 @host = http://localhost:5002
-GET {{host}}/api/products HTTP/1.1
+
+###
+POST {{host}}/api/products-query HTTP/1.1
 content-type: {{contentType}}
 
 {
+  "includes": ["Returns", "Code"],
   "filters": [
-    {
-      "fieldName": "Quantity",
-      "comparision": ">",
-      "fieldValue": "1000"
-    },
     {
       "fieldName": "Name",
       "comparision": "Contains",
-      "fieldValue": "adipiscing"
+      "fieldValue": "test product"
     }
   ],
   "sorts": ["nameDesc"],
   "page": 1,
   "pageSize": 20
+}
+
+###
+@id = 23537dac-303f-446f-be2a-1dbea22b3eba
+GET {{host}}/api/products/{{id}} HTTP/1.1
+content-type: {{contentType}}
+
+###
+POST {{host}}/api/products HTTP/1.1
+content-type: {{contentType}}
+
+{
+  "model": {
+    "name": "test product 1",
+    "quantity": 1,
+    "cost": 1000,
+    "productCodeName": "pcode"
+  }
 }
