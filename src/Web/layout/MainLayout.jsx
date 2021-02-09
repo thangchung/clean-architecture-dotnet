@@ -1,14 +1,11 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
-import styled from "styled-components";
+import { Layout, Row, Col } from "antd";
 
 /* Components */
 import NavBar from "./nav/NavBar";
-import Footer from "./foot/Footer";
+import MyFooter from "./foot/MyFooter";
 
-const MyRow = styled(Row)`
-  margin-top: 30px;
-`
+const { Header, Content, Footer } = Layout;
 
 function MainLayout(mainProps) {
   const { children } = mainProps;
@@ -17,13 +14,21 @@ function MainLayout(mainProps) {
 
   return (
     <>
-      <NavBar {...props} />
-      <Container fluid>
-        <MyRow>
-          <Col>{children}</Col>
-        </MyRow>
-      </Container>
-      <Footer />
+      <Layout>
+        <NavBar {...props} />
+        <Content
+          className="site-layout"
+          style={{ padding: "0 50px", marginTop: 100 }}
+        >
+          <div
+            className="site-layout-background"
+            style={{ padding: 24, minHeight: 600 }}
+          >
+            {children}
+          </div>
+        </Content>
+        <MyFooter />
+      </Layout>
     </>
   );
 }

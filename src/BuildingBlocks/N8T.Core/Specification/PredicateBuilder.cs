@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace N8T.Infrastructure.LambdaExpression
+namespace N8T.Core.Specification
 {
     /// <summary>
     /// https://codereview.stackexchange.com/questions/166460/chaining-multiple-predicates

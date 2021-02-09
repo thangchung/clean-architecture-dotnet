@@ -17,9 +17,25 @@ namespace N8T.Core.Specification
         public int Skip { get; private set; }
         public bool IsPagingEnabled { get; private set; }
 
+        protected void ApplyIncludeList(IEnumerable<Expression<Func<T, object>>> includes)
+        {
+            foreach (var include in includes)
+            {
+                AddInclude(include);
+            }
+        }
+
         protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
+        }
+
+        protected void ApplyIncludeList(IEnumerable<string> includes)
+        {
+            foreach (var include in includes)
+            {
+                AddInclude(include);
+            }
         }
 
         protected void AddInclude(string includeString)

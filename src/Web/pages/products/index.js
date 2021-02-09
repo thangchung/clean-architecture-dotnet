@@ -2,11 +2,10 @@ import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import MainLayout from "../layout/MainLayout";
-import HeadDefault from "../layout/head/HeadDefault";
+import MainLayout from "../../layout/MainLayout";
+import HeadDefault from "../../layout/head/HeadDefault";
 
 import {
-  Container,
   Card,
   CardHeader,
   CardBody,
@@ -17,6 +16,7 @@ import {
   DropdownItem,
   DropdownToggle,
 } from "reactstrap";
+import { Row, Col } from "antd";
 
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -56,7 +56,7 @@ const Products = (props) => {
             : [`${sortField}${_.startCase(_.toLower(sortOrder))}`],
         page: page,
         pageSize: sizePerPage,
-        includes: ["Returns", "Code"]
+        includes: ["Returns", "Code"],
       };
 
       var fts = [];
@@ -110,22 +110,30 @@ const Products = (props) => {
     setSelectedProduct(row);
   };
 
+  const handleCreate = () => {
+    router.push(`products/create`);
+  };
+
   const rowEdit = (cell, row, rowIndex, formatExtraData) => {
     return (
       <>
-        <Link href={`product/${row.id}`}>
+        <Link href={`products/${row.id}`}>
           <Button outline color="warning" size="sm">
             Edit
           </Button>
         </Link>
         &nbsp;
-        <Link href={`product/${row.id}`}>
+        <Link href={`products/${row.id}`}>
           <Button outline color="danger" size="sm">
             Delete
           </Button>
         </Link>
       </>
     );
+  };
+
+  const handleRefresh = () => {
+    router.reload();
   };
 
   const handleClearFilters = () => {
@@ -244,62 +252,68 @@ const Products = (props) => {
       />
       <MainLayout>
         <h3>Product Page</h3>
-        <Container fluid>
-          <Card>
-            <CardHeader tag="h3">
-              <ButtonGroup>
-                <UncontrolledButtonDropdown>
-                  <DropdownToggle outline caret color="info">
-                    Action
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem header>
-                      <a href="#">
-                        <FontAwesomeIcon icon="trash" /> <b>Delete</b>{" "}
-                      </a>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledButtonDropdown>
-                <Button outline color="primary">
-                  <FontAwesomeIcon icon="sync-alt" size="xs" /> <b>Refresh</b>
-                </Button>
-              </ButtonGroup>
-              <ButtonGroup className="float-right">
-                <Button outline color="secondary">
-                  <FontAwesomeIcon icon="plus" /> <b>New</b>
-                </Button>
-                <Button outline color="primary" onClick={handleClearFilters}>
-                  <FontAwesomeIcon icon="filter" /> <b>Filter</b>
-                </Button>
-                <UncontrolledButtonDropdown>
-                  <DropdownToggle outline caret color="info"></DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem header>
-                      <a href="#">
-                        <FontAwesomeIcon icon="file-excel" /> <b>Export</b>{" "}
-                      </a>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledButtonDropdown>
-              </ButtonGroup>
-            </CardHeader>
-            <CardBody>
-              <BootstrapTable
-                bootstrap4
-                hover
-                remote
-                keyField="id"
-                data={products}
-                columns={columns}
-                defaultSorted={defaultSorted}
-                filter={filterFactory()}
-                pagination={paginationFactory({ page, sizePerPage, totalSize })}
-                selectRow={selectRow}
-                onTableChange={fetchData}
-              />
-            </CardBody>
-          </Card>
-        </Container>
+        <Row>
+          <Col span={24}>
+            <Card>
+              <CardHeader tag="h3">
+                <ButtonGroup>
+                  <UncontrolledButtonDropdown>
+                    <DropdownToggle outline caret color="info">
+                      Action
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem header>
+                        <a href="#">
+                          <FontAwesomeIcon icon="trash" /> <b>Delete</b>{" "}
+                        </a>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledButtonDropdown>
+                  <Button outline color="primary" onClick={handleRefresh}>
+                    <FontAwesomeIcon icon="sync-alt" size="xs" /> <b>Refresh</b>
+                  </Button>
+                </ButtonGroup>
+                <ButtonGroup className="float-right">
+                  <Button outline color="secondary" onClick={handleCreate}>
+                    <FontAwesomeIcon icon="plus" /> <b>New</b>
+                  </Button>
+                  <Button outline color="primary" onClick={handleClearFilters}>
+                    <FontAwesomeIcon icon="filter" /> <b>Clear Filter</b>
+                  </Button>
+                  <UncontrolledButtonDropdown>
+                    <DropdownToggle outline caret color="info"></DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem header>
+                        <a href="#">
+                          <FontAwesomeIcon icon="file-excel" /> <b>Export</b>{" "}
+                        </a>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledButtonDropdown>
+                </ButtonGroup>
+              </CardHeader>
+              <CardBody>
+                <BootstrapTable
+                  bootstrap4
+                  hover
+                  remote
+                  keyField="id"
+                  data={products}
+                  columns={columns}
+                  defaultSorted={defaultSorted}
+                  filter={filterFactory()}
+                  pagination={paginationFactory({
+                    page,
+                    sizePerPage,
+                    totalSize,
+                  })}
+                  selectRow={selectRow}
+                  onTableChange={fetchData}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </MainLayout>
     </>
   );

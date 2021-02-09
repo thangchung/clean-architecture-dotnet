@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
 using N8T.Core.Specification;
-using N8T.Infrastructure.LambdaExpression;
 
 namespace N8T.Infrastructure.EfCore
 {

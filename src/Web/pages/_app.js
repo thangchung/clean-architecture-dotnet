@@ -1,4 +1,5 @@
 import "../assets/scss/main.scss";
+import 'antd/dist/antd.css';
 
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.css";

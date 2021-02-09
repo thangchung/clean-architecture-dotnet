@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using N8T.Core.Domain;
 
 namespace N8T.Core.Specification
 {
@@ -17,14 +18,47 @@ namespace N8T.Core.Specification
         public int Skip { get; private set; }
         public bool IsPagingEnabled { get; set; }
 
+        protected void ApplyIncludeList(IEnumerable<Expression<Func<T, object>>> includes)
+        {
+            foreach (var include in includes)
+            {
+                AddInclude(include);
+            }
+        }
+
         protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
         }
 
+        protected void ApplyIncludeList(IEnumerable<string> includes)
+        {
+            foreach (var include in includes)
+            {
+                AddInclude(include);
+            }
+        }
+
         protected void AddInclude(string includeString)
         {
             IncludeStrings.Add(includeString);
+        }
+
+        protected IGridSpecification<T> ApplyFilterList(IEnumerable<FilterModel> filters)
+        {
+            foreach (var (fieldName, comparision, fieldValue) in filters)
+            {
+                ApplyFilter(PredicateBuilder.Build<T>(fieldName, comparision, fieldValue));
+            }
+
+            return this;
+        }
+
+        protected IGridSpecification<T> ApplyFilter(Expression<Func<T, bool>> expr)
+        {
+            Criterias.Add(expr);
+
+            return this;
         }
 
         protected void ApplyPaging(int skip, int take)
@@ -42,6 +76,14 @@ namespace N8T.Core.Specification
 
         protected void ApplyGroupBy(Expression<Func<T, object>> groupByExpression) =>
             GroupBy = groupByExpression;
+
+        protected void ApplySortingList(IEnumerable<string> sorts)
+        {
+            foreach (var sort in sorts)
+            {
+                ApplySorting(sort);
+            }
+        }
 
         protected void ApplySorting(string sort)
         {

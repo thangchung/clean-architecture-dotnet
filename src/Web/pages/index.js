@@ -9,7 +9,6 @@ export default function Home() {
           description="Home page of eCommerce"
         />
         <MainLayout>
-
         </MainLayout>
       </>
   )

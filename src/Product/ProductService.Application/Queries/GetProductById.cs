@@ -12,7 +12,7 @@ using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Queries
 {
-    public class GetProductById
+    public static class GetProductById
     {
         public record Query : IItemQueryInput<Guid>, IQuery<ProductDto>
         {

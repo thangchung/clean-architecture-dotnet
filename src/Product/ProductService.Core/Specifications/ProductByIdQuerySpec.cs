@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using N8T.Core.Domain;
 using N8T.Core.Specification;
@@ -8,17 +9,15 @@ namespace ProductService.Core.Specifications
 {
     public sealed class ProductByIdQuerySpec : SpecificationBase<Product>
     {
-        private readonly IItemQueryInput<Guid> _queryInput;
+        private readonly Guid _id;
 
-        public ProductByIdQuerySpec(IItemQueryInput<Guid> queryInput)
+        public ProductByIdQuerySpec([NotNull] IItemQueryInput<Guid> queryInput)
         {
-            _queryInput = queryInput ?? throw new ArgumentNullException(nameof(queryInput));
-            foreach (var include in queryInput.Includes)
-            {
-                AddInclude(include);
-            }
+            ApplyIncludeList(queryInput.Includes);
+
+            _id = queryInput.Id;
         }
 
-        public override Expression<Func<Product, bool>> Criteria => p => p.Id == _queryInput.Id;
+        public override Expression<Func<Product, bool>> Criteria => p => p.Id == _id;
     }
 }
