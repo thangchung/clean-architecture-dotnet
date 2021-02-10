@@ -93,7 +93,7 @@ const CreateProduct = () => {
 
               <Form.Item {...tailFormItemLayout}>
                 <Button type="primary" htmlType="submit">
-                  Create
+                  Save
                 </Button>
                 <Button type="link" onClick={() => router.back()}>
                   Back

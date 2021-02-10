@@ -18,7 +18,7 @@ function NavBar() {
     <>
       <Header
         id="components-layout-demo-fixed"
-        style={{ position: "fixed", zIndex: 1, width: "100%" }}
+        style={{ position: "fixed", zIndex: 9999, width: "100%" }}
       >
         <div className="logo">eCommerce</div>
         <Menu

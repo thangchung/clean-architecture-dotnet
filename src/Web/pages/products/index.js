@@ -1,248 +1,150 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import MainLayout from "../../layout/MainLayout";
 import HeadDefault from "../../layout/head/HeadDefault";
 
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  ButtonGroup,
-  Button,
-  UncontrolledButtonDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-} from "reactstrap";
-import { Row, Col } from "antd";
-
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, {
-  textFilter,
-  numberFilter,
-  dateFilter,
-} from "react-bootstrap-table2-filter";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Row, Col, Button, Popconfirm } from "antd";
 
 import _ from "lodash";
 import axios from "axios";
-import moment from "moment";
+import { atom, useAtom } from "jotai";
+
+import List from "./components/List";
+import Filter from "./components/Filter";
 
 const ApiUrl = "http://localhost:5002/api/products-query";
 
-const Products = (props) => {
+const pageAtom = atom(1);
+const pageSizeAtom = atom(10);
+const totalSizeAtom = atom(0);
+
+const filterAtom = atom({});
+const sorterAtom = atom({});
+
+const Products = () => {
   const router = useRouter();
-  const [page, setPage] = useState(1);
-  const [sizePerPage, setSizePerPage] = useState(10);
   const [products, setProducts] = useState([]);
-  const [totalSize, setTotalSize] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState({});
 
-  let nameFilter;
-  let priceFilter;
-  let quantityFilter;
-  let createdFilter;
+  const [page, setPage] = useAtom(pageAtom);
+  const [pageSize, setPageSize] = useAtom(pageSizeAtom);
+  const [totalSize, setTotalSize] = useAtom(totalSizeAtom);
 
-  const fetchData = useCallback(
-    async (type, { page, sizePerPage, filters, sortField, sortOrder }) => {
-      var queryModel = {
+  const [filter, setFilter] = useAtom(filterAtom);
+  const [sorter, setSorter] = useAtom(sorterAtom);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const fetchData = useCallback(async (page, pageSize, filter, sorter) => {
+    var queryModel = {
+      includes: ["Returns", "Code"],
+    };
+
+    queryModel = _.assign(queryModel, {
+      page: page,
+      pageSize: pageSize,
+    });
+
+    if (!_.isNil(sorter && sorter.field && sorter.order)) {
+      queryModel = _.assign(queryModel, {
         sorts:
-          sortOrder === "asc"
-            ? [`${sortField}`]
-            : [`${sortField}${_.startCase(_.toLower(sortOrder))}`],
-        page: page,
-        pageSize: sizePerPage,
-        includes: ["Returns", "Code"],
-      };
+          (sorter == sorter.order) === "ascend"
+            ? [`${sorter.field}`]
+            : [`${sorter.field}Desc`],
+      });
+    }
 
+    if (!_.isNil(filter)) {
       var fts = [];
-
-      for (const dataField in filters) {
-        const { filterVal, filterType, comparator } = filters[dataField];
-        if (filterType === "TEXT") {
-          fts.push({
-            fieldName: _.startCase(_.toLower(dataField)),
-            comparision: "Contains",
-            fieldValue: filterVal,
-          });
-        } else if (filterType === "NUMBER" && filterVal.number != null) {
-          if (!filterVal.comparator == "") {
+      Object.keys(filter).map(function (fieldName, _) {
+        if (filter[fieldName]) {
+          if (fieldName == "name") {
             fts.push({
-              fieldName: _.startCase(_.toLower(dataField)),
-              comparision:
-                filterVal.comparator === "=" ? "==" : filterVal.comparator,
-              fieldValue: filterVal.number,
+              fieldName: fieldName,
+              comparision: "Contains",
+              fieldValue: filter[fieldName],
             });
-          }
-        } else if (filterType === "DATE" && filterVal.date != null) {
-          if (!(filterVal.comparator == "" || filterVal.comparator == null)) {
+          } else if (fieldName == "quantity") {
             fts.push({
-              fieldName: _.startCase(_.toLower(dataField)),
-              comparision:
-                filterVal.comparator === "=" ? "==" : filterVal.comparator,
-              fieldValue: filterVal.date,
+              fieldName: fieldName,
+              comparision: "<=",
+              fieldValue: `${filter[fieldName]}`,
             });
           }
         }
-      }
+      });
 
       if (fts.length > 0) {
         queryModel = _.assign(queryModel, {
           filters: fts,
         });
       }
+    }
 
-      axios.post(ApiUrl, queryModel).then((response) => {
-        setProducts(response.data.data.items);
-        setPage(response.data.data.page);
-        setSizePerPage(response.data.data.pageSize);
-        setTotalSize(response.data.data.totalItems);
+    console.log("query-model:", queryModel);
+    axios.post(ApiUrl, queryModel).then((response) => {
+      setProducts(response.data.data.items);
+      setPage(response.data.data.page);
+      setPageSize(response.data.data.pageSize);
+      setTotalSize(response.data.data.totalItems);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchData(page, pageSize, filter, sorter);
+  }, [fetchData]);
+
+  const onChange = (pagination, _, sort, extra) => {
+    if (extra.action == "paginate") {
+      setPage(pagination.current);
+      setPageSize(pagination.pageSize);
+    }
+
+    if (extra.action == "sort") {
+      setSorter({
+        field: sort.field,
+        order: sort.order,
       });
+    }
+
+    fetchData(pagination.current, pagination.pageSize, filter, {
+      field: sort.field,
+      order: sort.order,
+    });
+  };
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, _) => {
+      setSelectedRowKeys(selectedRowKeys);
     },
-    []
-  );
-
-  const rowSelect = (row, isSelect) => {
-    setSelectedProduct(row);
-  };
-
-  const handleCreate = () => {
-    router.push(`products/create`);
-  };
-
-  const rowEdit = (cell, row, rowIndex, formatExtraData) => {
-    return (
-      <>
-        <Link href={`products/${row.id}`}>
-          <Button outline color="warning" size="sm">
-            Edit
-          </Button>
-        </Link>
-        &nbsp;
-        <Link href={`products/${row.id}`}>
-          <Button outline color="danger" size="sm">
-            Delete
-          </Button>
-        </Link>
-      </>
-    );
+    selectedRowKeys: selectedRowKeys,
+    getCheckboxProps: (record) => ({
+      name: record.name,
+    }),
   };
 
   const handleRefresh = () => {
-    router.reload();
+    router.push("/products");
   };
 
-  const handleClearFilters = () => {
-    if (nameFilter != undefined || _.isFunction(nameFilter)) {
-      nameFilter("");
-    }
-    if (priceFilter != undefined || _.isFunction(priceFilter)) {
-      priceFilter("");
-    }
-    if (quantityFilter != undefined || _.isFunction(quantityFilter)) {
-      quantityFilter("");
-    }
-    if (createdFilter != undefined || _.isFunction(createdFilter)) {
-      createdFilter();
-    }
+  const handleDeleteItems = () => {
+    setSelectedRowKeys([]);
+
+    // do delete items
+
+    handleRefresh();
   };
 
-  const selectRow = {
-    mode: "checkbox",
-    clickToSelect: true,
-    bgColor: "#FFFFCC",
-    onSelect: (row, isSelect, rowIndex, e) => {
-      console.log(row.id);
-      console.log(isSelect);
-      console.log(rowIndex);
-      console.log(e);
+  const filterProps = {
+    filter: filter,
+    onFilterChange: (fields) => {
+      setFilter(fields);
+      fetchData(page, pageSize, filter, sorter);
     },
-    onSelectAll: (isSelect, rows, e) => {
-      console.log(isSelect);
-      console.log(rows);
-      console.log(e);
+    onAdd: () => {
+      router.push(`products/create`);
     },
   };
-
-  const columns = [
-    {
-      dataField: "id",
-      text: "Product id",
-      hidden: true,
-    },
-    {
-      dataField: "name",
-      text: "Product name",
-      filter: textFilter({
-        getFilter: (filter) => {
-          nameFilter = filter;
-        },
-      }),
-      sort: true,
-    },
-    {
-      dataField: "cost",
-      text: "Product price",
-      filter: numberFilter({
-        getFilter: (filter) => {
-          priceFilter = filter;
-        },
-      }),
-      sort: true,
-    },
-    {
-      dataField: "quantity",
-      text: "Quantity",
-      filter: numberFilter({
-        getFilter: (filter) => {
-          quantityFilter = filter;
-        },
-      }),
-      sort: true,
-    },
-    {
-      dataField: "created",
-      text: "Created",
-      headerStyle: () => {
-        return { width: "220px" };
-      },
-      formatter: (cell, row) => {
-        return moment(cell).format("l");
-      },
-      filter: dateFilter({
-        getFilter: (filter) => {
-          createdFilter = filter;
-        },
-      }),
-      sort: true,
-    },
-    {
-      dataField: "productCodeName",
-      text: "Code",
-      headerStyle: () => {
-        return { width: "80px", textAlign: "center" };
-      },
-    },
-    {
-      dataField: "actions",
-      text: "",
-      headerStyle: () => {
-        return { width: "150px", textAlign: "center" };
-      },
-      formatter: rowEdit,
-    },
-  ];
-
-  const defaultSorted = [
-    {
-      dataField: "name",
-      order: "desc",
-    },
-  ];
 
   return (
     <>
@@ -251,69 +153,46 @@ const Products = (props) => {
         description="Product page of eCommerce."
       />
       <MainLayout>
-        <h3>Product Page</h3>
-        <Row>
-          <Col span={24}>
-            <Card>
-              <CardHeader tag="h3">
-                <ButtonGroup>
-                  <UncontrolledButtonDropdown>
-                    <DropdownToggle outline caret color="info">
-                      Action
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem header>
-                        <a href="#">
-                          <FontAwesomeIcon icon="trash" /> <b>Delete</b>{" "}
-                        </a>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledButtonDropdown>
-                  <Button outline color="primary" onClick={handleRefresh}>
-                    <FontAwesomeIcon icon="sync-alt" size="xs" /> <b>Refresh</b>
-                  </Button>
-                </ButtonGroup>
-                <ButtonGroup className="float-right">
-                  <Button outline color="secondary" onClick={handleCreate}>
-                    <FontAwesomeIcon icon="plus" /> <b>New</b>
-                  </Button>
-                  <Button outline color="primary" onClick={handleClearFilters}>
-                    <FontAwesomeIcon icon="filter" /> <b>Clear Filter</b>
-                  </Button>
-                  <UncontrolledButtonDropdown>
-                    <DropdownToggle outline caret color="info"></DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem header>
-                        <a href="#">
-                          <FontAwesomeIcon icon="file-excel" /> <b>Export</b>{" "}
-                        </a>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledButtonDropdown>
-                </ButtonGroup>
-              </CardHeader>
-              <CardBody>
-                <BootstrapTable
-                  bootstrap4
-                  hover
-                  remote
-                  keyField="id"
-                  data={products}
-                  columns={columns}
-                  defaultSorted={defaultSorted}
-                  filter={filterFactory()}
-                  pagination={paginationFactory({
-                    page,
-                    sizePerPage,
-                    totalSize,
-                  })}
-                  selectRow={selectRow}
-                  onTableChange={fetchData}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <h1>Product Page</h1>
+        <br></br>
+        <Filter {...filterProps} />
+        {selectedRowKeys.length > 0 && (
+          <Row style={{ marginBottom: 24, textAlign: "right", fontSize: 13 }}>
+            <Col>
+              {`Selected ${selectedRowKeys.length} items `}
+              <Popconfirm
+                title="Are you sure delete these items?"
+                placement="left"
+                onConfirm={handleDeleteItems}
+              >
+                <Button type="primary" style={{ marginLeft: 8 }}>
+                  Remove
+                </Button>
+              </Popconfirm>
+            </Col>
+          </Row>
+        )}
+        <List
+          products={products}
+          pagination={{
+            current: page,
+            pageSize: pageSize,
+            total: totalSize,
+            showTotal: (total) => `Total ${total} Items`,
+          }}
+          onChange={onChange}
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
+          onEditItem={(item) => {
+            console.log(item);
+            router.push(`products/${item.id}`);
+          }}
+          onDeleteItem={() => {
+            handleRefresh();
+          }}
+        ></List>
       </MainLayout>
     </>
   );

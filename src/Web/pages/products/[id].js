@@ -1,16 +1,35 @@
+import { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+
+import { Button } from "antd";
+
+import axios from "axios";
 
 import MainLayout from "../../layout/MainLayout";
 import HeadDefault from "../../layout/head/HeadDefault";
 
-// https://react-hook-form.com/get-started
+const ApiUrl = `http://localhost:5002/api/products`;
+
 const Product = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [isloaded, setIsloaded] = useState(false);
+  const [product, setProduct] = useState({});
+
+  const fetchData = useCallback(
+    async (id) => {
+      axios.get(`${ApiUrl}/${id}`).then((response) => {
+        setProduct(response.data.data);
+        setIsloaded(true);
+      });
+    },
+    [id]
+  );
+
+  useEffect(() => {
+    fetchData(id);
+  }, [fetchData]);
 
   return (
     <>
@@ -19,16 +38,21 @@ const Product = () => {
         description="Product detail page of eCommerce."
       />
       <MainLayout>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
-            name="id"
-            defaultValue={id}
-            ref={register({ required: true })}
-          />
-          {errors.id && <span>This field is required</span>}
-
-          <input type="submit" />
-        </form>
+        <h1>Product Information</h1>
+        {!isloaded ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <p>Product name: {product.name}</p>
+            <p>Product code: {product.productCodeName}</p>
+            <p>Quantity: {product.quantity}</p>
+            <p>Price: {product.cost}</p>
+            <p>Active: {product.active.toString()}</p>
+          </>
+        )}
+        <Button type="link" onClick={() => router.back()}>
+          Back
+        </Button>
       </MainLayout>
     </>
   );
