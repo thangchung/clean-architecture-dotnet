@@ -15,7 +15,7 @@ services:
   image:  postgres
   env:
   - name: POSTGRES_PASSWORD
-    value: "P@ssw0rd"
+    value: P@ssw0rd
   bindings:
   - port: 5432
     connectionString: Server=${host};Port=${port};User Id=postgres;Password=${env:POSTGRES_PASSWORD};

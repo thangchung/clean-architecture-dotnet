@@ -131,7 +131,7 @@ public interface IDeleteInput<TId> : ICrudInput where TId : struct
 }
 ```
 
-# CRQS interface
+# CQRS interface
 
 ```csharp
 public interface ICommand<T> : IRequest<ResultModel<T>> {}
