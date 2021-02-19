@@ -2,10 +2,11 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
-*.razor linguist-language=rust
-*.html linguist-language=rust
-*.css linguist-language=rust
 *.cs linguist-language=rust
+*.rs linguist-language=C#
+# *.razor linguist-language=rust
+# *.html linguist-language=rust
+# *.css linguist-language=rust
 ###############################################################################
 # Set default behavior for command prompt diff.
 #

@@ -1,9 +1,9 @@
 table! {
-    histories (id) {
-        id -> Int4,
+    audit.histories (id) {
+        id -> Uuid,
         entity_type -> Varchar,
         metadata -> Text,
-        created -> Date,
+        created -> Timestamp,
         correlation_id -> Varchar,
     }
 }

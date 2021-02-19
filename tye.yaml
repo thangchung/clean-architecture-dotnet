@@ -1,13 +1,13 @@
 name: coolstore
 
-# extensions:
-# - name: dapr
-#   log-level: debug
-#   config: appconfig
-#   components-path: "./components/local/"
+extensions:
+- name: dapr
+  log-level: debug
+  # config: appconfig
+  # components-path: "./components/local/"
 # - name: zipkin
 # - name: elastic
-#   logPath: ./.logs
+  # logPath: ./.logs
 
 services:
 
@@ -32,3 +32,14 @@ services:
     value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
   bindings:
   - port: 5002
+
+- name: auditapp
+  dockerFile: rs/audit_service/Dockerfile
+  env:
+  - name: HOST
+    value: 0.0.0.0
+  - name: DATABASE_URL
+    value: postgres://postgres/postgres?user=postgres&password=P@ssw0rd
+  bindings:
+  - protocol: http
+    port: 5010
