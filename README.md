@@ -3,7 +3,6 @@
 The practical repository uses coolstore domain which is mainly borrowed from `https://github.com/zkavtaskin/Domain-Driven-Design-Example` to demonstrate how to apply Domain Driven Design seamlessly with Clean Architecture.
 
 
-
 # Business Usecases
 
 ![](assets/usecase_diagram.png)
@@ -17,6 +16,13 @@ The practical repository uses coolstore domain which is mainly borrowed from `ht
 ![](assets/class_diagram.png)
 
 # Testing Application
+
+- Prerequisite
+  - .NET SDK: 5.0.200-preview.21079.7
+  - Rust: v1.50.0
+  - nodejs: v15.5.1
+  - tye: 0.7.0-alpha.21070.7+eb3b50699b7a5f2d0997a5cc8c5185d056dde8ec
+  - dapr: 1.0.0
 
 - Starting the Api
 

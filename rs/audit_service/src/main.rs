@@ -42,7 +42,10 @@ async fn main() -> std::io::Result<()> {
 
     println!("Running migration...");
     let migration_pool_conn = pool.clone().get().expect("Cannot get db connection");
-    embedded_migrations::run(&migration_pool_conn);
+    match embedded_migrations::run(&migration_pool_conn) {
+      Ok(_) => println!("Done migration"),
+      Err(error) => println!("Failed: migration with error={}", error)
+    };
 
     let mut server = HttpServer::new(move || {
         App::new()

@@ -4,16 +4,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
 using N8T.Infrastructure.App.Dtos;
+using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Queries
 {
-    public class GetProductById
+    public class GetProductById : BaseAsyncEndpoint<Guid, ProductDto>
     {
+        [HttpGet("/api/products/{id:guid}")]
+        public override async Task<ActionResult<ProductDto>> HandleAsync(Guid id,
+            CancellationToken cancellationToken = new())
+        {
+            var request = new Query {Id = id};
+
+            return Ok(await Mediator.Send(request, cancellationToken));
+        }
+
         public record Query : IItemQueryInput<Guid>, IQuery<ProductDto>
         {
             public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});

@@ -3,16 +3,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
 using N8T.Infrastructure.App.Dtos;
 using N8T.Infrastructure.EfCore;
+using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 
 namespace ProductService.Application.Commands
 {
-    public class CreateProduct
+    public class CreateProduct : BaseAsyncEndpoint
     {
+        [HttpPost("/api/products")]
+        public async Task<ActionResult> HandleAsync([FromBody] Command model,
+            CancellationToken cancellationToken = new())
+        {
+            return Ok(await Mediator.Send(model, cancellationToken));
+        }
+
         public record Command : ICreateInput<Command.CreateProductModel>,
             ICommand<ProductDto>, ITxRequest
         {

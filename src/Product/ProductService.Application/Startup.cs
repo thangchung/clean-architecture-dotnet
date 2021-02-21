@@ -10,7 +10,7 @@ using N8T.Infrastructure.EfCore;
 using N8T.Infrastructure.Tye;
 using ProductService.Infrastructure.Data;
 
-namespace ProductService.Api
+namespace ProductService.Application
 {
     public class Startup
     {
@@ -34,7 +34,7 @@ namespace ProductService.Api
                 });
             });
 
-            services.AddCore(new[] {typeof(Application.Anchor)})
+            services.AddCore(new[] {typeof(Startup)})
                 .AddPostgresDbContext<MainDbContext, Infrastructure.Anchor>(
                     Config.GetConnectionString("postgres"),
                     svc =>

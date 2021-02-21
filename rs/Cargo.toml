@@ -1,6 +1,5 @@
 [workspace]
 members = [
   "audit_service",
-  "audit_subscriber",
-  "rs"
+  "audit_subscriber"
 ]
