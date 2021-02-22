@@ -2,20 +2,13 @@
 
 The practical repository uses coolstore domain which is mainly borrowed from `https://github.com/zkavtaskin/Domain-Driven-Design-Example` to demonstrate how to apply Domain Driven Design seamlessly with Clean Architecture.
 
+## Show your support
 
-# Business Usecases
+If you **cannot give a star** :star: for `practical-clean-ddd` repository, **try it again**! 
 
-![](assets/usecase_diagram.png)
+Why? Because it doesn't only **help strengthen our .NET community** but also **helps to improve cloud-native apps development on the .NET platform**. Thank you very much :+1:
 
-# High level context
-
-![](assets/context_diagram.png)
-
-# ERD
-
-![](assets/class_diagram.png)
-
-# Testing Application
+# Give it a try!
 
 - Prerequisite
   - .NET SDK: 5.0.200-preview.21079.7
@@ -46,6 +39,18 @@ $ npm run dev
 > 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
 
+# Business Usecases
+
+![](assets/usecase_diagram.png)
+
+# High level context
+
+![](assets/context_diagram.png)
+
+# ERD
+
+![](assets/class_diagram.png)
+
 # Clean Domain Driven-design
 
 Domain-driven Design demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in the real project when we get started. 
@@ -53,6 +58,9 @@ Domain-driven Design demonstrates it can help the business tidy and organized in
 Clean Architecture helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime.
 
 Clean Domain-driven Design is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith project as well.
+
+![](assets/projects_structure.png)
+
 ## Core project
 ### Domain
 
@@ -70,9 +78,6 @@ TODO
 
 TODO
 
-## Api project
-
-TODO
 # Public CRUD interface
 
 In medium and large software projects, we normally implement the CRUD actions over and over again. And it might take around 40-50% codebase just to do CRUD in the projects. The question is can we make standardized CRUD APIs, then we can use them in potential projects in the future? That is in my mind for a long time when I started and finished many projects, and I decide to take time to research and define the public interfaces for it as below
@@ -83,11 +88,19 @@ In medium and large software projects, we normally implement the CRUD actions ov
 public record ResultModel<T>(T Data, bool IsError = false, string? ErrorMessage = default);
 ```
 
+```csharp
+public interface ICommand<T> : IRequest<ResultModel<T>> {}
+```
+
+```csharp
+public interface IQuery<T> : IRequest<ResultModel<T>> {}
+```
+
 ## [R]etrieve
 
 ```csharp
 // input model for list query (normally using for the table UI control with paging, filtering and sorting)
-public interface IListQueryInput : ICrudInput
+public interface IListQuery<TResponse> : IQuery<TResponse>
 {
   public List<string> Includes { get; init; }
   public List<FilterModel> Filters { get; init; }
@@ -103,48 +116,38 @@ public record ListResponseModel<T>(List<T> Items, long TotalItems, int Page, int
 ```
 
 ```csharp
-public interface IItemQueryInput<TId> : ICrudInput where TId : struct
+public interface IItemQuery<TId, TResponse> : IQuery<TResponse>
 {
-    public List<string> Includes { get; init; }
-    public TId Id { get; init; }
+  public List<string> Includes { get; init; }
+  public TId Id { get; init; }
 }
 ```
 
 ## [C]reate
 
 ```csharp
-public interface ICreateInput<T> : ICrudInput
+public interface ICreateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxRequest
 {
-  public T Model { get; init; }
+    public TRequest Model { get; init; }
 }
 ```
 
 ## [U]pdate
 
 ```csharp
-public interface IUpdateInput<T> : ICrudInput
+public interface IUpdateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxRequest
 {
-  public T Model { get; init; }
+  public TRequest Model { get; init; }
 }
 ```
 
 ## [D]elete
 
 ```csharp
-public interface IDeleteInput<TId> : ICrudInput where TId : struct
+public interface IDeleteCommand<TId, TResponse> : ICommand<TResponse> where TId : struct
 {
   public TId Id { get; init; }
 }
-```
-
-# CQRS interface
-
-```csharp
-public interface ICommand<T> : IRequest<ResultModel<T>> {}
-```
-
-```csharp
-public interface IQuery<T> : IRequest<ResultModel<T>> {}
 ```
 
 # Sample pages

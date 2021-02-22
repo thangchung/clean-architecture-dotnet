@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using N8T.Core.Domain;
 using N8T.Core.Specification;
+using N8T.Infrastructure.App.Dtos;
 using ProductService.Core.Entities;
 
 namespace ProductService.Core.Specifications
@@ -11,7 +12,7 @@ namespace ProductService.Core.Specifications
     {
         private readonly Guid _id;
 
-        public ProductByIdQuerySpec([NotNull] IItemQueryInput<Guid> queryInput)
+        public ProductByIdQuerySpec([NotNull] IItemQuery<Guid, ProductDto> queryInput)
         {
             ApplyIncludeList(queryInput.Includes);
 

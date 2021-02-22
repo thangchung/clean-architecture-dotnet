@@ -12,7 +12,7 @@ using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
-namespace ProductService.Application.Queries
+namespace ProductService.Application.Endpoints.Queries
 {
     public class GetProductById : BaseAsyncEndpoint<Guid, ProductDto>
     {
@@ -25,7 +25,7 @@ namespace ProductService.Application.Queries
             return Ok(await Mediator.Send(request, cancellationToken));
         }
 
-        public record Query : IItemQueryInput<Guid>, IQuery<ProductDto>
+        public record Query : IItemQuery<Guid, ProductDto>
         {
             public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});
             public Guid Id { get; init; }
@@ -34,6 +34,9 @@ namespace ProductService.Application.Queries
             {
                 public Validator()
                 {
+                    RuleFor(x => x.Id)
+                        .NotNull()
+                        .NotEmpty().WithMessage("Id is required.");
                 }
             }
 

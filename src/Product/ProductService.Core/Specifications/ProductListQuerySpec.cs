@@ -1,12 +1,13 @@
 using N8T.Core.Domain;
 using N8T.Core.Specification;
+using N8T.Infrastructure.App.Dtos;
 using ProductService.Core.Entities;
 
 namespace ProductService.Core.Specifications
 {
     public sealed class ProductListQuerySpec : GridSpecificationBase<Product>
     {
-        public ProductListQuerySpec(IListQueryInput gridQueryInput)
+        public ProductListQuerySpec(IListQuery<ListResponseModel<ProductDto>> gridQueryInput)
         {
             ApplyIncludeList(gridQueryInput.Includes);
 

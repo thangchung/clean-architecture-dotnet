@@ -13,7 +13,7 @@ using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
-namespace ProductService.Application.Queries
+namespace ProductService.Application.Endpoints.Queries
 {
     public class GetProducts : BaseAsyncEndpoint
     {
@@ -24,20 +24,23 @@ namespace ProductService.Application.Queries
             return Ok(await Mediator.Send(queryModel, cancellationToken));
         }
 
-        public record Query : IListQueryInput, IQuery<Query.ListResponseModel<ProductDto>>
+        public record Query : IListQuery<ListResponseModel<ProductDto>>
         {
-            public List<string> Includes { get; init; } = new();
+            public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});
             public List<FilterModel> Filters { get; init; } = new();
             public List<string> Sorts { get; init; } = new();
             public int Page { get; init; } = 1;
             public int PageSize { get; init; } = 20;
 
-            internal record ListResponseModel<T>(List<T> Items, long TotalItems, int Page, int PageSize);
-
             internal class Validator : AbstractValidator<Query>
             {
                 public Validator()
                 {
+                    RuleFor(x => x.Page)
+                        .GreaterThanOrEqualTo(1).WithMessage("Page should at least greater than or equal to 1.");
+
+                    RuleFor(x => x.PageSize)
+                        .GreaterThanOrEqualTo(1).WithMessage("PageSize should at least greater than or equal to 1.");
                 }
             }
 

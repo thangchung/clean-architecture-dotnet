@@ -12,8 +12,6 @@ using N8T.Core.Domain;
 
 namespace N8T.Infrastructure.EfCore
 {
-    public interface ITxRequest { }
-
     //[DebuggerStepThrough]
     public class TxBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : notnull, IRequest<TResponse>
