@@ -63,5 +63,17 @@ namespace N8T.Core.Specification
         {
             this.ApplySorting(sort, nameof(ApplyOrderBy), nameof(ApplyOrderByDescending));
         }
+
+        private Func<T, bool> _compiledExpression;
+
+        private Func<T, bool> CompiledExpression
+        {
+            get { return _compiledExpression ??= Criteria.Compile(); }
+        }
+
+        public bool IsSatisfiedBy(T obj)
+        {
+            return CompiledExpression(obj);
+        }
     }
 }

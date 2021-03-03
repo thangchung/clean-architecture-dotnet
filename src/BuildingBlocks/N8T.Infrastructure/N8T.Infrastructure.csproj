@@ -6,18 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.ApiEndpoints" Version="2.0.0" />
+    <PackageReference Include="Ardalis.ApiEndpoints" Version="3.0.0" />
     <PackageReference Include="Autofac" Version="6.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-    <PackageReference Include="Dapr.AspNetCore" Version="0.12.0-preview01" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.0.0" />
     <PackageReference Include="FluentValidation" Version="9.3.0" />
     <PackageReference Include="Google.Protobuf" Version="4.0.0-rc2" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.33.1" />
-    <PackageReference Include="Grpc.Core" Version="2.33.1" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.33.1" />
-    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.33.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.35.0" />
+    <PackageReference Include="Grpc.Core" Version="2.36.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.35.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />

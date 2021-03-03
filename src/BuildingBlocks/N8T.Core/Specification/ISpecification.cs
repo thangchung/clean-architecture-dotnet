@@ -24,6 +24,8 @@ namespace N8T.Core.Specification
         int Take { get; }
         int Skip { get; }
         bool IsPagingEnabled { get; }
+
+        bool IsSatisfiedBy(T obj);
     }
     
     public interface IGridSpecification<T> : IRootSpecification

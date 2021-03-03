@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.AppContracts.Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using N8T.Infrastructure.App.Dtos;
 using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Endpoints.Queries
 {
-    public class GetProductById : BaseAsyncEndpoint<Guid, ProductDto>
+    public class GetProductById : BaseAsyncEndpoint.WithRequest<Guid>.WithResponse<ProductDto>
     {
         [HttpGet("/api/products/{id:guid}")]
         public override async Task<ActionResult<ProductDto>> HandleAsync(Guid id,
@@ -46,8 +46,7 @@ namespace ProductService.Application.Endpoints.Queries
 
                 public Handler(IRepository<Product> productRepository)
                 {
-                    _productRepository =
-                        productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+                    _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
                 }
 
                 public async Task<ResultModel<ProductDto>> Handle(Query request,

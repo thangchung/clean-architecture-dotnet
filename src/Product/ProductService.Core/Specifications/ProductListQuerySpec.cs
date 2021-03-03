@@ -1,6 +1,6 @@
+using CoolStore.AppContracts.Dtos;
 using N8T.Core.Domain;
 using N8T.Core.Specification;
-using N8T.Infrastructure.App.Dtos;
 using ProductService.Core.Entities;
 
 namespace ProductService.Core.Specifications

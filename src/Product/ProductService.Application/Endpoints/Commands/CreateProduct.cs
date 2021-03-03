@@ -1,24 +1,23 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.AppContracts.Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using N8T.Infrastructure.App.Dtos;
 using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 
 namespace ProductService.Application.Endpoints.Commands
 {
-    public class CreateProduct : BaseAsyncEndpoint
+    public class CreateProduct : BaseAsyncEndpoint.WithRequest<CreateProduct.Command>.WithoutResponse
     {
         [HttpPost("/api/products")]
-        public async Task<ActionResult> HandleAsync([FromBody] Command model,
-            CancellationToken cancellationToken = new())
+        public override async Task<ActionResult> HandleAsync(Command request, CancellationToken cancellationToken = new())
         {
-            return Ok(await Mediator.Send(model, cancellationToken));
+            return Ok(await Mediator.Send(request, cancellationToken));
         }
 
         public record Command : ICreateCommand<Command.CreateProductModel, ProductDto>

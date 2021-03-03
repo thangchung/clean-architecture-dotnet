@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.AppContracts.Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using N8T.Infrastructure.App.Dtos;
 using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
 namespace ProductService.Application.Endpoints.Queries
 {
-    public class GetProducts : BaseAsyncEndpoint
+    public class GetProducts : BaseAsyncEndpoint.WithRequest<GetProducts.Query>.WithoutResponse
     {
         [HttpPost("/api/products-query")]
-        public async Task<ActionResult> HandleAsync([FromBody] Query queryModel,
+        public override async Task<ActionResult> HandleAsync([FromBody] Query queryModel,
             CancellationToken cancellationToken = new())
         {
             return Ok(await Mediator.Send(queryModel, cancellationToken));
@@ -86,5 +86,7 @@ namespace ProductService.Application.Endpoints.Queries
                 }
             }
         }
+
+        
     }
 }

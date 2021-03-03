@@ -1,6 +1,6 @@
 using System;
 
-namespace N8T.Infrastructure.App.Dtos
+namespace CoolStore.AppContracts.Dtos
 {
     public record ProductDto
     {

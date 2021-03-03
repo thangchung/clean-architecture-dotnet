@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ProductCatalogService.Api": {
+    "ProductCatalogService.Application": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

@@ -1,3 +1,6 @@
+using CoolStore.AppContracts;
+using CoolStore.AppContracts.RestApi;
+using Dapr.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +12,8 @@ using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.EfCore;
 using N8T.Infrastructure.Tye;
 using ProductService.Infrastructure.Data;
+using RestEase;
+using RestEase.HttpClientFactory;
 
 namespace ProductService.Application
 {

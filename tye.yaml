@@ -3,8 +3,8 @@ name: coolstore
 extensions:
 - name: dapr
   log-level: debug
-  # config: appconfig
-  # components-path: "./components/local/"
+  config: appconfig
+  components-path: "./components"
 # - name: zipkin
 # - name: elastic
   # logPath: ./.logs
@@ -26,12 +26,28 @@ services:
   - port: 6379
 
 - name: productserviceapp
-  project: src/Product/ProductService.Api/ProductService.Api.csproj
+  project: src/Product/ProductService.Application/ProductService.Application.csproj
   env:
   - name: ConnectionStrings__postgres
     value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
   bindings:
   - port: 5002
+
+- name: customerapp
+  project: src/Customer/CustomerService.Application/CustomerService.Application.csproj
+  env:
+  - name: ConnectionStrings__postgres
+    value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  bindings:
+  - port: 5003
+
+- name: settingapp
+  project: src/Setting/SettingService.Application/SettingService.Application.csproj
+  env:
+  - name: ConnectionStrings__postgres
+    value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  bindings:
+  - port: 5005
 
 - name: auditapp
   dockerFile: rs/audit_service/Dockerfile

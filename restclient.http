@@ -1,4 +1,6 @@
 @host = http://localhost:5002
+@setting-host = http://localhost:5005
+@customer-host = http://localhost:5003
 
 ###
 POST {{host}}/api/products-query HTTP/1.1
@@ -23,6 +25,11 @@ GET {{host}}/api/products/{{id}} HTTP/1.1
 content-type: {{contentType}}
 
 ###
+@country-id = 18a4a8ae-3338-484a-a4ed-6e64d13d84dc
+GET {{setting-host}}/api/countries/{{country-id}} HTTP/1.1
+content-type: {{contentType}}
+
+###
 POST {{host}}/api/products HTTP/1.1
 content-type: {{contentType}}
 
@@ -32,5 +39,18 @@ content-type: {{contentType}}
     "quantity": 1,
     "cost": 1000,
     "productCodeName": "pcode"
+  }
+}
+
+###
+POST {{customer-host}}/api/customers HTTP/1.1
+content-type: {{contentType}}
+
+{
+  "model": {
+    "firstName": "firstName 1",
+    "lastName": "lastName 1",
+    "email": "email1@nomail.com",
+    "countryId": "18a4a8ae-3338-484a-a4ed-6e64d13d84dc"
   }
 }
