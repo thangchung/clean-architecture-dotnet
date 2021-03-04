@@ -12,8 +12,9 @@ using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
-namespace ProductService.Application.Endpoints.Queries
+namespace ProductService.Application.V1.Endpoints.Queries
 {
+    [ApiVersion( "1.0" )]
     public class GetProductById : BaseAsyncEndpoint.WithRequest<Guid>.WithResponse<ProductDto>
     {
         [HttpGet("/api/products/{id:guid}")]

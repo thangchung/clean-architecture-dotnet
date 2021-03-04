@@ -10,8 +10,9 @@ using N8T.Core.Repository;
 using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 
-namespace ProductService.Application.Endpoints.Commands
+namespace ProductService.Application.V1.Endpoints.Commands
 {
+    [ApiVersion( "1.0" )]
     public class CreateProduct : BaseAsyncEndpoint.WithRequest<CreateProduct.Command>.WithoutResponse
     {
         [HttpPost("/api/products")]

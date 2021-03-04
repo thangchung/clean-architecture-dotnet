@@ -1,8 +1,6 @@
-using CoolStore.AppContracts;
-using CoolStore.AppContracts.RestApi;
-using Dapr.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,10 +8,8 @@ using N8T.Core.Repository;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.EfCore;
-using N8T.Infrastructure.Tye;
+using N8T.Infrastructure.Swagger;
 using ProductService.Infrastructure.Data;
-using RestEase;
-using RestEase.HttpClientFactory;
 
 namespace ProductService.Application
 {
@@ -27,7 +23,6 @@ namespace ProductService.Application
 
         private IConfiguration Config { get; }
         private IWebHostEnvironment Env { get; }
-        private bool IsRunOnTye => Config.IsRunOnTye();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -49,10 +44,11 @@ namespace ProductService.Application
                     })
                 .AddCustomDaprClient()
                 .AddControllers()
-                .AddDapr();
+                .AddDapr()
+                .Services.AddSwagger<Startup>();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
             if (Env.IsDevelopment())
             {
@@ -67,6 +63,8 @@ namespace ProductService.Application
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
+            app.UseSwagger(provider);
         }
     }
 }

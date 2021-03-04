@@ -9,22 +9,26 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
+using N8T.Infrastructure;
 using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
-namespace ProductService.Application.Endpoints.Queries
+namespace ProductService.Application.V1.Endpoints.Queries
 {
-    public class GetProducts : BaseAsyncEndpoint.WithRequest<GetProducts.Query>.WithoutResponse
+    [ApiVersion( "1.0" )]
+    public class GetProducts : BaseAsyncEndpoint.WithRequest<string>.WithoutResponse
     {
-        [HttpPost("/api/products-query")]
-        public override async Task<ActionResult> HandleAsync([FromBody] Query queryModel,
+        [HttpGet("/api/products")]
+        public override async Task<ActionResult> HandleAsync([FromHeader(Name = "x-query")] string query,
             CancellationToken cancellationToken = new())
         {
+            var queryModel = HttpContext.SafeGetListQuery<Query, ListResponseModel<ProductDto>>(query);
+            
             return Ok(await Mediator.Send(queryModel, cancellationToken));
         }
 
-        public record Query : IListQuery<ListResponseModel<ProductDto>>
+        public class Query : IListQuery<ListResponseModel<ProductDto>>
         {
             public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});
             public List<FilterModel> Filters { get; init; } = new();
@@ -86,7 +90,5 @@ namespace ProductService.Application.Endpoints.Queries
                 }
             }
         }
-
-        
     }
 }

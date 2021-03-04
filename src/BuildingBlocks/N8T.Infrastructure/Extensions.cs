@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using N8T.Core.Domain;
 using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.Validator;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace N8T.Infrastructure
@@ -42,22 +44,18 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static IServiceCollection AddCustomMvc<TType>(this IServiceCollection services,
-            bool withDapr = false,
-            Action<IServiceCollection> doMoreActions = null)
+        public static TResult SafeGetListQuery<TResult, TResponse>(this HttpContext httpContext, string query)
+            where TResult : IListQuery<TResponse>, new()
         {
-            var mvcBuilder = services.AddControllers();
-
-            if (withDapr)
+            var queryModel = new TResult();
+            if (!(string.IsNullOrEmpty(query) || query == "{}"))
             {
-                mvcBuilder.AddDapr();
+                queryModel = JsonConvert.DeserializeObject<TResult>(query); 
             }
 
-            mvcBuilder.AddApplicationPart(typeof(TType).Assembly);
+            httpContext?.Response.Headers.Add("x-query", JsonConvert.SerializeObject(queryModel));
 
-            doMoreActions?.Invoke(services);
-
-            return services;
+            return queryModel;
         }
 
         [DebuggerStepThrough]

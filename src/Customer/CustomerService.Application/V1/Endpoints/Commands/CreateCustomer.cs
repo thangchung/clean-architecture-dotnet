@@ -12,8 +12,9 @@ using N8T.Core.Domain;
 using N8T.Core.Repository;
 using N8T.Infrastructure.Endpoint;
 
-namespace CustomerService.Application.Endpoints.Commands
+namespace CustomerService.Application.V1.Endpoints.Commands
 {
+    [ApiVersion( "1.0" )]
     public class CreateCustomer : BaseAsyncEndpoint.WithRequest<CreateCustomer.Command>.WithoutResponse
     {
         [HttpPost("/api/customers")]

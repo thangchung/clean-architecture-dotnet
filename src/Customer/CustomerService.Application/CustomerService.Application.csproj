@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Commands\" />
-    <Folder Include="Endpoints\Queries\" />
+    <Folder Include="V1\Endpoints\Queries\" />
   </ItemGroup>
 
 </Project>
