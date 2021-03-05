@@ -25,6 +25,11 @@ services:
   bindings:
   - port: 6379
 
+- name: gatewayapp
+  project: src/Gateways/AppGateway/AppGateway.csproj
+  bindings:
+  - port: 5000
+
 - name: productserviceapp
   project: src/Product/ProductService.Application/ProductService.Application.csproj
   env:

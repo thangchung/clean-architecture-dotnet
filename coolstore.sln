@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.AppContracts", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setting", "Setting", "{EEA08CE8-4834-4D36-ADE0-24F5F471AF6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingService.Core", "src\Setting\SettingService.Core\SettingService.Core.csproj", "{340E9BEE-1CE0-43EE-A33B-0C039D7FCE5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Core", "src\Setting\SettingService.Core\SettingService.Core.csproj", "{340E9BEE-1CE0-43EE-A33B-0C039D7FCE5B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Infrastructure", "src\Setting\SettingService.Infrastructure\SettingService.Infrastructure.csproj", "{2561F40E-103B-4E80-B057-91D7AD44E3D9}"
 EndProject
@@ -46,11 +46,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customer", "Customer", "{5D18FF27-2948-433A-A40F-77C778A705C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerService.Core", "src\Customer\CustomerService.Core\CustomerService.Core.csproj", "{C2531C6A-185A-4120-B098-946855684626}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Core", "src\Customer\CustomerService.Core\CustomerService.Core.csproj", "{C2531C6A-185A-4120-B098-946855684626}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Infrastructure", "src\Customer\CustomerService.Infrastructure\CustomerService.Infrastructure.csproj", "{A26F7B4F-F725-4018-954A-C3D7925C2A30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Application", "src\Customer\CustomerService.Application\CustomerService.Application.csproj", "{4F623591-01CB-4CCE-9BDD-9B0CBC6D8F8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{4DE0371F-85C0-4CC2-8457-08EB3F3F0A4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGateway", "src\Gateways\AppGateway\AppGateway.csproj", "{8CFC9025-2F85-4196-9AE7-74FE68AB79A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +118,10 @@ Global
 		{4F623591-01CB-4CCE-9BDD-9B0CBC6D8F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F623591-01CB-4CCE-9BDD-9B0CBC6D8F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F623591-01CB-4CCE-9BDD-9B0CBC6D8F8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFC9025-2F85-4196-9AE7-74FE68AB79A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFC9025-2F85-4196-9AE7-74FE68AB79A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFC9025-2F85-4196-9AE7-74FE68AB79A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFC9025-2F85-4196-9AE7-74FE68AB79A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +141,7 @@ Global
 		{C2531C6A-185A-4120-B098-946855684626} = {5D18FF27-2948-433A-A40F-77C778A705C1}
 		{A26F7B4F-F725-4018-954A-C3D7925C2A30} = {5D18FF27-2948-433A-A40F-77C778A705C1}
 		{4F623591-01CB-4CCE-9BDD-9B0CBC6D8F8E} = {5D18FF27-2948-433A-A40F-77C778A705C1}
+		{8CFC9025-2F85-4196-9AE7-74FE68AB79A4} = {4DE0371F-85C0-4CC2-8457-08EB3F3F0A4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B983152-0931-4714-9EDE-BD7DE35C758E}

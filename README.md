@@ -33,11 +33,47 @@ $ npm run dev
 
 - Public Apis:
 
-> Frontend: [http://localhost:3000/products](http://localhost:3000/products)
-> 
-> Backend: [http://localhost:5002](http://localhost:5002)
-> 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
+
+<table>
+  <thead>
+    <th>No.</th>
+    <th>Service name</th>
+    <th>Service uri</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>gateway</td>
+      <td><a href="http://localhost:5000">http://localhost:5000</a></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>product (internal)</td>
+      <td><a href="http://localhost:5002">http://localhost:5002</a></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>customer (internal)</td>
+      <td><a href="http://localhost:5003">http://localhost:5003</a></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>setting (internal)</td>
+      <td><a href="http://localhost:5005">http://localhost:5005</a></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>audit (internal)</td>
+      <td><a href="http://localhost:5010">http://localhost:5010</a></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>frontend</td>
+      <td><a href="http://localhost:3000">http://localhost:3000</a></td>
+    </tr>
+  </tbody>
+</table>
 
 # Business Usecases
 
