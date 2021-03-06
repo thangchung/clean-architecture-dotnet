@@ -34,6 +34,8 @@ $ npm run dev
 - Public Apis:
 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
+> 
+> Play around at [restclient.http](restclient.http)
 
 <table>
   <thead>
