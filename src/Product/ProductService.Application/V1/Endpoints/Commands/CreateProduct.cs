@@ -12,10 +12,10 @@ using ProductService.Core.Entities;
 
 namespace ProductService.Application.V1.Endpoints.Commands
 {
-    [ApiVersion( "1.0" )]
     public class CreateProduct : BaseAsyncEndpoint.WithRequest<CreateProduct.Command>.WithoutResponse
     {
-        [HttpPost("/api/products")]
+        [ApiVersion( "1.0" )]
+        [HttpPost("/api/v{version:apiVersion}/products")]
         public override async Task<ActionResult> HandleAsync(Command request, CancellationToken cancellationToken = new())
         {
             return Ok(await Mediator.Send(request, cancellationToken));
@@ -23,7 +23,7 @@ namespace ProductService.Application.V1.Endpoints.Commands
 
         public record Command : ICreateCommand<Command.CreateProductModel, ProductDto>
         {
-            public CreateProductModel Model { get; init; }
+            public CreateProductModel Model { get; init; } = default!;
 
             public record CreateProductModel(string Name, int Quantity, decimal Cost, string ProductCodeName);
 

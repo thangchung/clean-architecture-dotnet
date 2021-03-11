@@ -23,6 +23,8 @@ namespace AppGateway
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSecurityHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

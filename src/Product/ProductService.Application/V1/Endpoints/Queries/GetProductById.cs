@@ -14,10 +14,10 @@ using ProductService.Core.Specifications;
 
 namespace ProductService.Application.V1.Endpoints.Queries
 {
-    [ApiVersion( "1.0" )]
     public class GetProductById : BaseAsyncEndpoint.WithRequest<Guid>.WithResponse<ProductDto>
     {
-        [HttpGet("/api/products/{id:guid}")]
+        [ApiVersion( "1.0" )]
+        [HttpGet("/api/v{version:apiVersion}/products/{id:guid}")]
         public override async Task<ActionResult<ProductDto>> HandleAsync(Guid id,
             CancellationToken cancellationToken = new())
         {

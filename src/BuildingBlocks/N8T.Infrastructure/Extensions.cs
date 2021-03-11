@@ -11,6 +11,7 @@ using N8T.Core.Domain;
 using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.Validator;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Serilog;
 
 namespace N8T.Infrastructure
@@ -50,10 +51,12 @@ namespace N8T.Infrastructure
             var queryModel = new TResult();
             if (!(string.IsNullOrEmpty(query) || query == "{}"))
             {
-                queryModel = JsonConvert.DeserializeObject<TResult>(query); 
+                queryModel = JsonConvert.DeserializeObject<TResult>(query);
             }
 
-            httpContext?.Response.Headers.Add("x-query", JsonConvert.SerializeObject(queryModel));
+            httpContext?.Response.Headers.Add("x-query",
+                JsonConvert.SerializeObject(queryModel,
+                    new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()}));
 
             return queryModel;
         }

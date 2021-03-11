@@ -1,13 +1,13 @@
 @host = http://localhost:5000
 
 ###
-GET {{host}}/product-api/products?api-version=1.0 HTTP/1.1
+GET {{host}}/product-api/v1/products HTTP/1.1
 content-type: {{contentType}}
 x-query: {"filters":[{"fieldName": "Name", "comparision": "Contains", "fieldValue": "test"}],"sorts":["nameDesc"],"page":1,"pageSize":20}
 
 ###
 @id = 23537dac-303f-446f-be2a-1dbea22b3eba
-GET {{host}}/product-api/products/{{id}}?api-version=1.0 HTTP/1.1
+GET {{host}}/product-api/v1/products/{{id}} HTTP/1.1
 content-type: {{contentType}}
 
 ###
@@ -16,7 +16,7 @@ GET {{host}}/setting-api/countries/{{country-id}} HTTP/1.1
 content-type: {{contentType}}
 
 ###
-POST {{host}}/product-api/products?api-version=1.0 HTTP/1.1
+POST {{host}}/product-api/v1/products HTTP/1.1
 content-type: {{contentType}}
 
 {
@@ -29,7 +29,7 @@ content-type: {{contentType}}
 }
 
 ###
-POST {{host}}/customer-api/customers?api-version=1.0 HTTP/1.1
+POST {{host}}/customer-api/v1/customers HTTP/1.1
 content-type: {{contentType}}
 
 {

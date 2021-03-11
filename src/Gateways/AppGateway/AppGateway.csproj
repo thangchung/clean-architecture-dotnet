@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ReverseProxy" Version="1.0.0-preview.9.*" />
+    <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.13.0" />
   </ItemGroup>
 
 </Project>

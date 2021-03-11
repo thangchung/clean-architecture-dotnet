@@ -16,10 +16,10 @@ using ProductService.Core.Specifications;
 
 namespace ProductService.Application.V1.Endpoints.Queries
 {
-    [ApiVersion( "1.0" )]
     public class GetProducts : BaseAsyncEndpoint.WithRequest<string>.WithoutResponse
     {
-        [HttpGet("/api/products")]
+        [ApiVersion( "1.0" )]
+        [HttpGet("/api/v{version:apiVersion}/products")]
         public override async Task<ActionResult> HandleAsync([FromHeader(Name = "x-query")] string query,
             CancellationToken cancellationToken = new())
         {

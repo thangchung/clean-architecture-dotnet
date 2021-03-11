@@ -14,10 +14,10 @@ using N8T.Infrastructure.Endpoint;
 
 namespace CustomerService.Application.V1.Endpoints.Commands
 {
-    [ApiVersion( "1.0" )]
     public class CreateCustomer : BaseAsyncEndpoint.WithRequest<CreateCustomer.Command>.WithoutResponse
     {
-        [HttpPost("/api/customers")]
+        [ApiVersion( "1.0" )]
+        [HttpPost("/api/v{version:apiVersion}/customers")]
         public override async Task<ActionResult> HandleAsync(Command request, CancellationToken cancellationToken = new())
         {
             return Ok(await Mediator.Send(request, cancellationToken));
@@ -25,7 +25,7 @@ namespace CustomerService.Application.V1.Endpoints.Commands
 
         public record Command : ICreateCommand<Command.CreateCustomerModel, CustomerDto>
         {
-            public CreateCustomerModel Model { get; init; }
+            public CreateCustomerModel Model { get; init; } = default!;
 
             public record CreateCustomerModel(string FirstName, string LastName, string Email, Guid CountryId);
 
