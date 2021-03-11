@@ -55,25 +55,11 @@ namespace ProductService.Application.V1.Endpoints.Queries
                 {
                     if (request == null) throw new ArgumentNullException(nameof(request));
 
-                    var spec = new ProductByIdQuerySpec(request);
+                    var spec = new ProductByIdQuerySpec<ProductDto>(request);
 
                     var product = await _productRepository.FindOneAsync(spec);
 
-                    return new ResultModel<ProductDto>
-                    (
-                        new ProductDto
-                        {
-                            Id = product.Id,
-                            ProductCodeId = product.ProductCodeId,
-                            Active = product.Active,
-                            Cost = product.Cost,
-                            Name = product.Name,
-                            Quantity = product.Quantity,
-                            ProductCodeName = product.Code.Name,
-                            Created = product.Created,
-                            Modified = product.Updated
-                        }
-                    );
+                    return ResultModel<ProductDto>.Create(product.AdaptToDto());
                 }
             }
         }

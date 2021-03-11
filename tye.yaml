@@ -25,11 +25,6 @@ services:
   bindings:
   - port: 6379
 
-- name: gatewayapp
-  project: src/Gateways/AppGateway/AppGateway.csproj
-  bindings:
-  - port: 5000
-
 - name: productserviceapp
   project: src/Product/ProductService.Application/ProductService.Application.csproj
   env:
@@ -54,13 +49,18 @@ services:
   bindings:
   - port: 5005
 
-- name: auditapp
-  dockerFile: rs/audit_service/Dockerfile
-  env:
-  - name: HOST
-    value: 0.0.0.0
-  - name: DATABASE_URL
-    value: postgres://postgres/postgres?user=postgres&password=P@ssw0rd
+- name: gatewayapp
+  project: src/Gateways/AppGateway/AppGateway.csproj
   bindings:
-  - protocol: http
-    port: 5010
+  - port: 5000
+
+# - name: auditapp
+#   dockerFile: rs/audit_service/Dockerfile
+#   env:
+#   - name: HOST
+#     value: 0.0.0.0
+#   - name: DATABASE_URL
+#     value: postgres://postgres/postgres?user=postgres&password=P@ssw0rd
+#   bindings:
+#   - protocol: http
+#     port: 5010

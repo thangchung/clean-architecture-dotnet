@@ -1,18 +1,17 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using CoolStore.AppContracts.Dtos;
 using N8T.Core.Domain;
 using N8T.Core.Specification;
 using ProductService.Core.Entities;
 
 namespace ProductService.Core.Specifications
 {
-    public sealed class ProductByIdQuerySpec : SpecificationBase<Product>
+    public sealed class ProductByIdQuerySpec<TResponse> : SpecificationBase<Product>
     {
         private readonly Guid _id;
 
-        public ProductByIdQuerySpec([NotNull] IItemQuery<Guid, ProductDto> queryInput)
+        public ProductByIdQuerySpec([NotNull] IItemQuery<Guid, TResponse> queryInput)
         {
             ApplyIncludeList(queryInput.Includes);
 

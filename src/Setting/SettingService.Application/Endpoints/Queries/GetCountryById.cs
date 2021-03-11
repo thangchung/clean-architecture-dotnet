@@ -55,14 +55,9 @@ namespace SettingService.Application.Endpoints.Queries
 
                     var country = _countryRepository.FindById(request.Id);
 
-                    return new ResultModel<CountryDto>
-                    (
-                        new CountryDto {Id = country.Id, Name = country.Name,}
-                    );
+                    return ResultModel<CountryDto>.Create(country.AdaptToDto());
                 }
             }
         }
-
-       
     }
 }

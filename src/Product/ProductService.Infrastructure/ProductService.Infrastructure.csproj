@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
     <ProjectReference Include="..\ProductService.Core\ProductService.Core.csproj" />
   </ItemGroup>
 

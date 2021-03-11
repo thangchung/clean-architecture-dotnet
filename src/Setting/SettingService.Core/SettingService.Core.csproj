@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
+    <Folder Include="Entities\" />
+    <Folder Include="Events\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Events\" />
+    <ProjectReference Include="..\..\BuildingBlocks\N8T.Core\N8T.Core.csproj" />
   </ItemGroup>
 
 </Project>

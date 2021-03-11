@@ -1,14 +1,12 @@
-using CoolStore.AppContracts.Dtos;
 using N8T.Core.Domain;
 using N8T.Core.Specification;
-using N8T.Infrastructure;
 using ProductService.Core.Entities;
 
 namespace ProductService.Core.Specifications
 {
-    public sealed class ProductListQuerySpec : GridSpecificationBase<Product>
+    public sealed class ProductListQuerySpec<TResponse> : GridSpecificationBase<Product>
     {
-        public ProductListQuerySpec(IListQuery<ListResponseModel<ProductDto>> gridQueryInput)
+        public ProductListQuerySpec(IListQuery<ListResponseModel<TResponse>> gridQueryInput)
         {
             ApplyIncludeList(gridQueryInput.Includes);
 

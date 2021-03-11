@@ -68,7 +68,9 @@ namespace CustomerService.Application.V1.Endpoints.Commands
                     var existingCustomer = await _customerRepository.FindOneAsync(alreadyRegisteredSpec);
 
                     if (existingCustomer != null)
+                    {
                         throw new Exception("Customer with this email already exists");
+                    }
 
                     // check country is exists and valid
                     var (countryDto, isError, _) = await _countryApi.GetCountryByIdAsync(request.Model.CountryId);
@@ -81,14 +83,7 @@ namespace CustomerService.Application.V1.Endpoints.Commands
 
                     var created = await _customerRepository.AddAsync(customer);
 
-                    return new ResultModel<CustomerDto>(new CustomerDto
-                    {
-                        Id = created.Id,
-                        FirstName = created.FirstName,
-                        LastName = created.LastName,
-                        Email = created.Email,
-                        CountryId = created.CountryId
-                    });
+                    return ResultModel<CustomerDto>.Create(created.AdaptToDto());
                 }
             }
         }

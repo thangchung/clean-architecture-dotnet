@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
     <ProjectReference Include="..\SettingService.Core\SettingService.Core.csproj" />
   </ItemGroup>
 

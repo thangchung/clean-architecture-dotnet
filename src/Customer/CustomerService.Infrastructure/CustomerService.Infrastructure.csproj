@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
     <ProjectReference Include="..\CustomerService.Core\CustomerService.Core.csproj" />
   </ItemGroup>
 

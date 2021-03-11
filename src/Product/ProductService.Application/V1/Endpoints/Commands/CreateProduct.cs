@@ -52,8 +52,7 @@ namespace ProductService.Application.V1.Endpoints.Commands
                 private readonly IRepository<Product> _productRepository;
                 private readonly IRepository<ProductCode> _productCodeRepository;
 
-                public Handler(
-                    IRepository<Product> productRepository,
+                public Handler(IRepository<Product> productRepository,
                     IRepository<ProductCode> productCodeRepository)
                 {
                     _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
@@ -78,18 +77,7 @@ namespace ProductService.Application.V1.Endpoints.Commands
                             request.Model.Cost,
                             productCode));
 
-                    return new ResultModel<ProductDto>(new ProductDto
-                    {
-                        Id = created.Id,
-                        ProductCodeId = created.ProductCodeId,
-                        Active = created.Active,
-                        Cost = created.Cost,
-                        Name = created.Name,
-                        Quantity = created.Quantity,
-                        ProductCodeName = productCode.Name,
-                        Created = created.Created,
-                        Modified = created.Updated
-                    });
+                    return ResultModel<ProductDto>.Create(created.AdaptToDto());
                 }
             }
         }

@@ -7,7 +7,7 @@ namespace CustomerService.Core.Specs
 {
     public class CreditCardAvailableSpec : SpecificationBase<CreditCard>
     {
-        readonly DateTime _dateTime;
+        private readonly DateTime _dateTime;
 
         public CreditCardAvailableSpec(DateTime dateTime)
         {

@@ -63,30 +63,18 @@ namespace ProductService.Application.V1.Endpoints.Queries
                 {
                     if (request == null) throw new ArgumentNullException(nameof(request));
 
-                    var spec = new ProductListQuerySpec(request);
+                    var spec = new ProductListQuerySpec<ProductDto>(request);
 
                     var products = await _productRepository.FindAsync(spec);
 
-                    var productModels = products.Select(x => new ProductDto
-                    {
-                        Id = x.Id,
-                        ProductCodeId = x.ProductCodeId,
-                        Active = x.Active,
-                        Cost = x.Cost,
-                        Name = x.Name,
-                        Quantity = x.Quantity,
-                        ProductCodeName = x.Code.Name,
-                        Created = x.Created,
-                        Modified = x.Updated
-                    });
+                    var productModels = products.Select(x => x.AdaptToDto());
 
                     var totalProducts = await _productRepository.CountAsync(spec);
 
-                    var resultModel =
-                        new ListResponseModel<ProductDto>(productModels.ToList(), totalProducts, request.Page,
-                            request.PageSize);
+                    var resultModel = ListResponseModel<ProductDto>.Create(
+                        productModels.ToList(), totalProducts, request.Page, request.PageSize);
 
-                    return new ResultModel<ListResponseModel<ProductDto>>(resultModel);
+                    return ResultModel<ListResponseModel<ProductDto>>.Create(resultModel);
                 }
             }
         }
