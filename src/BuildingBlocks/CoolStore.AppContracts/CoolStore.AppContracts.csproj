@@ -12,8 +12,6 @@
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="5.0.1" />
-    <PackageReference Include="RestEase" Version="1.5.2" />
-    <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.2" />
     <PackageReference Include="RestEase.SourceGenerator" Version="1.5.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

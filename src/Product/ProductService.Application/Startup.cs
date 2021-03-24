@@ -6,8 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Core.Repository;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Dapr;
+using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
+using N8T.Infrastructure.ServiceInvocation.Dapr;
 using N8T.Infrastructure.Swagger;
 using ProductService.Infrastructure.Data;
 
@@ -42,10 +43,10 @@ namespace ProductService.Application
                         svc.AddScoped(typeof(IRepository<>), typeof(Repository<>));
                         svc.AddScoped(typeof(IGridRepository<>), typeof(Repository<>));
                     })
-                .AddCustomDaprClient()
+                .AddDaprClient()
                 .AddControllers()
-                .AddDapr()
-                .Services.AddSwagger<Startup>();
+                .AddMessageBroker()
+                .AddSwagger<Startup>();
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
@@ -58,9 +59,11 @@ namespace ProductService.Application
             app.UseCors("api");
 
             app.UseRouting();
+            app.UseCloudEvents();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapSubscribeHandler();
                 endpoints.MapDefaultControllerRoute();
             });
 

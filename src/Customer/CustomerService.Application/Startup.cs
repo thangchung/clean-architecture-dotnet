@@ -1,7 +1,6 @@
 using CoolStore.AppContracts;
 using CoolStore.AppContracts.RestApi;
 using CustomerService.Infrastructure.Data;
-using Dapr.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -10,12 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Core.Repository;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Dapr;
+using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
+using N8T.Infrastructure.ServiceInvocation.Dapr;
 using N8T.Infrastructure.Swagger;
 using N8T.Infrastructure.Tye;
-using RestEase;
-using RestEase.HttpClientFactory;
 
 namespace CustomerService.Application
 {
@@ -49,20 +47,11 @@ namespace CustomerService.Application
                         svc.AddScoped(typeof(IRepository<>), typeof(Repository<>));
                         svc.AddScoped(typeof(IGridRepository<>), typeof(Repository<>));
                     })
-                .AddCustomDaprClient()
+                .AddDaprClient()
+                .AddRestClient(typeof(ICountryApi), AppConsts.SettingAppName, 5005, IsRunOnTye)
                 .AddControllers()
-                .AddDapr()
-                .Services.AddSwagger<Startup>();
-
-            var settingAppUri = IsRunOnTye
-                ? $"http://{AppConsts.SettingAppName}:5005"
-                : "http://localhost:5005"; //TODO: it might have a problem when deploy on k8s 
-
-            services.AddScoped<InvocationHandler>();
-            services.AddRestEaseClient<ICountryApi>(settingAppUri, client =>
-            {
-                client.RequestPathParamSerializer = new StringEnumRequestPathParamSerializer();
-            }).AddHttpMessageHandler<InvocationHandler>();
+                .AddMessageBroker()
+                .AddSwagger<Startup>();
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
@@ -75,9 +64,11 @@ namespace CustomerService.Application
             app.UseCors("api");
 
             app.UseRouting();
+            app.UseCloudEvents();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapSubscribeHandler();
                 endpoints.MapDefaultControllerRoute();
             });
 

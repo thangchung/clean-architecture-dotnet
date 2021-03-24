@@ -21,6 +21,7 @@ namespace N8T.Infrastructure
         public static IServiceCollection AddCore(this IServiceCollection services, Type[] types = null,
             Action<IServiceCollection> doMoreActions = null)
         {
+            services.AddHttpContextAccessor();
             services.AddCustomMediatR(types);
             services.AddCustomValidators(types);
 

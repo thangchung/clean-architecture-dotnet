@@ -47,7 +47,7 @@ namespace CustomerService.Core.Entities
             if (countryId == null)
                 throw new ArgumentNullException("country");
 
-            Customer customer = new Customer()
+            Customer customer = new()
             {
                 Id = id,
                 FirstName = firstname,
