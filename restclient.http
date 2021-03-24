@@ -12,7 +12,7 @@ content-type: {{contentType}}
 
 ###
 @country-id = 18a4a8ae-3338-484a-a4ed-6e64d13d84dc
-GET {{host}}/setting-api/countries/{{country-id}} HTTP/1.1
+GET {{host}}/setting-api/v1/countries/{{country-id}} HTTP/1.1
 content-type: {{contentType}}
 
 ###

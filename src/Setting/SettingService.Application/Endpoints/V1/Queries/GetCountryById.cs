@@ -11,11 +11,12 @@ using N8T.Core.Repository;
 using N8T.Infrastructure.Endpoint;
 using SettingService.Core.Entities;
 
-namespace SettingService.Application.Endpoints.Queries
+namespace SettingService.Application.Endpoints.V1.Queries
 {
     public class GetCountryById : BaseAsyncEndpoint.WithRequest<Guid>.WithResponse<CountryDto>
     {
-        [HttpGet("/api/countries/{id:guid}")]
+        [ApiVersion( "1.0" )]
+        [HttpGet("/api/v{version:apiVersion}/countries/{id:guid}")]
         public override async Task<ActionResult<CountryDto>> HandleAsync(Guid id,
             CancellationToken cancellationToken = new())
         {

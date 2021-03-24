@@ -8,7 +8,7 @@ namespace CoolStore.AppContracts.RestApi
 {
     public interface ICountryApi
     {
-        [Get("api/countries/{countryId}")]
+        [Get("api/v1/countries/{countryId}")]
         Task<ResultModel<CountryDto>> GetCountryByIdAsync([Path] Guid countryId);
     }
 }
