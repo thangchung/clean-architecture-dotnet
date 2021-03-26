@@ -13,74 +13,61 @@ namespace N8T.Infrastructure.EfCore
         where TEntity : EntityBase, IAggregateRoot
         where TDbContext : DbContext
     {
-        private readonly IDbContextFactory<TDbContext> _dbContextFactory;
+        private readonly TDbContext _dbContext;
 
-        protected RepositoryBase(IDbContextFactory<TDbContext> dbContextFactory)
+        protected RepositoryBase(TDbContext dbContext)
         {
-            _dbContextFactory = dbContextFactory;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public TEntity FindById(Guid id)
         {
-            using var dbContext = _dbContextFactory.CreateDbContext();
-
-            return dbContext.Set<TEntity>().SingleOrDefault(e => e.Id == id);
+            return _dbContext.Set<TEntity>().SingleOrDefault(e => e.Id == id);
         }
 
         public async Task<TEntity> FindOneAsync(ISpecification<TEntity> spec)
         {
-            await using var dbContext = _dbContextFactory.CreateDbContext();
-
-            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+            var specificationResult = GetQuery(_dbContext.Set<TEntity>(), spec);
 
             return await specificationResult.FirstOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> FindAsync(ISpecification<TEntity> spec)
         {
-            await using var dbContext = _dbContextFactory.CreateDbContext();
-
-            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+            var specificationResult = GetQuery(_dbContext.Set<TEntity>(), spec);
 
             return await specificationResult.ToListAsync();
         }
 
         public async ValueTask<long> CountAsync(IGridSpecification<TEntity> spec)
         {
-            await using var dbContext = _dbContextFactory.CreateDbContext();
-
             spec.IsPagingEnabled = false;
-            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+            var specificationResult = GetQuery(_dbContext.Set<TEntity>(), spec);
 
-            return specificationResult.LongCount();
+            return await ValueTask.FromResult(specificationResult.LongCount());
         }
 
         public async Task<List<TEntity>> FindAsync(IGridSpecification<TEntity> spec)
         {
-            await using var dbContext = _dbContextFactory.CreateDbContext();
-
-            var specificationResult = GetQuery(dbContext.Set<TEntity>(), spec);
+            var specificationResult = GetQuery(_dbContext.Set<TEntity>(), spec);
 
             return await specificationResult.ToListAsync();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
-            await using var dbContext = _dbContextFactory.CreateDbContext();
+            await _dbContext.Set<TEntity>().AddAsync(entity);
 
-            await dbContext.Set<TEntity>().AddAsync(entity);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return entity;
         }
 
         public async Task RemoveAsync(TEntity entity)
         {
-            await using var dbContext = _dbContextFactory.CreateDbContext();
+            _dbContext.Set<TEntity>().Remove(entity);
 
-            dbContext.Set<TEntity>().Remove(entity);
-
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         private static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery,

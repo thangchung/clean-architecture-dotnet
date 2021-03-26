@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using CoolStore.IntegrationEvents.Product;
 using N8T.Core.Domain;
-using ProductService.Core.Events;
 
 namespace ProductService.Core.Entities
 {
@@ -42,7 +42,14 @@ namespace ProductService.Core.Entities
                 ProductCodeId = productCode.Id
             };
 
-            product.AddDomainEvent(new ProductCreated {Product = product});
+            product.AddDomainEvent(new ProductCreatedIntegrationEvent
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Quantity = product.Quantity,
+                ProductCost = product.Cost,
+                ProductCodeId = productCode.Id
+            });
 
             return product;
         }

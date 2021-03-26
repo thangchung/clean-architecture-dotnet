@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.AppContracts.Dtos;
-using CoolStore.AppContracts.IntegrationEvents;
 using CoolStore.AppContracts.RestApi;
+using CoolStore.IntegrationEvents.Customer;
 using CustomerService.Core.Entities;
 using CustomerService.Core.Specs;
 using FluentValidation;
@@ -11,7 +11,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.Endpoint;
 
 namespace CustomerService.Application.V1.Endpoints.Commands
@@ -54,13 +53,11 @@ namespace CustomerService.Application.V1.Endpoints.Commands
             {
                 private readonly IRepository<Customer> _customerRepository;
                 private readonly ICountryApi _countryApi;
-                private readonly IEventBus _eventBus;
 
-                public Handler(IRepository<Customer> customerRepository, ICountryApi countryApi, IEventBus eventBus)
+                public Handler(IRepository<Customer> customerRepository, ICountryApi countryApi)
                 {
                     _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
                     _countryApi = countryApi ?? throw new ArgumentNullException(nameof(countryApi));
-                    _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
                 }
 
                 public async Task<ResultModel<CustomerDto>> Handle(Command request,
@@ -84,9 +81,9 @@ namespace CustomerService.Application.V1.Endpoints.Commands
 
                     var customer = Customer.Create(request.Model.FirstName, request.Model.LastName, request.Model.Email, request.Model.CountryId);
 
-                    var created = await _customerRepository.AddAsync(customer);
+                    customer.AddDomainEvent(new CustomerCreatedIntegrationEvent());
 
-                    await _eventBus.PublishAsync(new CustomerCreatedIntegrationEvent(), token: cancellationToken);
+                    var created = await _customerRepository.AddAsync(customer);
 
                     return ResultModel<CustomerDto>.Create(created.AdaptToDto());
                 }

@@ -1,6 +1,6 @@
 using System;
+using CoolStore.IntegrationEvents.Product;
 using N8T.Core.Domain;
-using ProductService.Core.Events;
 
 namespace ProductService.Core.Entities
 {
@@ -17,7 +17,10 @@ namespace ProductService.Core.Entities
         {
             ProductCode productCode = new() {Id = id, Name = name};
 
-            productCode.AddDomainEvent(new ProductCodeCreated {ProductCode = productCode});
+            productCode.AddDomainEvent(new ProductCodeCreatedIntegrationEvent
+            {
+                ProductCodeId = productCode.Id, ProductCodeName = productCode.Name
+            });
 
             return productCode;
         }

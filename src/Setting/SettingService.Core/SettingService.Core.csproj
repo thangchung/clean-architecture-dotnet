@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Core\N8T.Core.csproj" />
   </ItemGroup>
 

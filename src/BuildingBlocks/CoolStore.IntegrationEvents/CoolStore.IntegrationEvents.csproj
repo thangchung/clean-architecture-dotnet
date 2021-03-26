@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj" />
-    <ProjectReference Include="..\..\BuildingBlocks\N8T.Core\N8T.Core.csproj" />
+    <ProjectReference Include="..\N8T.Core\N8T.Core.csproj" />
+    <ProjectReference Include="..\N8T.Infrastructure\N8T.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

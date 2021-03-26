@@ -19,7 +19,7 @@ namespace N8T.Infrastructure.EfCore
         public static IServiceCollection AddPostgresDbContext<TDbContext, TType>(this IServiceCollection services, string connString, Action<IServiceCollection> doMoreActions = null)
             where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
         {
-            services.AddPooledDbContextFactory<TDbContext>(options =>
+            services.AddDbContext<TDbContext>(options =>
                 {
                     options.UseNpgsql(connString, sqlOptions =>
                     {
@@ -28,8 +28,8 @@ namespace N8T.Infrastructure.EfCore
                     }).UseSnakeCaseNamingConvention();
                 });
 
-            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<IDbContextFactory<TDbContext>>()!.CreateDbContext());
-            services.AddScoped<IDomainEventContext>(provider => provider.GetService<IDbContextFactory<TDbContext>>()!.CreateDbContext());
+            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
+            services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TxBehavior<,>));
 

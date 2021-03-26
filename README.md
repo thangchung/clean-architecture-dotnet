@@ -188,6 +188,59 @@ public interface IDeleteCommand<TId, TResponse> : ICommand<TResponse> where TId 
 }
 ```
 
+# Service Invocation
+
+- RestEase with Dapr handler. More information is at https://dev.to/thangchung/how-to-make-dapr-client-works-well-with-refit-and-restease-40m
+
+# Event Bus
+
+```csharp
+public interface IEventBus
+{
+  Task PublishAsync<TEvent>(TEvent @event, string[] topics = default, CancellationToken token = default) where TEvent : IDomainEvent;
+
+  Task SubscribeAsync<TEvent>(string[] topics = default, CancellationToken token = default) where TEvent : IDomainEvent;
+}
+```
+
+- Dapr provider
+
+# Transactional Outbox
+
+```csharp
+public class OutboxEntity
+{
+    [JsonInclude]
+    public Guid Id { get; private set; }
+
+    [JsonInclude]
+    public DateTime OccurredOn { get; private set; }
+
+    [JsonInclude]
+    public string Type { get; private set; }
+
+    [JsonInclude]
+    public string Data { get; private set; }
+
+    public OutboxEntity()
+    {
+        // only for System.Text.Json to deserialized data
+    }
+
+    public OutboxEntity(Guid id, DateTime occurredOn, IDomainEvent @event)
+    {
+        Id = id.Equals(Guid.Empty) ? Guid.NewGuid() : id;
+        OccurredOn = occurredOn;
+        Type = @event.GetType().FullName;
+        Data = JsonConvert.SerializeObject(@event);
+    }
+
+    public virtual IDomainEvent RecreateMessage(Assembly assembly) => (IDomainEvent)JsonConvert.DeserializeObject(Data, assembly.GetType(Type)!);
+}
+```
+
+- Dapr provider
+
 # Sample pages
 
 ![](assets/products_screen.png)

@@ -8,15 +8,15 @@ namespace N8T.Core.Domain
         public Guid Id { get; protected init; } = Guid.NewGuid();
         public DateTime Created { get; protected init; } = DateTime.UtcNow;
         public DateTime? Updated { get; protected set; }
-        public HashSet<DomainEventBase> DomainEvents { get; private set; }
+        public HashSet<EventBase> DomainEvents { get; private set; }
 
-        protected void AddDomainEvent(DomainEventBase eventItem)
+        public void AddDomainEvent(EventBase eventItem)
         {
-            DomainEvents ??= new HashSet<DomainEventBase>();
+            DomainEvents ??= new HashSet<EventBase>();
             DomainEvents.Add(eventItem);
         }
 
-        protected void RemoveDomainEvent(DomainEventBase eventItem)
+        public void RemoveDomainEvent(EventBase eventItem)
         {
             DomainEvents?.Remove(eventItem);
         }

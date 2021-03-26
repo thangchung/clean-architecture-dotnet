@@ -10,6 +10,7 @@ using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
 using N8T.Infrastructure.ServiceInvocation.Dapr;
 using N8T.Infrastructure.Swagger;
+using N8T.Infrastructure.TransactionalOutbox;
 using ProductService.Infrastructure.Data;
 
 namespace ProductService.Application
@@ -45,7 +46,8 @@ namespace ProductService.Application
                     })
                 .AddDaprClient()
                 .AddControllers()
-                .AddMessageBroker()
+                .AddMessageBroker(Config)
+                .AddTransactionalOutbox(Config)
                 .AddSwagger<Startup>();
         }
 

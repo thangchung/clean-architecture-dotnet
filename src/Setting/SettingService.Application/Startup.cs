@@ -47,7 +47,7 @@ namespace SettingService.Application
                     })
                 .AddDaprClient()
                 .AddControllers()
-                .AddMessageBroker()
+                .AddMessageBroker(Config)
                 .AddSwagger<Startup>();
         }
 

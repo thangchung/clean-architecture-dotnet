@@ -12,23 +12,25 @@ namespace N8T.Core.Domain
 
     public interface IDomainEventContext
     {
-        IEnumerable<DomainEventBase> GetDomainEvents();
+        IEnumerable<EventBase> GetDomainEvents();
     }
 
     public abstract class EventBase : IDomainEvent
     {
-        public string EventType { get { return GetType().AssemblyQualifiedName; } }
+        public string EventType { get { return GetType().FullName; } }
         public DateTime CreatedAt { get; } = DateTime.UtcNow;
         public string CorrelationId { get; init; }
         public IDictionary<string, object> MetaData { get; } = new Dictionary<string, object>();
         public abstract void Flatten();
     }
 
-    public abstract class DomainEventBase : EventBase
+    public class EventWrapper : INotification
     {
-    }
+        public EventWrapper(IDomainEvent @event)
+        {
+            Event = @event;
+        }
 
-    public abstract class IntegrationEventBase : EventBase
-    {
+        public IDomainEvent Event { get; }
     }
 }

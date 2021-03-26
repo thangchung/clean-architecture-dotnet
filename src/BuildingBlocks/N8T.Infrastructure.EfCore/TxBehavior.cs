@@ -61,10 +61,10 @@ namespace N8T.Infrastructure.EfCore
                     .Select(async @event =>
                     {
                         // because we have int identity
-                        var id = (response as dynamic)?.Id;
-                        @event.MetaData.Add("id", id);
+                        //var id = (response as dynamic)?.Id;
+                        //@event.MetaData.Add("id", id);
 
-                        await _mediator.Publish(@event, cancellationToken);
+                        await _mediator.Publish(new EventWrapper(@event), cancellationToken);
                         _logger.LogDebug(
                             "{Prefix} Published domain event {DomainEventName} with payload {DomainEventContent}", nameof(TxBehavior<TRequest, TResponse>), @event.GetType().FullName, JsonSerializer.Serialize(@event));
                     });

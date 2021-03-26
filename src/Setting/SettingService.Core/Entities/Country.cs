@@ -1,6 +1,6 @@
 using System;
+using CoolStore.IntegrationEvents.Setting;
 using N8T.Core.Domain;
-using SettingService.Core.Events;
 
 namespace SettingService.Core.Entities
 {
@@ -21,7 +21,7 @@ namespace SettingService.Core.Entities
                 Name = name
             };
 
-            country.AddDomainEvent(new CountryCreated {Country = country});
+            country.AddDomainEvent(new CountryCreatedIntegrationEvent {Id = country.Id, Name = country.Name});
 
             return country;
         }

@@ -13,6 +13,7 @@ using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
 using N8T.Infrastructure.ServiceInvocation.Dapr;
 using N8T.Infrastructure.Swagger;
+using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Tye;
 
 namespace CustomerService.Application
@@ -50,7 +51,8 @@ namespace CustomerService.Application
                 .AddDaprClient()
                 .AddRestClient(typeof(ICountryApi), AppConsts.SettingAppName, 5005, IsRunOnTye)
                 .AddControllers()
-                .AddMessageBroker()
+                .AddMessageBroker(Config)
+                .AddTransactionalOutbox(Config)
                 .AddSwagger<Startup>();
         }
 
