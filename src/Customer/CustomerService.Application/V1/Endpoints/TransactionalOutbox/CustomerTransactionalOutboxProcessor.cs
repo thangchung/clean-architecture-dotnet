@@ -23,36 +23,6 @@ namespace CustomerService.Application.V1.Endpoints.TransactionalOutbox
         {
             await _outboxProcessor.HandleAsync(typeof(CoolStore.IntegrationEvents.Anchor), cancellationToken);
 
-            /*_logger.LogInformation("{CustomerOutboxProcessor}: Cron @{DateTime}", nameof(CustomerTransactionalOutboxProcessor), DateTime.UtcNow);
-
-            var events = await _daprClient.GetStateEntryAsync<List<OutboxEntity>>("statestore", "outbox");
-
-            if (events?.Value != null && events?.Value.Count > 0)
-            {
-                var deletedEventIds = new List<Guid>();
-
-                foreach (var domainEvent in events.Value)
-                {
-                    if (domainEvent.Id.Equals(Guid.Empty) || string.IsNullOrEmpty(domainEvent.Type) || string.IsNullOrEmpty(domainEvent.Data)) continue;
-
-                    var @event = domainEvent.RecreateMessage(typeof(CoolStore.IntegrationEvents.Anchor).Assembly);
-
-                    await _eventBus.PublishAsync(@event);
-
-                    deletedEventIds.Add(domainEvent.Id);
-                }
-
-                if (deletedEventIds.Count > 0)
-                {
-                    foreach (var deletedEventId in deletedEventIds)
-                    {
-                        events.Value.RemoveAll(e => e.Id == deletedEventId);
-                    }
-
-                    await events.SaveAsync();
-                }
-            }*/
-
             return Ok();
         }
     }

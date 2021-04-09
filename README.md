@@ -2,11 +2,13 @@
 
 The practical repository uses coolstore domain which is mainly borrowed from `https://github.com/zkavtaskin/Domain-Driven-Design-Example` to demonstrate how to apply Domain Driven Design seamlessly with Clean Architecture.
 
+[![Sparkline](https://stars.medv.io/thangchung/practical-clean-ddd.svg)](https://stars.medv.io/thangchung/practical-clean-ddd)
+
 ## Give a star ⭐
 
-A bright future of the .NET Community! What you LIKE or SHARE on `practical-clean-ddd` repository will help to strengthen and spread-out the way YOU develop the cloud-native application with the .NET platform and toolings as well as microservices development on Dapr and Kubernetes with .NET toolkit.
+If you're using this repository for your samples, workshop, your project or whatever, please give a star ⭐. Thank you very much :+1:
 
-So if you use this repository for your samples, workshop, your project or whatever you did, please give a star ⭐ for it. Thank you very much :+1:
+> Plz, use this project with care because we're using this repository for brainstorming new ideas in .NET and containerization worlds! 
 
 # Give it a try!
 
