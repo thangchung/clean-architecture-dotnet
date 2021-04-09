@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/thangchung/practical-clean-ddd.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
