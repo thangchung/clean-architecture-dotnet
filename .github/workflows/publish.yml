@@ -33,4 +33,4 @@ jobs:
           dotnet pack src/BuildingBlocks/N8T.Core/N8T.Core.csproj -c Release -o out
 
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push $GITHUB_WORKSPACE/out/*.nupkg --api-key $secrets.PRACTICAL_CLEAN_DDD_TOKEN --source "github"
+        run: dotnet nuget push $GITHUB_WORKSPACE/out/*.nupkg --repository https://github.com/thangchung/practical-clean-ddd --api-key $secrets.PRACTICAL_CLEAN_DDD_TOKEN --source "github"
