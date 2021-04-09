@@ -1,0 +1,34 @@
+name: NuGet Generation
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: Update NuGet package
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Setup .NET Core @ Latest
+        uses: actions/setup-dotnet@v1
+        with:
+          source-url: https://nuget.pkg.github.com/thangchung/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.PRACTICAL_CLEAN_DDD_TOKEN}}
+
+      - name: Build solution and generate NuGet package
+        run: |
+          cd practical-clean-ddd
+          dotnet pack src/BuildingBlocks/N8T.Core/N8T.Core.csproj -c Release -o out
+
+      - name: Push generated package to GitHub registry
+        run: dotnet nuget push ./practical-clean-ddd/out/*.nupkg --skip-duplicate --no-symbols true
