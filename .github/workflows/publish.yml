@@ -20,11 +20,11 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Setup .NET Core @ Latest
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v1.5.0
         with:
-          source-url: https://nuget.pkg.github.com/thangchung/index.json
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.PRACTICAL_CLEAN_DDD_TOKEN}}
+          NUGET_AUTH_TOKEN: '%NUGET_AUTH_TOKEN%'
 
       - name: Build solution and generate NuGet package
         run: |
@@ -33,4 +33,6 @@ jobs:
           dotnet pack src/BuildingBlocks/N8T.Core/N8T.Core.csproj -c Release -o out
 
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push $GITHUB_WORKSPACE/out/*.nupkg --repository https://github.com/thangchung/practical-clean-ddd --api-key $secrets.PRACTICAL_CLEAN_DDD_TOKEN --source "github"
+        run: dotnet nuget push $GITHUB_WORKSPACE/out/*.nupkg --no-symbols --skip-duplicate
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
