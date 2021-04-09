@@ -3,11 +3,11 @@ name: NuGet Generation
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [closed]
     branches:
-      - master
+      - main
 
 jobs:
   build:
