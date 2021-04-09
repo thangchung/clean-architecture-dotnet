@@ -37,6 +37,6 @@ jobs:
           dotnet pack src/BuildingBlocks/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID -o out
 
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push /home/runner/work/practical-clean-ddd/practical-clean-ddd/out/*.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --include-symbols --skip-duplicate
+        run: dotnet nuget push /home/runner/work/practical-clean-ddd/practical-clean-ddd/out/*.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
