@@ -29,10 +29,10 @@ jobs:
 
       - name: Build solution and generate NuGet package
         run: |
-          dotnet pack src/BuildingBlocks/N8T.Core/N8T.Core.csproj -c Release -o out
-          dotnet pack src/BuildingBlocks/N8T.Infrastructure/N8T.Infrastructure.csproj -c Release -o out
-          dotnet pack src/BuildingBlocks/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release -o out
-          dotnet pack src/BuildingBlocks/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release -o out
+          dotnet pack src/BuildingBlocks/N8T.Core/N8T.Core.csproj -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -o out
+          dotnet pack src/BuildingBlocks/N8T.Infrastructure/N8T.Infrastructure.csproj -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -o out
+          dotnet pack src/BuildingBlocks/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -o out
+          dotnet pack src/BuildingBlocks/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -o out
 
       - name: Push generated package to GitHub registry
         run: dotnet nuget push /home/runner/work/practical-clean-ddd/practical-clean-ddd/out/*.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --no-symbols --skip-duplicate
