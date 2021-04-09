@@ -29,7 +29,8 @@ jobs:
 
       - name: Build solution and generate NuGet package
         run: |
-          echo "${{ GITHUB_RUN_ID}}"
+          printenv
+          echo "${{ env.GITHUB_RUN_ID}}"
           dotnet pack src/BuildingBlocks/N8T.Core/N8T.Core.csproj -c Release --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID -o out
           dotnet pack src/BuildingBlocks/N8T.Infrastructure/N8T.Infrastructure.csproj -c Release --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID -o out
           dotnet pack src/BuildingBlocks/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID -o out
