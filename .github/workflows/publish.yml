@@ -24,7 +24,7 @@ jobs:
         with:
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
-          NUGET_AUTH_TOKEN: '%NUGET_AUTH_TOKEN%'
+          NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
 
       - name: Build solution and generate NuGet package
         run: |
