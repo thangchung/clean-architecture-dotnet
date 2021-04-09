@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - feat/building-blocks-nuget
   pull_request:
     types: [closed]
     branches:

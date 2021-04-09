@@ -243,6 +243,33 @@ public class OutboxEntity
 
 - Dapr provider
 
+# Private `nuget` for NetCoreKit
+
+Fork this repository!
+
+Set global nuget for accessing in Visual Studio
+
+```
+# edit C:\Users\<current user>\AppData\Roaming\NuGet\NuGet.Config
+
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+    <add key="github" value="https://nuget.pkg.github.com/thangchung/index.json" />
+  </packageSources>
+  <packageSourceCredentials>
+    <github>
+      <add key="Username" value="<your github username>" />
+      <add key="ClearTextPassword" value="<Github Token>" />
+    </github>
+  </packageSourceCredentials>
+</configuration>
+```
+
 # Sample pages
 
 ![](assets/products_screen.png)
