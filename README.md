@@ -106,7 +106,7 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
 
 # Project structure
 
-![](assets/projects_structure.png)
+![](assets/productapp_minimal_template.png)
 
 ## Project dependencies
 
