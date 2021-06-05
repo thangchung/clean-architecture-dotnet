@@ -5,27 +5,15 @@ using System.Threading.Tasks;
 using CoolStore.AppContracts.Dtos;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using N8T.Infrastructure.Endpoint;
 using ProductService.Core.Entities;
 using ProductService.Core.Specifications;
 
-namespace ProductService.Application.V1.Endpoints.Queries
+namespace ProductService.Application.V1.UseCases.Queries
 {
-    public class GetProductById : BaseAsyncEndpoint.WithRequest<Guid>.WithResponse<ProductDto>
+    public class GetProductById
     {
-        [ApiVersion( "1.0" )]
-        [HttpGet("/api/v{version:apiVersion}/products/{id:guid}")]
-        public override async Task<ActionResult<ProductDto>> HandleAsync(Guid id,
-            CancellationToken cancellationToken = new())
-        {
-            var request = new Query {Id = id};
-
-            return Ok(await Mediator.Send(request, cancellationToken));
-        }
-
         public record Query : IItemQuery<Guid, ProductDto>
         {
             public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});

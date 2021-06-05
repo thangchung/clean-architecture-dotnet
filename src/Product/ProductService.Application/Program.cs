@@ -1,20 +1,62 @@
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using N8T.Core.Repository;
+using N8T.Infrastructure;
+using N8T.Infrastructure.Bus;
+using N8T.Infrastructure.EfCore;
+using N8T.Infrastructure.ServiceInvocation.Dapr;
+using N8T.Infrastructure.Swagger;
+using N8T.Infrastructure.TransactionalOutbox;
+using ProductService.Application.V1.UseCases.Commands;
+using ProductService.Infrastructure.Data;
 
-namespace ProductService.Application
+var builder = WebApplication.CreateBuilder(args);
+
+const string corsName = "api";
+
+builder.Services.AddCors(options =>
 {
-    public static class Program
+    options.AddPolicy(corsName, policy =>
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+builder.Services.AddCore(new[] {typeof(CreateProduct)})
+    .AddPostgresDbContext<MainDbContext, ProductService.Infrastructure.Anchor>(
+        builder.Configuration.GetConnectionString("postgres"),
+        svc =>
+        {
+            svc.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            svc.AddScoped(typeof(IGridRepository<>), typeof(Repository<>));
+        })
+    .AddDaprClient()
+    .AddControllers()
+    .AddMessageBroker(builder.Configuration)
+    .AddTransactionalOutbox(builder.Configuration)
+    .AddSwagger<CreateProduct>();
+
+var app = builder.Build();
+
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseCors(corsName);
+app.UseRouting();
+app.UseCloudEvents();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapSubscribeHandler();
+    endpoints.MapDefaultControllerRoute();
+});
+
+var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
+app.UseSwagger(provider);
+
+app.Run();
