@@ -55,7 +55,7 @@ namespace ProductService.Infrastructure.Data
             modelBuilder.Entity<Return>().Property(x => x.Created).HasDefaultValueSql(Consts.DateAlgorithm);
 
             modelBuilder.Entity<Return>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<Return>().Ignore(x => x.DomainEvents);
+            //modelBuilder.Entity<Return>().Ignore(x => x.DomainEvents);
 
             // relationship
             modelBuilder.Entity<Product>()

@@ -5,7 +5,7 @@ using N8T.Core.Domain;
 
 namespace ProductService.Core.Entities
 {
-    public class Product : EntityBase, IAggregateRoot
+    public class Product : EntityRootBase
     {
         private readonly List<Return> _returns = new();
 

@@ -49,7 +49,7 @@ namespace CustomerService.Application
                         svc.AddScoped(typeof(IGridRepository<>), typeof(Repository<>));
                     })
                 .AddDaprClient()
-                .AddRestClient(typeof(ICountryApi), AppConsts.SettingAppName, 5005, IsRunOnTye)
+                .AddRestClient(typeof(ICountryApi), AppConsts.SettingAppName, Config.GetValue("Services:SettingApp:Port", 5005))
                 .AddControllers()
                 .AddMessageBroker(Config)
                 .AddTransactionalOutbox(Config)

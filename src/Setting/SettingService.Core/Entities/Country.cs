@@ -4,7 +4,7 @@ using N8T.Core.Domain;
 
 namespace SettingService.Core.Entities
 {
-    public class Country : EntityBase, IAggregateRoot
+    public class Country : EntityRootBase
     {
         public string Name { get; protected set; } = default!;
 

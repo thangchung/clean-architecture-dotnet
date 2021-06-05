@@ -4,7 +4,7 @@ using N8T.Core.Domain;
 
 namespace ProductService.Core.Entities
 {
-    public class ProductCode : EntityBase, IAggregateRoot
+    public class ProductCode : EntityRootBase
     {
         public string Name { get; private init; } = default!;
 

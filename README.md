@@ -1,5 +1,7 @@
 # practical-clean-ddd
 
+A simplified and effortless approach to get started with Domain-driven Design, Clean Architecture, CQRS, and Microservices patterns.
+
 The practical repository uses coolstore domain which is mainly borrowed from `https://github.com/zkavtaskin/Domain-Driven-Design-Example` to demonstrate how to apply Domain Driven Design seamlessly with Clean Architecture.
 
 [![Sparkline](https://stars.medv.io/thangchung/practical-clean-ddd.svg)](https://stars.medv.io/thangchung/practical-clean-ddd)
@@ -8,7 +10,7 @@ The practical repository uses coolstore domain which is mainly borrowed from `ht
 
 If you're using this repository for your samples, workshop, your project or whatever, please give a star ⭐. Thank you very much :+1:
 
-> Plz, use this project with care because we're using this repository for brainstorming new ideas in .NET and containerization worlds! 
+> Plz, use this project with care because we're using this repository for brainstorming new ideas in .NET and containerization worlds!
 
 # Give it a try!
 
@@ -36,7 +38,7 @@ $ npm run dev
 - Public Apis:
 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
-> 
+>
 > Play around at [restclient.http](restclient.http)
 
 <table>
@@ -99,7 +101,16 @@ Clean Architecture helps the project structure easier to refactor and evolve in 
 
 Clean Domain-driven Design is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith project as well.
 
+![](assets/DomainDrivenHexagon.png)
+Reference to https://github.com/Sairyss/domain-driven-hexagon
+
+# Project structure
+
 ![](assets/projects_structure.png)
+
+## Project dependencies
+
+![](assets/projects_dependencies.png)
 
 ## Core project
 ### Domain

@@ -36,7 +36,7 @@ content-type: {{contentType}}
   "model": {
     "firstName": "firstName 1",
     "lastName": "lastName 1",
-    "email": "email1@nomail.com",
+    "email": "email@nomail.com",
     "countryId": "18a4a8ae-3338-484a-a4ed-6e64d13d84dc"
   }
 }

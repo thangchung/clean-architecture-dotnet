@@ -6,7 +6,7 @@ using N8T.Core.Domain;
 
 namespace CustomerService.Core.Entities
 {
-    public class Customer : EntityBase, IAggregateRoot
+    public class Customer : EntityRootBase
     {
         private readonly List<CreditCard> _creditCards = new();
 

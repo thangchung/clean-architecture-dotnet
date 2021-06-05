@@ -4,7 +4,7 @@ using N8T.Core.Domain;
 
 namespace CustomerService.Core.Entities
 {
-    public class CreditCard : EntityBase
+    public class CreditCard : EntityRootBase
     {
         public string NameOnCard { get; protected set; } = default!;
         public string CardNumber { get; protected set; } = default!;
@@ -26,7 +26,7 @@ namespace CustomerService.Core.Entities
             if (DateTime.Now > expiry)
                 throw new Exception("Credit card expiry can't be in the past");
 
-            CreditCard creditCard = new CreditCard
+            CreditCard creditCard = new()
             {
                 Customer = customer,
                 NameOnCard = name,
