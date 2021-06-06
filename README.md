@@ -1,4 +1,4 @@
-# clean-architecture-dotnet
+# 🔆 clean-architecture-dotnet
 
 "Everything should be made as simple as possible, but not simpler." - Albert Einstein
 
@@ -12,11 +12,11 @@ In the end of our journey, we would like to give these simplified and effortless
 
 > Even we're trying to do the best, but make sure you stress test carefully if you want to use these libs in the production environment.
 
-## Give a star ⭐
+# ⭐ Give a star
 
-If you're using this repository for your samples, workshop, your project or whatever, please give a star ⭐. Thank you very much :+1:
+If you're using this repository for your learning, samples, workshop, or your project, please give a star ⭐. Thanks :+1:
 
-# Give it a try!
+# :hearts: Give it a try!
 
 - Prerequisite
   - [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
@@ -27,7 +27,22 @@ If you're using this repository for your samples, workshop, your project or what
     - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
     - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
 
-- Starting the Api
+# 💎 Technical stacks
+- ✔️ **[`.NET Core 6`](https://dotnet.microsoft.com/download)** - .NET Framework and .NET Core, including ASP.NET and ASP.NET Core
+- ✔️ **[`MVC Versioning API`](https://github.com/microsoft/aspnet-api-versioning)** - Set of libraries which add service API versioning to ASP.NET Web API, OData with ASP.NET Web API, and ASP.NET Core
+- ✔️ **[`YARP`](https://github.com/microsoft/reverse-proxy)** - A toolkit for developing high-performance HTTP reverse proxy applications
+- ✔️ **[`MediatR`](https://github.com/jbogard/MediatR)** - Simple, unambitious mediator implementation in .NET
+- ✔️ **[`EF Core`](https://github.com/dotnet/efcore)** - Modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations
+- ✔️ **[`FluentValidation`](https://github.com/FluentValidation/FluentValidation)** - Popular .NET validation library for building strongly-typed validation rules
+- ✔️ **[`Swagger & Swagger UI`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)** - Swagger tools for documenting API's built on ASP.NET Core
+- ✔️ **[`serilog`](https://github.com/serilog/serilog)** - Simple .NET logging with fully-structured events
+- ✔️ **[`Dapr dotnet-sdk`](https://github.com/dapr/dotnet-sdk)** - Dapr SDK for .NET
+- ✔️ **[`RestEase`](https://github.com/canton7/RestEase)** - Easy-to-use typesafe REST API client library for .NET Standard 1.1 and .NET Framework 4.5 and higher, which is simple and customisable
+- ✔️ **[`Polly`](https://github.com/App-vNext/Polly)** - Polly is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner
+- ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
+- ✔️ **[`opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
+
+## Starting the APIs
 
 ```
 $ tye run
@@ -74,19 +89,19 @@ $ tye run
   </tbody>
 </table>
 
-# Business Usecases
+# 🎇 Business Usecases
 
 ![](assets/usecase_diagram.png)
 
-# High level context
+# 🎇 High level context
 
 ![](assets/context_diagram.png)
 
-# ERD
+# 🎇 ERD
 
 ![](assets/class_diagram.png)
 
-# Clean Domain Driven-design
+# 🎓 Clean Domain Driven-design
 
 Domain-driven Design demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in the real project when we get started.
 
