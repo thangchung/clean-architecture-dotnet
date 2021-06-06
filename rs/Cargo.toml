@@ -1,5 +1,0 @@
-[workspace]
-members = [
-  "audit_service",
-  "audit_subscriber"
-]

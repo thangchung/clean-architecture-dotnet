@@ -28,3 +28,11 @@ README.md
 .devcontainer/certs
 .logs
 out/
+assets/
+rs/
+.github
+.config
+components
+src/Web
+nuget.config
+global.json

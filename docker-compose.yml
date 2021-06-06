@@ -1,0 +1,202 @@
+version: "3"
+
+services:
+  #######################################
+  # webapigateway app + Dapr sidecar
+  #######################################
+  webapigatewayapp:
+    image: vndg/webapigateway-ca:latest
+    build:
+      context: .
+      dockerfile: samples/AppGateway/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - redis
+      - placement
+      - productapp
+      - customerapp
+      - settingapp
+    networks:
+      - coolstore-network
+
+  webapigatewayapp-dapr:
+    image: "daprio/daprd:edge"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "webapigatewayapp",
+        "-app-port",
+        "80",
+        "-placement-host-address",
+        "placement:50006",
+        "-components-path",
+        "/components",
+      ]
+    volumes:
+      - "./samples/components/:/components"
+    depends_on:
+      - webapigatewayapp
+    network_mode: "service:webapigatewayapp"
+
+  #######################################
+  # product app + Dapr sidecar
+  #######################################
+  productapp:
+    image: vndg/productapp-ca:latest
+    build:
+      context: .
+      dockerfile: samples/Product/ProductService.Application/Dockerfile
+    depends_on:
+      - redis
+      - placement
+      - postgresql
+    environment:
+      - ConnectionStrings__postgres=Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
+      - "Logging__LogLevel__N8T.Infrastructure.TransactionalOutbox.Dapr.Internal.TransactionalOutboxProcessor=Trace"
+    ports:
+      - "5002:80"
+    networks:
+      - coolstore-network
+
+  productapp-dapr:
+    image: "daprio/daprd:edge"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "productapp",
+        "-app-port",
+        "80",
+        "-placement-host-address",
+        "placement:50006",
+        "-components-path",
+        "/components",
+      ]
+    volumes:
+      - "./samples/components/:/components"
+    depends_on:
+      - productapp
+    network_mode: "service:productapp"
+
+  #######################################
+  # customer app + Dapr sidecar
+  #######################################
+  customerapp:
+    image: vndg/customerapp-ca:latest
+    build:
+      context: .
+      dockerfile: samples/Customer/CustomerService.Application/Dockerfile
+    depends_on:
+      - redis
+      - placement
+      - postgresql
+    environment:
+      - ConnectionStrings__postgres=Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
+      - "Logging__LogLevel__N8T.Infrastructure.TransactionalOutbox.Dapr.Internal.TransactionalOutboxProcessor=Trace"
+    ports:
+      - "5003:80"
+    networks:
+      - coolstore-network
+
+  customerapp-dapr:
+    image: "daprio/daprd:edge"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "customerapp",
+        "-app-port",
+        "80",
+        "-placement-host-address",
+        "placement:50006",
+        "-components-path",
+        "/components",
+      ]
+    volumes:
+      - "./samples/components/:/components"
+    depends_on:
+      - customerapp
+    network_mode: "service:customerapp"
+
+  #######################################
+  # settings app + Dapr sidecar
+  #######################################
+  settingapp:
+    image: vndg/settingapp-ca:latest
+    build:
+      context: .
+      dockerfile: samples/Setting/SettingService.Application/Dockerfile
+    depends_on:
+      - redis
+      - placement
+      - postgresql
+    environment:
+      - ConnectionStrings__postgres=Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
+    ports:
+      - "5005:80"
+    networks:
+      - coolstore-network
+
+  settingapp-dapr:
+    image: "daprio/daprd:edge"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "settingapp",
+        "-app-port",
+        "80",
+        "-placement-host-address",
+        "placement:50006",
+        "-components-path",
+        "/components",
+      ]
+    volumes:
+      - "./samples/components/:/components"
+    depends_on:
+      - settingapp
+    network_mode: "service:settingapp"
+
+  ############################
+  # PostgresQL component
+  ############################
+  postgresql:
+    image: postgres:11-alpine
+    container_name: postgresql
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P@ssw0rd
+    ports:
+      - "5432:5432"
+    networks:
+      - coolstore-network
+
+  ############################
+  # Dapr placement service
+  ############################
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+      - coolstore-network
+
+  ############################
+  # Redis state store
+  ############################
+  redis:
+    image: "redis:alpine"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+    ports:
+      - "6379:6379"
+    networks:
+      - coolstore-network
+
+networks:
+  coolstore-network:
