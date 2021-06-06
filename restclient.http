@@ -21,7 +21,7 @@ content-type: {{contentType}}
 
 {
   "model": {
-    "name": "test product 1",
+    "name": "test product {{$guid}}",
     "quantity": 1,
     "cost": 1000,
     "productCodeName": "pcode"
@@ -34,9 +34,9 @@ content-type: {{contentType}}
 
 {
   "model": {
-    "firstName": "firstName 1",
-    "lastName": "lastName 1",
-    "email": "email@nomail.com",
+    "firstName": "firstName {{$guid}}",
+    "lastName": "lastName {{$guid}}",
+    "email": "email{{$guid}}@nomail.com",
     "countryId": "18a4a8ae-3338-484a-a4ed-6e64d13d84dc"
   }
 }

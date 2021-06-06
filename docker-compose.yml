@@ -8,7 +8,7 @@ services:
     image: vndg/webapigateway-ca:latest
     build:
       context: .
-      dockerfile: src/Gateways/AppGateway/Dockerfile
+      dockerfile: samples/AppGateway/Dockerfile
     ports:
       - "5000:80"
     depends_on:
@@ -35,7 +35,7 @@ services:
         "/components",
       ]
     volumes:
-      - "./components/:/components"
+      - "./samples/components/:/components"
     depends_on:
       - webapigatewayapp
     network_mode: "service:webapigatewayapp"
@@ -47,7 +47,7 @@ services:
     image: vndg/productapp-ca:latest
     build:
       context: .
-      dockerfile: src/Product/ProductService.Application/Dockerfile
+      dockerfile: samples/Product/ProductService.Application/Dockerfile
     depends_on:
       - redis
       - placement
@@ -75,7 +75,7 @@ services:
         "/components",
       ]
     volumes:
-      - "./components/:/components"
+      - "./samples/components/:/components"
     depends_on:
       - productapp
     network_mode: "service:productapp"
@@ -87,7 +87,7 @@ services:
     image: vndg/customerapp-ca:latest
     build:
       context: .
-      dockerfile: src/Customer/CustomerService.Application/Dockerfile
+      dockerfile: samples/Customer/CustomerService.Application/Dockerfile
     depends_on:
       - redis
       - placement
@@ -115,7 +115,7 @@ services:
         "/components",
       ]
     volumes:
-      - "./components/:/components"
+      - "./samples/components/:/components"
     depends_on:
       - customerapp
     network_mode: "service:customerapp"
@@ -127,7 +127,7 @@ services:
     image: vndg/settingapp-ca:latest
     build:
       context: .
-      dockerfile: src/Setting/SettingService.Application/Dockerfile
+      dockerfile: samples/Setting/SettingService.Application/Dockerfile
     depends_on:
       - redis
       - placement
@@ -154,7 +154,7 @@ services:
         "/components",
       ]
     volumes:
-      - "./components/:/components"
+      - "./samples/components/:/components"
     depends_on:
       - settingapp
     network_mode: "service:settingapp"
