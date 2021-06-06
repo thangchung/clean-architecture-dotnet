@@ -8,22 +8,13 @@ using CustomerService.Core.Entities;
 using CustomerService.Core.Specs;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using N8T.Infrastructure.Endpoint;
 
 namespace CustomerService.Application.V1.UseCases.Commands
 {
-    public class CreateCustomer : BaseAsyncEndpoint.WithRequest<CreateCustomer.Command>.WithoutResponse
+    public class CreateCustomer
     {
-        [ApiVersion( "1.0" )]
-        [HttpPost("/api/v{version:apiVersion}/customers")]
-        public override async Task<ActionResult> HandleAsync(Command request, CancellationToken cancellationToken = new())
-        {
-            return Ok(await Mediator.Send(request, cancellationToken));
-        }
-
         public record Command : ICreateCommand<Command.CreateCustomerModel, CustomerDto>
         {
             public CreateCustomerModel Model { get; init; } = default!;
