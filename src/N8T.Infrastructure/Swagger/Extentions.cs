@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,7 @@ namespace N8T.Infrastructure.Swagger
 {
     public static class Extentions
     {
-        public static IServiceCollection AddSwagger<TMarker>(this IServiceCollection services)
+        public static IServiceCollection AddSwagger(this IServiceCollection services, Type anchor)
         {
             services.AddApiVersioning(
                 options =>
@@ -31,7 +32,7 @@ namespace N8T.Infrastructure.Swagger
                 {
                     options.OperationFilter<SwaggerDefaultValues>();
 
-                    var xmlFile = XmlCommentsFilePath();
+                    var xmlFile = XmlCommentsFilePath(anchor);
                     if (File.Exists(xmlFile))
                     {
                         options.IncludeXmlComments(xmlFile);
@@ -40,10 +41,10 @@ namespace N8T.Infrastructure.Swagger
 
             return services;
 
-            static string XmlCommentsFilePath()
+            static string XmlCommentsFilePath(Type anchor)
             {
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var fileName = typeof(TMarker).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                var fileName = anchor.GetTypeInfo().Assembly.GetName().Name + ".xml";
                 return Path.Combine(basePath, fileName);
             }
         }

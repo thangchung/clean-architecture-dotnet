@@ -3,12 +3,18 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Core.Domain;
+using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.Logging;
+using N8T.Infrastructure.Swagger;
+using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -18,16 +24,49 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        public static IServiceCollection AddCore(this IServiceCollection services, Type[] types = null,
-            Action<IServiceCollection> doMoreActions = null)
+        public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration config,
+            Type apiAnchorType, Action<IServiceCollection> doMoreActions = null)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("api", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddHttpContextAccessor();
-            services.AddCustomMediatR(types);
-            services.AddCustomValidators(types);
+            services.AddCustomMediatR(new []{apiAnchorType});
+            services.AddCustomValidators(new[] {apiAnchorType});
+            services.AddDaprClient();
+            services.AddControllers().AddMessageBroker(config);
+            services.AddTransactionalOutbox(config);
+            services.AddSwagger(apiAnchorType);
 
             doMoreActions?.Invoke(services);
 
             return services;
+        }
+
+        public static IApplicationBuilder UseAppCore(this WebApplication app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseCors("api");
+            app.UseRouting();
+            app.UseCloudEvents();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapSubscribeHandler();
+                endpoints.MapDefaultControllerRoute();
+            });
+
+            var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
+            return app.UseSwagger(provider);
         }
 
         [DebuggerStepThrough]
@@ -57,7 +96,7 @@ namespace N8T.Infrastructure
 
             httpContext?.Response.Headers.Add("x-query",
                 JsonConvert.SerializeObject(queryModel,
-                    new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()}));
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
 
             return queryModel;
         }
@@ -80,7 +119,7 @@ namespace N8T.Infrastructure
             try
             {
                 var converter = TypeDescriptor.GetConverter(typeof(T));
-                return (T) converter.ConvertFromString(input);
+                return (T)converter.ConvertFromString(input);
             }
             catch (NotSupportedException)
             {

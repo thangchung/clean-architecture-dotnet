@@ -14,7 +14,7 @@ In the end of our journey, we would like to give these simplified and effortless
 
 # ⭐ Give a star
 
-If you're using this repository for your learning, samples, workshop, or your project, please give a star ⭐. Thanks :+1:
+If you're using this repository for your learning, samples, workshop, or your project, please give a star. Thanks :+1:
 
 # :hearts: Give it a try!
 

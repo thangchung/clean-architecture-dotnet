@@ -6,10 +6,12 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Core.Domain;
+using N8T.Core.Repository;
 using N8T.Infrastructure.EfCore.Internal;
 
 namespace N8T.Infrastructure.EfCore
@@ -40,38 +42,17 @@ namespace N8T.Infrastructure.EfCore
             return services;
         }
 
-        public static async ValueTask<TResponse> HandleTransaction<TDbContext, TResponse>(this IMediator mediator,
-            TDbContext dbContext, CancellationToken cancellationToken, Func<Task<TResponse>> next)
-            where TDbContext : DbContext, IDomainEventContext
+        public static IServiceCollection AddRepository(this IServiceCollection services, Type repoType)
         {
-            var strategy = dbContext.Database.CreateExecutionStrategy();
-            return await strategy.ExecuteAsync(async () =>
-            {
-                // Achieving atomicity
-                await using var transaction =
-                    await dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+            services.Scan(scan => scan
+                .FromAssembliesOf(repoType)
+                .AddClasses(classes =>
+                    classes.AssignableTo(repoType)).As(typeof(IRepository<>)).WithScopedLifetime()
+                .AddClasses(classes =>
+                    classes.AssignableTo(repoType)).As(typeof(IGridRepository<>)).WithScopedLifetime()
+            );
 
-                var response = await next();
-
-                await transaction.CommitAsync(cancellationToken);
-
-                var domainEvents = dbContext.GetDomainEvents().ToList();
-
-                var tasks = domainEvents
-                    .Select(async @event =>
-                    {
-                        //IMPORTANT: because we have identity
-                        var id = (response as dynamic)?.Id;
-                        @event.MetaData.Add("id", id);
-
-                        // publish it out
-                        await mediator.Publish(@event, cancellationToken);
-                    });
-
-                await Task.WhenAll(tasks);
-
-                return response;
-            });
+            return services;
         }
 
         public static void MigrateDataFromScript(this MigrationBuilder migrationBuilder)

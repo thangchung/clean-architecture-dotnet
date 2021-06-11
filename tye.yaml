@@ -20,11 +20,6 @@ services:
   - port: 5432
     connectionString: Server=${host};Port=${port};User Id=postgres;Password=${env:POSTGRES_PASSWORD};
 
-- name: redis
-  image: redis
-  bindings:
-  - port: 6379
-
 - name: productapp
   project: samples/Product/ProductService.Application/ProductService.Application.csproj
   env:
