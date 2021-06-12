@@ -16,18 +16,44 @@ In the end of our journey, we would like to give these simplified and effortless
 
 If you're using this repository for your learning, samples, workshop, or your project, please give a star. Thanks :+1:
 
-# :hearts: Give it a try!
+# 🎇 Business Usecases
 
-- Prerequisite
-  - [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
-  - [nodejs](https://nodejs.org/en/download): v15.5.1
-  - [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
-  - [dapr](https://dapr.io/): 1.2.0
-  - Dev tools:
-    - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
-    - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
+![](assets/usecase_diagram.png)
 
-# 💎 Technical stacks
+# 🎇 High level context
+
+![](assets/context_diagram.png)
+
+# 🎇 ERD
+
+![](assets/class_diagram.png)
+
+# 🎇 Minimal DDD, CQRS, and Clean Architecture
+
+1. `Domain-driven Design` (a.k.a DDD) demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in real projects when we get started.
+
+2. `Command and Query Responsibility Segregation` (a.k.a CQRS) helps to separate components into command and query parts, but again it's really hard and might bloat when we get starting some of the project. We need something more lightweight, just like https://github.com/gautema/CQRSlite, but we might not need Event Sourcing in almost all projects.
+
+3. `Clean Architecture` helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime. The thing is boilerplate code in this kind of project to make components lose coupling.
+
+=> When we jump in and set up the project for the Microservice approach. We want to apply all the best practices from the community, and some kind of patterns and architecture above sometimes makes us feel power off when start implements the first line of code which actually solves the business requirements. So the solution is we need something minimal and enough to get starting, and then when our business gets grows by the time, then we go back to add more. That's what's the practical way to go!
+
+`clean-architecture-dotnet` is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith projects as well.
+
+![](assets/DomainDrivenHexagon.png)
+Reference to https://github.com/Sairyss/domain-driven-hexagon
+
+# 💎 Prerequisites
+
+- [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
+- [nodejs](https://nodejs.org/en/download): v15.5.1
+- [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
+- [dapr](https://dapr.io/): 1.2.0
+- Dev tools:
+  - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
+  - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
+
+# :hearts: Technical stacks
 - ✔️ **[`.NET Core 6`](https://dotnet.microsoft.com/download)** - .NET Framework and .NET Core, including ASP.NET and ASP.NET Core
 - ✔️ **[`MVC Versioning API`](https://github.com/microsoft/aspnet-api-versioning)** - Set of libraries which add service API versioning to ASP.NET Web API, OData with ASP.NET Web API, and ASP.NET Core
 - ✔️ **[`YARP`](https://github.com/microsoft/reverse-proxy)** - A toolkit for developing high-performance HTTP reverse proxy applications
@@ -41,29 +67,6 @@ If you're using this repository for your learning, samples, workshop, or your pr
 - ✔️ **[`Polly`](https://github.com/App-vNext/Polly)** - Polly is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner
 - ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
 - ✔️ **[`opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
-
-# 🎇 Business Usecases
-
-![](assets/usecase_diagram.png)
-
-# 🎇 High level context
-
-![](assets/context_diagram.png)
-
-# 🎇 ERD
-
-![](assets/class_diagram.png)
-
-# 🎇 Clean Domain Driven-design
-
-Domain-driven Design demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in the real project when we get started.
-
-Clean Architecture helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime.
-
-Clean Domain-driven Design is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith project as well.
-
-![](assets/DomainDrivenHexagon.png)
-Reference to https://github.com/Sairyss/domain-driven-hexagon
 
 # 🎇 All packages dependencies
 
@@ -251,7 +254,6 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
         \---Scripts
                 20210129104438_SeedInitData.sql
 ```
-
 # 🎇 Starting the APIs
 
 ```
