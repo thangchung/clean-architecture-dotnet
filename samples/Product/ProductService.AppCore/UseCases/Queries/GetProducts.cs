@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.AppContracts.Dtos;
+using FluentValidation;
 using MediatR;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using ProductService.CoreApp.Entities;
-using ProductService.CoreApp.Specs;
+using ProductService.AppCore.Core;
+using ProductService.AppCore.Core.Specs;
 
-namespace ProductService.CoreApp.UseCases.Queries
+namespace ProductService.AppCore.UseCases.Queries
 {
     public class GetProducts
     {
@@ -52,7 +54,17 @@ namespace ProductService.CoreApp.UseCases.Queries
 
                     var products = await _productRepository.FindAsync(spec);
 
-                    var productModels = products.Select(x => x.AdaptToDto());
+                    var productModels = products.Select(x => new ProductDto
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Active = x.Active,
+                        Cost = x.Cost,
+                        Quantity = x.Quantity,
+                        Created = x.Created,
+                        Updated = x.Updated,
+                        ProductCodeId = x.ProductCodeId
+                    });
 
                     var totalProducts = await _productRepository.CountAsync(spec);
 

@@ -1,12 +1,8 @@
 using System;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,14 +14,15 @@ namespace N8T.Infrastructure.EfCore
 {
     public static class Extensions
     {
-        public static IServiceCollection AddPostgresDbContext<TDbContext, TType>(this IServiceCollection services, string connString, Action<IServiceCollection> doMoreActions = null)
-            where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
+        public static IServiceCollection AddPostgresDbContext<TDbContext>(this IServiceCollection services,
+            string connString, Action<IServiceCollection> doMoreActions = null)
+                where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
         {
             services.AddDbContext<TDbContext>(options =>
                 {
                     options.UseNpgsql(connString, sqlOptions =>
                     {
-                        sqlOptions.MigrationsAssembly(typeof(TType).Assembly.GetName().Name);
+                        sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.GetName().Name);
                         sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                     }).UseSnakeCaseNamingConvention();
                 });

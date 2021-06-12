@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.AppContracts.Dtos;
 using FluentValidation;
 using MediatR;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using ProductService.CoreApp.Entities;
-using ProductService.CoreApp.Specs;
+using ProductService.AppCore.Core;
+using ProductService.AppCore.Core.Specs;
 
-namespace ProductService.CoreApp.UseCases.Queries
+namespace ProductService.AppCore.UseCases.Queries
 {
     public class GetProductById
     {
@@ -46,7 +47,17 @@ namespace ProductService.CoreApp.UseCases.Queries
 
                     var product = await _productRepository.FindOneAsync(spec);
 
-                    return ResultModel<ProductDto>.Create(product.AdaptToDto());
+                    return ResultModel<ProductDto>.Create(new ProductDto
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Active = product.Active,
+                        Cost = product.Cost,
+                        Quantity = product.Quantity,
+                        Created = product.Created,
+                        Updated = product.Updated,
+                        ProductCodeId = product.ProductCodeId
+                    });
                 }
             }
         }

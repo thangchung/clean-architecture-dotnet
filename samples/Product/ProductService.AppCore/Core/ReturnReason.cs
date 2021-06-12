@@ -1,4 +1,4 @@
-﻿namespace ProductService.CoreApp.Core.Entities
+﻿namespace ProductService.AppCore.Core
 {
     public enum ReturnReason
     {

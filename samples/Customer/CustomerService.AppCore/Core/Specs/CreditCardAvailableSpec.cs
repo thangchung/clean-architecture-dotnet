@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using CustomerService.Core.Entities;
+using CustomerService.AppCore.Core.Entities;
 using N8T.Core.Specification;
 
-namespace CustomerService.Core.Specs
+namespace CustomerService.AppCore.Core.Specs
 {
     public class CreditCardAvailableSpec : SpecificationBase<CreditCard>
     {

@@ -1,4 +1,7 @@
 ﻿using System;
+using CoolStore.AppContracts;
+using CoolStore.AppContracts.RestApi;
+using CustomerService.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -11,10 +14,10 @@ using N8T.Infrastructure.EfCore;
 using N8T.Infrastructure.Swagger;
 using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
-using ProductService.Infrastructure.Data;
-using AppCoreAnchor = ProductService.AppCore.Anchor;
+using N8T.Infrastructure.ServiceInvocation.Dapr;
+using AppCoreAnchor = CustomerService.AppCore.Anchor;
 
-namespace ProductService.Infrastructure
+namespace CustomerService.Infrastructure
 {
     public static class Extensions
     {
@@ -43,6 +46,9 @@ namespace ProductService.Infrastructure
             services.AddPostgresDbContext<MainDbContext>(
                 config.GetConnectionString(DbName),
                 svc => svc.AddRepository(typeof(Repository<>)));
+
+            services.AddRestClient(typeof(ICountryApi), AppConstants.SettingAppName,
+                config.GetValue("Services:SettingApp:Port", 5005));
 
             return services;
         }

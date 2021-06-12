@@ -2,7 +2,7 @@ using System;
 using CoolStore.IntegrationEvents.Product;
 using N8T.Core.Domain;
 
-namespace ProductService.CoreApp.Core.Entities
+namespace ProductService.AppCore.Core
 {
     public class ProductCode : EntityRootBase
     {

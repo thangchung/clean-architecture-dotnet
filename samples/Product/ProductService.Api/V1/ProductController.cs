@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Controller;
-using ProductService.Application.V1.UseCases.Commands;
-using ProductService.Application.V1.UseCases.Queries;
+using ProductService.AppCore.UseCases.Commands;
+using ProductService.AppCore.UseCases.Queries;
 
 namespace ProductService.Application.V1
 {

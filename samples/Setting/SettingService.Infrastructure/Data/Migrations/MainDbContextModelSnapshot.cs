@@ -20,7 +20,7 @@ namespace SettingService.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("SettingService.Core.Entities.Country", b =>
+            modelBuilder.Entity("SettingService.AppCore.Entities.Country", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

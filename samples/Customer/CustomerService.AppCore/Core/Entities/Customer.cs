@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using CustomerService.Core.Specs;
+using CoolStore.IntegrationEvents.Customer;
+using CustomerService.AppCore.Core.Specs;
 using N8T.Core.Domain;
 
-namespace CustomerService.Core.Entities
+namespace CustomerService.AppCore.Core.Entities
 {
     public class Customer : EntityRootBase
     {
@@ -56,6 +57,7 @@ namespace CustomerService.Core.Entities
                 CountryId = countryId
             };
 
+            customer.AddDomainEvent(new CustomerCreatedIntegrationEvent());
             //DomainEvents.Raise<CustomerCreated>(new CustomerCreated() { Customer = customer });
 
             return customer;

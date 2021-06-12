@@ -1,4 +1,4 @@
-namespace ProductService.Infrastructure
+namespace ProductService.AppCore
 {
     public struct Anchor { }
 }

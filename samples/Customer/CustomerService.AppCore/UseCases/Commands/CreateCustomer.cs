@@ -3,15 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.AppContracts.Dtos;
 using CoolStore.AppContracts.RestApi;
-using CoolStore.IntegrationEvents.Customer;
-using CustomerService.Core.Entities;
-using CustomerService.Core.Specs;
+using CustomerService.AppCore.Core.Entities;
+using CustomerService.AppCore.Core.Specs;
 using FluentValidation;
 using MediatR;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
 
-namespace CustomerService.Application.V1.UseCases.Commands
+namespace CustomerService.AppCore.UseCases.Commands
 {
     public class CreateCustomer
     {
@@ -72,11 +71,21 @@ namespace CustomerService.Application.V1.UseCases.Commands
 
                     var customer = Customer.Create(request.Model.FirstName, request.Model.LastName, request.Model.Email, request.Model.CountryId);
 
-                    customer.AddDomainEvent(new CustomerCreatedIntegrationEvent());
+                    //customer.AddDomainEvent(new CustomerCreatedIntegrationEvent());
 
                     var created = await _customerRepository.AddAsync(customer);
 
-                    return ResultModel<CustomerDto>.Create(created.AdaptToDto());
+                    return ResultModel<CustomerDto>.Create(new CustomerDto
+                    {
+                        Id = created.Id,
+                        FirstName = created.FirstName,
+                        LastName = created.LastName,
+                        Email = created.Email,
+                        CountryId = created.CountryId,
+                        Balance = created.Balance,
+                        Created = created.Created,
+                        Updated = created.Updated
+                    });
                 }
             }
         }

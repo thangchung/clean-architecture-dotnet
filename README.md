@@ -42,7 +42,217 @@ If you're using this repository for your learning, samples, workshop, or your pr
 - ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
 - ✔️ **[`opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
 
-## Starting the APIs
+# 🎇 Business Usecases
+
+![](assets/usecase_diagram.png)
+
+# 🎇 High level context
+
+![](assets/context_diagram.png)
+
+# 🎇 ERD
+
+![](assets/class_diagram.png)
+
+# 🎇 Clean Domain Driven-design
+
+Domain-driven Design demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in the real project when we get started.
+
+Clean Architecture helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime.
+
+Clean Domain-driven Design is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith project as well.
+
+![](assets/DomainDrivenHexagon.png)
+Reference to https://github.com/Sairyss/domain-driven-hexagon
+
+# 🎇 All packages dependencies
+
+![](assets/package_dependencies.png)
+
+## ✔️ Building blocks
+
+
+```bash
++---N8T.Core
+|   |   N8T.Core.csproj
+|   |
+|   +---Domain
+|   |       Cqrs.cs
+|   |       Entities.cs
+|   |       Events.cs
+|   |       Exceptions.cs
+|   |
+|   +---Helpers
+|   |       DateTimeHelper.cs
+|   |       GuidHelper.cs
+|   |
+|   +---Repository
+|   |       IRepository.cs
+|   |
+|   \---Specification
+|           And.cs
+|           Extensions.cs
+|           GridSpecificationBase.cs
+|           ISpecification.cs
+|           Negated.cs
+|           Or.cs
+|           PredicateBuilder.cs
+|           SpecificationBase.cs
+|
++---N8T.Infrastructure
+|   |   AppOptions.cs
+|   |   Extensions.cs
+|   |   N8T.Infrastructure.csproj
+|   |
+|   +---Auth
+|   |       AuthBehavior.cs
+|   |       Extensions.cs
+|   |       IAuthRequest.cs
+|   |       ISecurityContextAccessor.cs
+|   |       SecurityContextAccessor.cs
+|   |
+|   +---Bus
+|   |   |   Extensions.cs
+|   |   |   IEventBus.cs
+|   |   |
+|   |   \---Dapr
+|   |       |   DaprEventBusOptions.cs
+|   |       |
+|   |       \---Internal
+|   |               DaprEventBus.cs
+|   |
+|   +---Controller
+|   |       BaseController.cs
+|   |
+|   +---Helpers
+|   |       ConfigurationHelper.cs
+|   |
+|   +---Logging
+|   |       Extensions.cs
+|   |       LoggingBehavior.cs
+|   |       TraceIdEnricher.cs
+|   |
+|   +---ServiceInvocation
+|   |   \---Dapr
+|   |           Extensions.cs
+|   |
+|   +---Status
+|   |       Extensions.cs
+|   |       StatusModel.cs
+|   |
+|   +---Swagger
+|   |       ConfigureSwaggerOptions.cs
+|   |       Extentions.cs
+|   |       SwaggerDefaultValues.cs
+|   |
+|   +---TransactionalOutbox
+|   |   |   Extensions.cs
+|   |   |   OutboxEntity.cs
+|   |   |
+|   |   \---Dapr
+|   |       |   DaprTransactionalOutboxOptions.cs
+|   |       |   ITransactionalOutboxProcessor.cs
+|   |       |
+|   |       \---Internal
+|   |               LocalDispatchedHandler.cs
+|   |               TransactionalOutboxProcessor.cs
+|   |
+|   \---Validator
+|           Extensions.cs
+|           RequestValidationBehavior.cs
+|           ValidationError.cs
+|           ValidationException.cs
+|           ValidationResultModel.cs
+|
++---N8T.Infrastructure.EfCore
+|   |   AppDbContextBase.cs
+|   |   Consts.cs
+|   |   DbContextDesignFactoryBase.cs
+|   |   Extensions.cs
+|   |   IDbFacadeResolver.cs
+|   |   N8T.Infrastructure.EfCore.csproj
+|   |   Repository.cs
+|   |   TxBehavior.cs
+|   |
+|   \---Internal
+|           DbContextMigratorHostedService.cs
+|
+\---N8T.Infrastructure.OTel
+    |   Extensions.cs
+    |   N8T.Infrastructure.OTel.csproj
+    |
+    \---MediatR
+            OTelMediatROptions.cs
+            OTelMediatRTracingBehavior.cs
+```
+
+## ✔️ Product service structure (microservice)
+
+
+```bash
++---ProductService.Api
+|   |   .dockerignore
+|   |   appsettings.json
+|   |   Dockerfile
+|   |   ProductService.Api.csproj
+|   |   Program.cs
+|   |
+|   +---Properties
+|   |       launchSettings.json
+|   |
+|   \---V1
+|           Anchor.cs
+|           IntegrationEventHandler.cs
+|           ProductController.cs
+|           TransactionalOutboxProcessor.cs
+|
++---ProductService.AppCore
+|   |   Anchor.cs
+|   |   ProductService.AppCore.csproj
+|   |
+|   +---Core
+|   |   |   Product.cs
+|   |   |   ProductCode.cs
+|   |   |   Return.cs
+|   |   |   ReturnReason.cs
+|   |   |
+|   |   \---Specs
+|   |           ProductByIdQuerySpec.cs
+|   |           ProductIsInStockSpec.cs
+|   |           ProductListQuerySpec.cs
+|   |           ProductReturnReasonSpec.cs
+|   |
+|   \---UseCases
+|       +---Commands
+|       |       CreateProduct.cs
+|       |
+|       \---Queries
+|               GetProductById.cs
+|               GetProducts.cs
+|
+\---ProductService.Infrastructure
+    |   Anchor.cs
+    |   Extensions.cs
+    |   ProductService.Infrastructure.csproj
+    |   readme.txt
+    |
+    \---Data
+        |   MainDbContext.cs
+        |   MainDbContextDesignFactory.cs
+        |   Repository.cs
+        |
+        +---Migrations
+        |       20210129103734_InitialProductionDb.cs
+        |       20210129103734_InitialProductionDb.Designer.cs
+        |       20210129104438_SeedInitData.cs
+        |       20210129104438_SeedInitData.Designer.cs
+        |       MainDbContextModelSnapshot.cs
+        |
+        \---Scripts
+                20210129104438_SeedInitData.sql
+```
+
+# 🎇 Starting the APIs
 
 ```
 $ tye run
@@ -89,56 +299,12 @@ $ tye run
   </tbody>
 </table>
 
-# 🎇 Business Usecases
-
-![](assets/usecase_diagram.png)
-
-# 🎇 High level context
-
-![](assets/context_diagram.png)
-
-# 🎇 ERD
-
-![](assets/class_diagram.png)
-
-# 🎓 Clean Domain Driven-design
-
-Domain-driven Design demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in the real project when we get started.
-
-Clean Architecture helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime.
-
-Clean Domain-driven Design is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith project as well.
-
-![](assets/DomainDrivenHexagon.png)
-Reference to https://github.com/Sairyss/domain-driven-hexagon
-
-# Project structure
-
-![](assets/productapp_minimal_template.png)
-
-## Project dependencies
-
-![](assets/projects_dependencies.png)
-
-## Core project
-### Domain
-
-This contains all things to get start the project. Almost there are DDD-lite components just like Entity, AggregateRoot, Specification, Repository.
-
-Assembly: N8T.Core.dll
-
-## Infrastructure project
-
-This is where some of component for Clean Architecture resides such as drivers (Entity Framework for PostgresDB, Authentication, Dapr Bus, MVC, Logging, Service Invocation with Dapr, Service Status model, Swagger with SwashBuckle, Transactional Outbox with Dapr, Tye configuration, Validation Model, OpenTelemetry components)
-
-Assemblies: N8T.Infrastructure.dll, N8T.Infrastructure.EfCore.dll, N8T.Infrastructure.OTel.dll
-
-# Additionals
+# 🎇 Additional parts
 ## Public CRUD interface
 
 In medium and large software projects, we normally implement the CRUD actions over and over again. And it might take around 40-50% codebase just to do CRUD in the projects. The question is can we make standardized CRUD APIs, then we can use them in potential projects in the future? That is in my mind for a long time when I started and finished many projects, and I decide to take time to research and define the public interfaces for it as below
 
-### Common
+### ✔️ Common
 
 ```csharp
 public record ResultModel<T>(T Data, bool IsError = false, string? ErrorMessage = default);
@@ -152,7 +318,7 @@ public interface ICommand<T> : IRequest<ResultModel<T>> {}
 public interface IQuery<T> : IRequest<ResultModel<T>> {}
 ```
 
-### [R]etrieve
+### ✔️ [R]etrieve
 
 ```csharp
 // input model for list query (normally using for the table UI control with paging, filtering and sorting)
@@ -179,7 +345,7 @@ public interface IItemQuery<TId, TResponse> : IQuery<TResponse>
 }
 ```
 
-### [C]reate
+### ✔️ [C]reate
 
 ```csharp
 public interface ICreateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxRequest
@@ -188,7 +354,7 @@ public interface ICreateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxR
 }
 ```
 
-### [U]pdate
+### ✔️ [U]pdate
 
 ```csharp
 public interface IUpdateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxRequest
@@ -197,7 +363,7 @@ public interface IUpdateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxR
 }
 ```
 
-### [D]elete
+### ✔️ [D]elete
 
 ```csharp
 public interface IDeleteCommand<TId, TResponse> : ICommand<TResponse> where TId : struct
@@ -206,12 +372,12 @@ public interface IDeleteCommand<TId, TResponse> : ICommand<TResponse> where TId 
 }
 ```
 
-# Dapr components
-## Service Invocation
+## Dapr components
+### ✔️ Service Invocation
 
 - RestEase with Dapr handler. More information is at https://dev.to/thangchung/how-to-make-dapr-client-works-well-with-refit-and-restease-40m
 
-## Event Bus
+### ✔️ Event Bus
 
 ```csharp
 public interface IEventBus
@@ -224,7 +390,7 @@ public interface IEventBus
 
 - Dapr provider
 
-## Transactional Outbox
+### ✔️ Transactional Outbox
 
 ```csharp
 public class OutboxEntity
@@ -260,14 +426,16 @@ public class OutboxEntity
 
 - Dapr provider
 
-# Sample pages
+## Sample pages
 
 > We haven't have enough time to update the front-end API just yet :(
 
 ![](assets/products_screen.png)
 
-# Refs
+# 🎇 Cool references
+
 - https://github.com/zkavtaskin/Domain-Driven-Design-Example
+- 
 - [Ant Design Components](https://ant.design/components/overview)
 - [C4 PlaintUML Model](https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/samples/C4CoreDiagrams.md)
 - [Real world PlantUML](https://real-world-plantuml.com)

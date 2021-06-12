@@ -22,7 +22,7 @@ namespace CustomerService.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("CustomerService.Core.Entities.CreditCard", b =>
+            modelBuilder.Entity("CustomerService.AppCore.Entities.CreditCard", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,7 @@ namespace CustomerService.Infrastructure.Data.Migrations
                     b.ToTable("credit_cards", "customer");
                 });
 
-            modelBuilder.Entity("CustomerService.Core.Entities.Customer", b =>
+            modelBuilder.Entity("CustomerService.AppCore.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,9 +128,9 @@ namespace CustomerService.Infrastructure.Data.Migrations
                     b.ToTable("customers", "customer");
                 });
 
-            modelBuilder.Entity("CustomerService.Core.Entities.CreditCard", b =>
+            modelBuilder.Entity("CustomerService.AppCore.Entities.CreditCard", b =>
                 {
-                    b.HasOne("CustomerService.Core.Entities.Customer", "Customer")
+                    b.HasOne("CustomerService.AppCore.Entities.Customer", "Customer")
                         .WithMany("CreditCards")
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("fk_credit_cards_customers_customer_id")
@@ -140,7 +140,7 @@ namespace CustomerService.Infrastructure.Data.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("CustomerService.Core.Entities.Customer", b =>
+            modelBuilder.Entity("CustomerService.AppCore.Entities.Customer", b =>
                 {
                     b.Navigation("CreditCards");
                 });

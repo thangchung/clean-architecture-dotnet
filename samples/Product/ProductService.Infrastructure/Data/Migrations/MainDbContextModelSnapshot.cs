@@ -20,7 +20,7 @@ namespace ProductService.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("ProductService.Core.Entities.Product", b =>
+            modelBuilder.Entity("ProductService.AppCore.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace ProductService.Infrastructure.Data.Migrations
                     b.ToTable("products", "prod");
                 });
 
-            modelBuilder.Entity("ProductService.Core.Entities.ProductCode", b =>
+            modelBuilder.Entity("ProductService.AppCore.Entities.ProductCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,7 +106,7 @@ namespace ProductService.Infrastructure.Data.Migrations
                     b.ToTable("product_codes", "prod");
                 });
 
-            modelBuilder.Entity("ProductService.Core.Entities.Return", b =>
+            modelBuilder.Entity("ProductService.AppCore.Entities.Return", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,9 +154,9 @@ namespace ProductService.Infrastructure.Data.Migrations
                     b.ToTable("returns", "prod");
                 });
 
-            modelBuilder.Entity("ProductService.Core.Entities.Product", b =>
+            modelBuilder.Entity("ProductService.AppCore.Entities.Product", b =>
                 {
-                    b.HasOne("ProductService.Core.Entities.ProductCode", "Code")
+                    b.HasOne("ProductService.AppCore.Entities.ProductCode", "Code")
                         .WithMany()
                         .HasForeignKey("ProductCodeId")
                         .HasConstraintName("fk_products_product_codes_product_code_id")
@@ -166,9 +166,9 @@ namespace ProductService.Infrastructure.Data.Migrations
                     b.Navigation("Code");
                 });
 
-            modelBuilder.Entity("ProductService.Core.Entities.Return", b =>
+            modelBuilder.Entity("ProductService.AppCore.Entities.Return", b =>
                 {
-                    b.HasOne("ProductService.Core.Entities.Product", "Product")
+                    b.HasOne("ProductService.AppCore.Entities.Product", "Product")
                         .WithMany("Returns")
                         .HasForeignKey("ProductId")
                         .HasConstraintName("fk_returns_products_product_id")
@@ -178,7 +178,7 @@ namespace ProductService.Infrastructure.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ProductService.Core.Entities.Product", b =>
+            modelBuilder.Entity("ProductService.AppCore.Entities.Product", b =>
                 {
                     b.Navigation("Returns");
                 });

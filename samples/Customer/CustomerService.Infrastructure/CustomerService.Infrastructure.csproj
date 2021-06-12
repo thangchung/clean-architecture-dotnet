@@ -7,17 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\CustomerService.Application\appsettings.json" Link="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\src\N8T.Core\N8T.Core.csproj" />
     <ProjectReference Include="..\..\..\src\N8T.Infrastructure.EfCore\N8T.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\..\..\src\N8T.Infrastructure.OTel\N8T.Infrastructure.OTel.csproj" />
     <ProjectReference Include="..\..\..\src\N8T.Infrastructure\N8T.Infrastructure.csproj" />
-    <ProjectReference Include="..\CustomerService.Core\CustomerService.Core.csproj" />
+    <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
+    <ProjectReference Include="..\CustomerService.AppCore\CustomerService.AppCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +24,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\CustomerService.Api\appsettings.json">
+      <Link>appsettings.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

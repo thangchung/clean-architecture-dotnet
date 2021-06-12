@@ -1,19 +1,11 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using N8T.Infrastructure;
-using N8T.Infrastructure.EfCore;
-using SettingService.Application.V1;
-using SettingService.Infrastructure.Data;
+using SettingService.Infrastructure;
+using ApiAnchor = SettingService.Application.V1.Anchor;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddCore(builder.Configuration, typeof(Anchor))
-    .AddPostgresDbContext<MainDbContext>(
-        builder.Configuration.GetConnectionString("postgres"),
-        svc => svc.AddRepository(typeof(Repository<>)));
+builder.Services.AddCoreServices(builder.Configuration, builder.Environment, typeof(ApiAnchor));
 
 var app = builder.Build();
-
-app.UseAppCore(builder.Environment);
+app.UseCoreApplication(builder.Environment);
 
 app.Run();

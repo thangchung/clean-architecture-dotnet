@@ -1,12 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.AppContracts.Dtos;
+using FluentValidation;
 using MediatR;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using ProductService.CoreApp.Entities;
+using ProductService.AppCore.Core;
 
-namespace ProductService.CoreApp.UseCases.Commands
+namespace ProductService.AppCore.UseCases.Commands
 {
     public class CreateProduct
     {
@@ -66,7 +68,17 @@ namespace ProductService.CoreApp.UseCases.Commands
                             request.Model.Cost,
                             productCode));
 
-                    return ResultModel<ProductDto>.Create(created.AdaptToDto());
+                    return ResultModel<ProductDto>.Create(new ProductDto
+                    {
+                        Id = created.Id,
+                        Name = created.Name,
+                        Active = created.Active,
+                        Cost = created.Cost,
+                        Quantity = created.Quantity,
+                        Created = created.Created,
+                        Updated = created.Updated,
+                        ProductCodeId = created.ProductCodeId
+                    });
                 }
             }
         }

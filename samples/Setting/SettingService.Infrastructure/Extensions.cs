@@ -6,15 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
 using N8T.Infrastructure.Swagger;
-using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
-using ProductService.Infrastructure.Data;
-using AppCoreAnchor = ProductService.AppCore.Anchor;
+using SettingService.Infrastructure.Data;
+using AppCoreAnchor = SettingService.AppCore.Anchor;
 
-namespace ProductService.Infrastructure
+namespace SettingService.Infrastructure
 {
     public static class Extensions
     {
@@ -35,9 +33,9 @@ namespace ProductService.Infrastructure
             services.AddHttpContextAccessor();
             services.AddCustomMediatR(new[] {typeof(AppCoreAnchor)});
             services.AddCustomValidators(new[] {typeof(AppCoreAnchor)});
-            services.AddDaprClient();
-            services.AddControllers().AddMessageBroker(config);
-            services.AddTransactionalOutbox(config);
+            //services.AddDaprClient();
+            services.AddControllers();//.AddMessageBroker(config);
+            //services.AddTransactionalOutbox(config);
             services.AddSwagger(apiType);
 
             services.AddPostgresDbContext<MainDbContext>(
@@ -60,7 +58,7 @@ namespace ProductService.Infrastructure
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapSubscribeHandler();
+                //endpoints.MapSubscribeHandler();
                 endpoints.MapDefaultControllerRoute();
             });
 

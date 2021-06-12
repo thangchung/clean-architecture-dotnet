@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using CoolStore.AppContracts.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Infrastructure.Controller;
-using SettingService.Application.V1.UseCases.Queries;
+using SettingService.AppCore.UseCases.Queries;
 
 namespace SettingService.Application.V1
 {

@@ -1,6 +1,6 @@
 namespace CoolStore.AppContracts
 {
-    public class AppConsts
+    public class AppConstants
     {
         public const string ProductAppName = "productapp";
         public const string CartAppName = "cartapp";

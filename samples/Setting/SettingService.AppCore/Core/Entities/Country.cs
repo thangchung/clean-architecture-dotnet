@@ -2,7 +2,7 @@ using System;
 using CoolStore.IntegrationEvents.Setting;
 using N8T.Core.Domain;
 
-namespace SettingService.Core.Entities
+namespace SettingService.AppCore.Core.Entities
 {
     public class Country : EntityRootBase
     {

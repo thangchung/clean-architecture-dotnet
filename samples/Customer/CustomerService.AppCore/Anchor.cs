@@ -1,4 +1,4 @@
-﻿namespace CustomerService.Application.V1
+﻿namespace CustomerService.AppCore
 {
     public struct Anchor { }
 }

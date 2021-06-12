@@ -5,9 +5,9 @@ using FluentValidation;
 using MediatR;
 using N8T.Core.Domain;
 using N8T.Core.Repository;
-using SettingService.Core.Entities;
+using SettingService.AppCore.Core.Entities;
 
-namespace SettingService.Application.V1.UseCases.Queries
+namespace SettingService.AppCore.UseCases.Queries
 {
     public class GetCountryById
     {

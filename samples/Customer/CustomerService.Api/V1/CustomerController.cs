@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using CustomerService.Application.V1.UseCases.Commands;
+using CustomerService.AppCore.UseCases.Commands;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Infrastructure.Controller;
 

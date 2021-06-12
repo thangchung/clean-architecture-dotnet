@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <RootNamespace>SettingService.Application</RootNamespace>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,7 @@
     <ProjectReference Include="..\..\..\src\N8T.Infrastructure\N8T.Infrastructure.csproj" />
     <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
     <ProjectReference Include="..\..\DataContracts\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj" />
-    <ProjectReference Include="..\SettingService.Core\SettingService.Core.csproj" />
+    <ProjectReference Include="..\SettingService.AppCore\SettingService.AppCore.csproj" />
     <ProjectReference Include="..\SettingService.Infrastructure\SettingService.Infrastructure.csproj" />
   </ItemGroup>
 
