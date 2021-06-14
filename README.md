@@ -434,10 +434,15 @@ public class OutboxEntity
 
 ![](assets/products_screen.png)
 
-# 🎇 Cool references
+# 🎇 Credits
 
+- https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
 - https://github.com/zkavtaskin/Domain-Driven-Design-Example
-- 
+- https://github.com/ardalis/CleanArchitecture
+- https://github.com/CanerPatir/aspnet-core-clean-arch
+- https://github.com/jasontaylordev/CleanArchitecture
+- https://github.com/ThreeDotsLabs/wild-workouts-go-ddd-example
+- https://github.com/alibaba/COLA
 - [Ant Design Components](https://ant.design/components/overview)
 - [C4 PlaintUML Model](https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/samples/C4CoreDiagrams.md)
 - [Real world PlantUML](https://real-world-plantuml.com)

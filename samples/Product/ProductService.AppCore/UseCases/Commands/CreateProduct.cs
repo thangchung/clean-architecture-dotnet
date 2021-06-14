@@ -51,8 +51,7 @@ namespace ProductService.AppCore.UseCases.Commands
                                              throw new ArgumentNullException(nameof(productCodeRepository));
                 }
 
-                public async Task<ResultModel<ProductDto>> Handle(Command request,
-                    CancellationToken cancellationToken)
+                public async Task<ResultModel<ProductDto>> Handle(Command request, CancellationToken cancellationToken)
                 {
                     var productCode =
                         await _productCodeRepository.AddAsync(ProductCode.Create(request.Model.ProductCodeName));
