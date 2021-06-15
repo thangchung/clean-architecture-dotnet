@@ -11,7 +11,7 @@ namespace CoolStore.AppContracts.Dtos
         public decimal Cost { get; set; }
         public Guid ProductCodeId { get; set; }
         public ProductCodeDto Code { get; set; }
-        public IEnumerable<ReturnDto> Returns { get; set; }
+        public List<ReturnDto> Returns { get; set; }
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }

@@ -56,7 +56,7 @@ services:
       - ConnectionStrings__postgres=Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
       - "Logging__LogLevel__N8T.Infrastructure.TransactionalOutbox.Dapr.Internal.TransactionalOutboxProcessor=Trace"
     ports:
-      - "5002:80"
+      - "5003:80"
     networks:
       - coolstore-network
 
@@ -96,7 +96,7 @@ services:
       - ConnectionStrings__postgres=Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=P@ssw0rd;
       - "Logging__LogLevel__N8T.Infrastructure.TransactionalOutbox.Dapr.Internal.TransactionalOutboxProcessor=Trace"
     ports:
-      - "5003:80"
+      - "5004:80"
     networks:
       - coolstore-network
 

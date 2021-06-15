@@ -280,23 +280,28 @@ $ tye run
     </tr>
     <tr>
       <td>2</td>
-      <td>product (internal)</td>
-      <td><a href="http://localhost:5002">http://localhost:5002</a></td>
+      <td>identity server</td>
+      <td><a href="https://localhost:5001">https://localhost:5001</a></td>
     </tr>
     <tr>
       <td>3</td>
-      <td>customer (internal)</td>
-      <td><a href="http://localhost:5003">http://localhost:5003</a></td>
+      <td>Web Blazor</td>
+      <td><a href="https://localhost:5002">https://localhost:5002</a></td>
     </tr>
     <tr>
       <td>4</td>
-      <td>setting (internal)</td>
-      <td><a href="http://localhost:5005">http://localhost:5005</a></td>
+      <td>product (upstream service)</td>
+      <td><a href="http://localhost:5003">http://localhost:5003</a></td>
     </tr>
     <tr>
       <td>5</td>
-      <td>frontend (not updated)</td>
-      <td><a href="http://localhost:3000">http://localhost:3000</a></td>
+      <td>customer (upstream service)</td>
+      <td><a href="http://localhost:5004">http://localhost:5004</a></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>setting (upstream service)</td>
+      <td><a href="http://localhost:5005">http://localhost:5005</a></td>
     </tr>
   </tbody>
 </table>

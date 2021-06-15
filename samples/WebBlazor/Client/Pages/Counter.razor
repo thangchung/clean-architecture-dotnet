@@ -1,0 +1,16 @@
+@page "/counter"
+
+<Heading Size="HeadingSize.Is1">Counter</Heading>
+
+<Paragraph>Current count: @currentCount</Paragraph>
+
+<Button Color="Color.Primary" Clicked="IncrementCount">Click me</Button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
