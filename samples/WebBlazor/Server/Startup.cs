@@ -23,7 +23,7 @@ namespace Blazor.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBff()
+            services.AddBff(options => options.ForwardedHeaders.Add("x-query"))
                 .AddServerSideSessions();
 
             services.AddControllers();

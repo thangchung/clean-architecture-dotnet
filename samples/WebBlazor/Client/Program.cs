@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using RestEase.HttpClientFactory;
 
 namespace Blazor.Client
 {
@@ -28,15 +29,22 @@ namespace Blazor.Client
 
             builder.Services.AddBlazorise(options =>
                 {
-                    options.ChangeTextOnKeyPress = true;
+                    options.ChangeTextOnKeyPress = false;
+                    options.DelayTextOnKeyPress = true;
+                    options.DelayTextOnKeyPressInterval = 1000;
                 })
                 .AddBootstrapProviders()
                 .AddFontAwesomeIcons();
 
             builder.Services.AddTransient<AntiforgeryHandler>();
+
+            // Because of HostAuthenticationStateProvider.cs
             builder.Services.AddHttpClient("backend", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<AntiforgeryHandler>();
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("backend"));
+
+            builder.Services.AddRestEaseClient<Blazor.Shared.IAppApi>(builder.HostEnvironment.BaseAddress)
+                .AddHttpMessageHandler<AntiforgeryHandler>();
 
             builder.RootComponents.Add<App>("#app");
             await builder.Build().RunAsync();

@@ -49,10 +49,7 @@ else
         }
         else
         {
-            error = "Error contacting API: " + response.StatusCode.ToString();
+            error = "Error contacting API: " + response.StatusCode;
         }
-
-      var others = await Http.GetAsync("api/product-api/v1/products/23537dac-303f-446f-be2a-1dbea22b3eba");
     }
-
 }

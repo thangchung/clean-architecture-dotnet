@@ -3,7 +3,7 @@
 ###
 GET {{host}}/product-api/v1/products HTTP/1.1
 content-type: {{contentType}}
-x-query: {"filters":[{"fieldName": "Name", "comparision": "Contains", "fieldValue": "test"}],"sorts":["nameDesc"],"page":1,"pageSize":20}
+x-query: {"filters":[{"fieldName": "Name", "comparision": "Contains", "fieldValue": "test"}],"sorts":["NameDesc"],"page":1,"pageSize":20}
 
 ###
 @id = 23537dac-303f-446f-be2a-1dbea22b3eba
