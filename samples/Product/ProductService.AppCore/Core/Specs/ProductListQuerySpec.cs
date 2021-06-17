@@ -5,7 +5,7 @@ namespace ProductService.AppCore.Core.Specs
 {
     public sealed class ProductListQuerySpec<TResponse> : GridSpecificationBase<Product>
     {
-        public ProductListQuerySpec(IListQuery<ListResponseModel<TResponse>> gridQueryInput)
+        public ProductListQuerySpec(IListQuery<ListResultModel<TResponse>> gridQueryInput)
         {
             ApplyIncludeList(gridQueryInput.Includes);
 

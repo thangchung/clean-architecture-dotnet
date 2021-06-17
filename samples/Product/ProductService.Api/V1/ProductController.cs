@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.AppContracts.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using N8T.Core.Domain;
 using N8T.Infrastructure;
@@ -11,6 +12,7 @@ using ProductService.AppCore.UseCases.Queries;
 
 namespace ProductService.Application.V1
 {
+    [Authorize("RequireInteractiveUser")]
     [ApiVersion("1.0")]
     public class ProductController : BaseController
     {
@@ -27,7 +29,7 @@ namespace ProductService.Application.V1
         public async Task<ActionResult> HandleGetProductsAsync([FromHeader(Name = "x-query")] string query,
             CancellationToken cancellationToken = new())
         {
-            var queryModel = HttpContext.SafeGetListQuery<GetProducts.Query, ListResponseModel<ProductDto>>(query);
+            var queryModel = HttpContext.SafeGetListQuery<GetProducts.Query, ListResultModel<ProductDto>>(query);
 
             return Ok(await Mediator.Send(queryModel, cancellationToken));
         }

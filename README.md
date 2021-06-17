@@ -67,6 +67,8 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
 - ✔️ **[`Polly`](https://github.com/App-vNext/Polly)** - Polly is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner
 - ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
 - ✔️ **[`opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
+- ✔️ **[`Blazor - WASM`](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)** - Client web apps with C#
+- ✔️ **[`BFF`](https://github.com/DuendeSoftware/BFF)** - Framework for ASP.NET Core to secure SPAs using the Backend-for-Frontend (BFF) pattern
 
 # 🎇 All packages dependencies
 
@@ -435,9 +437,7 @@ public class OutboxEntity
 
 ## Sample pages
 
-> We haven't have enough time to update the front-end API just yet :(
-
-![](assets/products_screen.png)
+![](assets/products_blazor_screen.png)
 
 # 🎇 Credits
 

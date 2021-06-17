@@ -15,8 +15,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\src\N8T.Core\N8T.Core.csproj" />
-  </ItemGroup>
-
 </Project>

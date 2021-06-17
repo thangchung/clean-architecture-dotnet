@@ -15,7 +15,7 @@ namespace ProductService.AppCore.UseCases.Queries
 {
     public class GetProducts
     {
-        public class Query : IListQuery<ListResponseModel<ProductDto>>
+        public class Query : IListQuery<ListResultModel<ProductDto>>
         {
             public List<string> Includes { get; init; } = new(new[] {"Returns", "Code"});
             public List<FilterModel> Filters { get; init; } = new();
@@ -35,7 +35,7 @@ namespace ProductService.AppCore.UseCases.Queries
                 }
             }
 
-            internal class Handler : IRequestHandler<Query, ResultModel<ListResponseModel<ProductDto>>>
+            internal class Handler : IRequestHandler<Query, N8T.Core.Domain.ResultModel<ListResultModel<ProductDto>>>
             {
                 private readonly IGridRepository<Product> _productRepository;
 
@@ -45,7 +45,7 @@ namespace ProductService.AppCore.UseCases.Queries
                         productRepository ?? throw new ArgumentNullException(nameof(productRepository));
                 }
 
-                public async Task<ResultModel<ListResponseModel<ProductDto>>> Handle(Query request,
+                public async Task<N8T.Core.Domain.ResultModel<ListResultModel<ProductDto>>> Handle(Query request,
                     CancellationToken cancellationToken)
                 {
                     if (request == null) throw new ArgumentNullException(nameof(request));
@@ -68,10 +68,10 @@ namespace ProductService.AppCore.UseCases.Queries
 
                     var totalProducts = await _productRepository.CountAsync(spec);
 
-                    var resultModel = ListResponseModel<ProductDto>.Create(
+                    var resultModel = ListResultModel<ProductDto>.Create(
                         productModels.ToList(), totalProducts, request.Page, request.PageSize);
 
-                    return ResultModel<ListResponseModel<ProductDto>>.Create(resultModel);
+                    return N8T.Core.Domain.ResultModel<ListResultModel<ProductDto>>.Create(resultModel);
                 }
             }
         }

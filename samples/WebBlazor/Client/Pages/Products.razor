@@ -54,16 +54,16 @@
 
   async Task OnReadData(DataGridReadDataEventArgs<ProductDto> e)
   {
-    Console.WriteLine(JsonSerializer.Serialize(e.Columns));
+    //Console.WriteLine(JsonSerializer.Serialize(e.Columns));
 
     if (!e.CancellationToken.IsCancellationRequested)
     {
-      var queryRequest = new QueryRequest();
+      var queryRequest = new QueryDto();
       foreach (var colInfo in e.Columns)
       {
         if (colInfo.SearchValue is not null)
         {
-          queryRequest.Filters.Add(new FilterModel(colInfo.Field, "Contains", colInfo.SearchValue));
+          queryRequest.Filters.Add(new FilterDto(colInfo.Field, "Contains", colInfo.SearchValue));
         }
 
         switch (colInfo.Direction)
@@ -86,14 +86,21 @@
 
       //Console.WriteLine(JsonSerializer.Serialize(criterionRequest, _options));
 
-      var (listResponseModel, isError, errorMessage) = await _appApi.GetProductsAsync(JsonSerializer.Serialize(queryRequest, _options));
-      if (isError)
+      try
       {
-        _error = $"Error contacting API: {errorMessage}";
-      }
+        var (listResponseModel, isError, errorMessage) = await _appApi.GetProductsAsync(JsonSerializer.Serialize(queryRequest, _options));
+        if (isError)
+        {
+          _error = $"Error contacting API: {errorMessage}";
+        }
 
-      Items = listResponseModel.Items;
-      TotalItems = (int) listResponseModel.TotalItems;
+        Items = listResponseModel.Items;
+        TotalItems = (int) listResponseModel.TotalItems;
+      }
+      catch (ApiException ex)
+      {
+        _error = $"Error contacting API: {ex.Message}";
+      }
 
       StateHasChanged();
     }

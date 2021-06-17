@@ -8,6 +8,7 @@ using Blazor.Client.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using CoolStore.AppContracts.RestApi;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +44,7 @@ namespace Blazor.Client
                 .AddHttpMessageHandler<AntiforgeryHandler>();
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("backend"));
 
-            builder.Services.AddRestEaseClient<Blazor.Shared.IAppApi>(builder.HostEnvironment.BaseAddress)
+            builder.Services.AddRestEaseClient<IAppApi>(builder.HostEnvironment.BaseAddress)
                 .AddHttpMessageHandler<AntiforgeryHandler>();
 
             builder.RootComponents.Add<App>("#app");

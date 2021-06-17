@@ -1,5 +1,4 @@
 ﻿@page "/fetchdata"
-@using Blazor.Shared
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
@@ -37,7 +36,7 @@ else
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecastDto[] forecasts;
     private string error;
 
     protected override async Task OnInitializedAsync()
@@ -45,7 +44,7 @@ else
         var response = await Http.GetAsync("WeatherForecast");
         if (response.IsSuccessStatusCode)
         {
-            forecasts = await response.Content.ReadFromJsonAsync<WeatherForecast[]>();
+            forecasts = await response.Content.ReadFromJsonAsync<WeatherForecastDto[]>();
         }
         else
         {

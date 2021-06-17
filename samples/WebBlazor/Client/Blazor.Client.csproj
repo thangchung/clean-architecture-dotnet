@@ -19,13 +19,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" Watch="false" />
-    <ProjectReference Include="..\Shared\Blazor.Shared.csproj" />
   </ItemGroup>
 
   <!--<ItemGroup>
     <Content Update="@(Content)" Watch="false" />
   </ItemGroup>-->
-  
+
   <ItemGroup>
     <Watch Include="**\*.razor;**\*.html;**\*.css" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*;" />
   </ItemGroup>
