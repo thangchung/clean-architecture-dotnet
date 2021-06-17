@@ -1,0 +1,74 @@
+name: eCommerceApp
+
+extensions:
+- name: dapr
+  log-level: debug
+  config: appconfig
+  components-path: "./components/tye/"
+# - name: zipkin
+# - name: elastic
+  # logPath: ./.logs
+
+services:
+
+- name: postgres
+  image:  postgres
+  env:
+  - name: POSTGRES_PASSWORD
+    value: P@ssw0rd
+  bindings:
+  - port: 5432
+    connectionString: Server=${host};Port=${port};User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  tags:
+  - apis
+
+- name: productapp
+  project: Product/ProductService.Api/ProductService.Api.csproj
+  env:
+  - name: ConnectionStrings__postgres
+    value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  bindings:
+  - port: 5003
+  tags:
+  - apis
+
+- name: customerapp
+  project: Customer/CustomerService.Api/CustomerService.Api.csproj
+  env:
+  - name: ConnectionStrings__postgres
+    value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  bindings:
+  - port: 5004
+  tags:
+  - apis
+
+- name: settingapp
+  project: Setting/SettingService.Api/SettingService.Api.csproj
+  env:
+  - name: ConnectionStrings__postgres
+    value: Server=postgresql;Port=5432;Database=postgres;User Id=postgres;Password=${env:POSTGRES_PASSWORD};
+  bindings:
+  - port: 5005
+  tags:
+  - apis
+
+- name: identityserver
+  project: IdentityServer/IdentityServer.csproj
+  bindings:
+  - port: 5001
+    protocol: https
+  tags:
+  - id
+
+- name: webblazor
+  project: WebBlazor/Server/Blazor.Server.csproj
+  bindings:
+  - port: 5002
+    protocol: https
+
+- name: gatewayapp
+  project: AppGateway/AppGateway.csproj
+  bindings:
+  - port: 5000
+  tags:
+  - apis

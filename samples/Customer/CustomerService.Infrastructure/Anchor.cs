@@ -1,6 +1,4 @@
 namespace CustomerService.Infrastructure
 {
-    public struct Anchor
-    {
-    }
+    public struct Anchor { }
 }

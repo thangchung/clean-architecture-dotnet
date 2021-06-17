@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <RootNamespace>ProductService.Application</RootNamespace>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\N8T.Core\N8T.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\N8T.Infrastructure.EfCore\N8T.Infrastructure.EfCore.csproj" />
+    <ProjectReference Include="..\..\..\src\N8T.Infrastructure.OTel\N8T.Infrastructure.OTel.csproj" />
+    <ProjectReference Include="..\..\..\src\N8T.Infrastructure\N8T.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
+    <ProjectReference Include="..\..\DataContracts\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\ProductService.AppCore\ProductService.AppCore.csproj" />
+    <ProjectReference Include="..\ProductService.Infrastructure\ProductService.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+﻿@page "/fetchdataCrossSite"
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (data == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <pre>
+        @data
+    </pre>
+}
+
+@code {
+    private string data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetStringAsync("api/foo");
+        var foo = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(response);
+
+        data = JsonSerializer.Serialize(foo, new JsonSerializerOptions { WriteIndented = true });
+
+    }
+
+}

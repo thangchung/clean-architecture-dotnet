@@ -14,20 +14,46 @@ In the end of our journey, we would like to give these simplified and effortless
 
 # ⭐ Give a star
 
-If you're using this repository for your learning, samples, workshop, or your project, please give a star ⭐. Thanks :+1:
+If you're using this repository for your learning, samples, workshop, or your project, please give a star. Thanks :+1:
 
-# :hearts: Give it a try!
+# 🎇 Business Usecases
 
-- Prerequisite
-  - [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
-  - [nodejs](https://nodejs.org/en/download): v15.5.1
-  - [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
-  - [dapr](https://dapr.io/): 1.2.0
-  - Dev tools:
-    - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
-    - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
+![](assets/usecase_diagram.png)
 
-# 💎 Technical stacks
+# 🎇 High level context
+
+![](assets/context_diagram.png)
+
+# 🎇 ERD
+
+![](assets/class_diagram.png)
+
+# 🎇 Minimal DDD, CQRS, and Clean Architecture
+
+1. `Domain-driven Design` (a.k.a DDD) demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in real projects when we get started.
+
+2. `Command and Query Responsibility Segregation` (a.k.a CQRS) helps to separate components into command and query parts, but again it's really hard and might bloat when we get starting some of the project. We need something more lightweight, just like https://github.com/gautema/CQRSlite, but we might not need Event Sourcing in almost all projects.
+
+3. `Clean Architecture` helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime. The thing is boilerplate code in this kind of project to make components lose coupling.
+
+=> When we jump in and set up the project for the Microservice approach. We want to apply all the best practices from the community, and some kind of patterns and architecture above sometimes makes us feel power off when start implements the first line of code which actually solves the business requirements. So the solution is we need something minimal and enough to get starting, and then when our business gets grows by the time, then we go back to add more. That's what's the practical way to go!
+
+`clean-architecture-dotnet` is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith projects as well.
+
+![](assets/DomainDrivenHexagon.png)
+Reference to https://github.com/Sairyss/domain-driven-hexagon
+
+# 💎 Prerequisites
+
+- [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
+- [nodejs](https://nodejs.org/en/download): v15.5.1
+- [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
+- [dapr](https://dapr.io/): 1.2.0
+- Dev tools:
+  - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
+  - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
+
+# :hearts: Technical stacks
 - ✔️ **[`.NET Core 6`](https://dotnet.microsoft.com/download)** - .NET Framework and .NET Core, including ASP.NET and ASP.NET Core
 - ✔️ **[`MVC Versioning API`](https://github.com/microsoft/aspnet-api-versioning)** - Set of libraries which add service API versioning to ASP.NET Web API, OData with ASP.NET Web API, and ASP.NET Core
 - ✔️ **[`YARP`](https://github.com/microsoft/reverse-proxy)** - A toolkit for developing high-performance HTTP reverse proxy applications
@@ -41,8 +67,196 @@ If you're using this repository for your learning, samples, workshop, or your pr
 - ✔️ **[`Polly`](https://github.com/App-vNext/Polly)** - Polly is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner
 - ✔️ **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
 - ✔️ **[`opentelemetry-dotnet`](https://github.com/open-telemetry/opentelemetry-dotnet)** - The OpenTelemetry .NET Client
+- ✔️ **[`Blazor - WASM`](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)** - Client web apps with C#
+- ✔️ **[`BFF`](https://github.com/DuendeSoftware/BFF)** - Framework for ASP.NET Core to secure SPAs using the Backend-for-Frontend (BFF) pattern
 
-## Starting the APIs
+# 🎇 All packages dependencies
+
+![](assets/package_dependencies.png)
+
+## ✔️ Building blocks
+
+
+```bash
++---N8T.Core
+|   |   N8T.Core.csproj
+|   |
+|   +---Domain
+|   |       Cqrs.cs
+|   |       Entities.cs
+|   |       Events.cs
+|   |       Exceptions.cs
+|   |
+|   +---Helpers
+|   |       DateTimeHelper.cs
+|   |       GuidHelper.cs
+|   |
+|   +---Repository
+|   |       IRepository.cs
+|   |
+|   \---Specification
+|           And.cs
+|           Extensions.cs
+|           GridSpecificationBase.cs
+|           ISpecification.cs
+|           Negated.cs
+|           Or.cs
+|           PredicateBuilder.cs
+|           SpecificationBase.cs
+|
++---N8T.Infrastructure
+|   |   AppOptions.cs
+|   |   Extensions.cs
+|   |   N8T.Infrastructure.csproj
+|   |
+|   +---Auth
+|   |       AuthBehavior.cs
+|   |       Extensions.cs
+|   |       IAuthRequest.cs
+|   |       ISecurityContextAccessor.cs
+|   |       SecurityContextAccessor.cs
+|   |
+|   +---Bus
+|   |   |   Extensions.cs
+|   |   |   IEventBus.cs
+|   |   |
+|   |   \---Dapr
+|   |       |   DaprEventBusOptions.cs
+|   |       |
+|   |       \---Internal
+|   |               DaprEventBus.cs
+|   |
+|   +---Controller
+|   |       BaseController.cs
+|   |
+|   +---Helpers
+|   |       ConfigurationHelper.cs
+|   |
+|   +---Logging
+|   |       Extensions.cs
+|   |       LoggingBehavior.cs
+|   |       TraceIdEnricher.cs
+|   |
+|   +---ServiceInvocation
+|   |   \---Dapr
+|   |           Extensions.cs
+|   |
+|   +---Status
+|   |       Extensions.cs
+|   |       StatusModel.cs
+|   |
+|   +---Swagger
+|   |       ConfigureSwaggerOptions.cs
+|   |       Extentions.cs
+|   |       SwaggerDefaultValues.cs
+|   |
+|   +---TransactionalOutbox
+|   |   |   Extensions.cs
+|   |   |   OutboxEntity.cs
+|   |   |
+|   |   \---Dapr
+|   |       |   DaprTransactionalOutboxOptions.cs
+|   |       |   ITransactionalOutboxProcessor.cs
+|   |       |
+|   |       \---Internal
+|   |               LocalDispatchedHandler.cs
+|   |               TransactionalOutboxProcessor.cs
+|   |
+|   \---Validator
+|           Extensions.cs
+|           RequestValidationBehavior.cs
+|           ValidationError.cs
+|           ValidationException.cs
+|           ValidationResultModel.cs
+|
++---N8T.Infrastructure.EfCore
+|   |   AppDbContextBase.cs
+|   |   Consts.cs
+|   |   DbContextDesignFactoryBase.cs
+|   |   Extensions.cs
+|   |   IDbFacadeResolver.cs
+|   |   N8T.Infrastructure.EfCore.csproj
+|   |   Repository.cs
+|   |   TxBehavior.cs
+|   |
+|   \---Internal
+|           DbContextMigratorHostedService.cs
+|
+\---N8T.Infrastructure.OTel
+    |   Extensions.cs
+    |   N8T.Infrastructure.OTel.csproj
+    |
+    \---MediatR
+            OTelMediatROptions.cs
+            OTelMediatRTracingBehavior.cs
+```
+
+## ✔️ Product service structure (microservice)
+
+
+```bash
++---ProductService.Api
+|   |   .dockerignore
+|   |   appsettings.json
+|   |   Dockerfile
+|   |   ProductService.Api.csproj
+|   |   Program.cs
+|   |
+|   +---Properties
+|   |       launchSettings.json
+|   |
+|   \---V1
+|           Anchor.cs
+|           IntegrationEventHandler.cs
+|           ProductController.cs
+|           TransactionalOutboxProcessor.cs
+|
++---ProductService.AppCore
+|   |   Anchor.cs
+|   |   ProductService.AppCore.csproj
+|   |
+|   +---Core
+|   |   |   Product.cs
+|   |   |   ProductCode.cs
+|   |   |   Return.cs
+|   |   |   ReturnReason.cs
+|   |   |
+|   |   \---Specs
+|   |           ProductByIdQuerySpec.cs
+|   |           ProductIsInStockSpec.cs
+|   |           ProductListQuerySpec.cs
+|   |           ProductReturnReasonSpec.cs
+|   |
+|   \---UseCases
+|       +---Commands
+|       |       CreateProduct.cs
+|       |
+|       \---Queries
+|               GetProductById.cs
+|               GetProducts.cs
+|
+\---ProductService.Infrastructure
+    |   Anchor.cs
+    |   Extensions.cs
+    |   ProductService.Infrastructure.csproj
+    |   readme.txt
+    |
+    \---Data
+        |   MainDbContext.cs
+        |   MainDbContextDesignFactory.cs
+        |   Repository.cs
+        |
+        +---Migrations
+        |       20210129103734_InitialProductionDb.cs
+        |       20210129103734_InitialProductionDb.Designer.cs
+        |       20210129104438_SeedInitData.cs
+        |       20210129104438_SeedInitData.Designer.cs
+        |       MainDbContextModelSnapshot.cs
+        |
+        \---Scripts
+                20210129104438_SeedInitData.sql
+```
+# 🎇 Starting the APIs
 
 ```
 $ tye run
@@ -68,77 +282,38 @@ $ tye run
     </tr>
     <tr>
       <td>2</td>
-      <td>product (internal)</td>
-      <td><a href="http://localhost:5002">http://localhost:5002</a></td>
+      <td>identity server</td>
+      <td><a href="https://localhost:5001">https://localhost:5001</a></td>
     </tr>
     <tr>
       <td>3</td>
-      <td>customer (internal)</td>
-      <td><a href="http://localhost:5003">http://localhost:5003</a></td>
+      <td>Web Blazor</td>
+      <td><a href="https://localhost:5002">https://localhost:5002</a></td>
     </tr>
     <tr>
       <td>4</td>
-      <td>setting (internal)</td>
-      <td><a href="http://localhost:5005">http://localhost:5005</a></td>
+      <td>product (upstream service)</td>
+      <td><a href="http://localhost:5003">http://localhost:5003</a></td>
     </tr>
     <tr>
       <td>5</td>
-      <td>frontend (not updated)</td>
-      <td><a href="http://localhost:3000">http://localhost:3000</a></td>
+      <td>customer (upstream service)</td>
+      <td><a href="http://localhost:5004">http://localhost:5004</a></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>setting (upstream service)</td>
+      <td><a href="http://localhost:5005">http://localhost:5005</a></td>
     </tr>
   </tbody>
 </table>
 
-# 🎇 Business Usecases
-
-![](assets/usecase_diagram.png)
-
-# 🎇 High level context
-
-![](assets/context_diagram.png)
-
-# 🎇 ERD
-
-![](assets/class_diagram.png)
-
-# 🎓 Clean Domain Driven-design
-
-Domain-driven Design demonstrates it can help the business tidy and organized in many years. But it is hard to approach and use, we need to make it easier to use in the real project when we get started.
-
-Clean Architecture helps the project structure easier to refactor and evolve in medium and big projects. Especially in the Microservice world, we always want to do and try with a lot of time in the project lifetime.
-
-Clean Domain-driven Design is a collection of basic building blocks and project structure to help we get starting the project with less code boilerplate and effortless. We focus on the Microservice approach of how can we organize code, the project with the monorepo approach, and you can use it for modular monolith project as well.
-
-![](assets/DomainDrivenHexagon.png)
-Reference to https://github.com/Sairyss/domain-driven-hexagon
-
-# Project structure
-
-![](assets/productapp_minimal_template.png)
-
-## Project dependencies
-
-![](assets/projects_dependencies.png)
-
-## Core project
-### Domain
-
-This contains all things to get start the project. Almost there are DDD-lite components just like Entity, AggregateRoot, Specification, Repository.
-
-Assembly: N8T.Core.dll
-
-## Infrastructure project
-
-This is where some of component for Clean Architecture resides such as drivers (Entity Framework for PostgresDB, Authentication, Dapr Bus, MVC, Logging, Service Invocation with Dapr, Service Status model, Swagger with SwashBuckle, Transactional Outbox with Dapr, Tye configuration, Validation Model, OpenTelemetry components)
-
-Assemblies: N8T.Infrastructure.dll, N8T.Infrastructure.EfCore.dll, N8T.Infrastructure.OTel.dll
-
-# Additionals
+# 🎇 Additional parts
 ## Public CRUD interface
 
 In medium and large software projects, we normally implement the CRUD actions over and over again. And it might take around 40-50% codebase just to do CRUD in the projects. The question is can we make standardized CRUD APIs, then we can use them in potential projects in the future? That is in my mind for a long time when I started and finished many projects, and I decide to take time to research and define the public interfaces for it as below
 
-### Common
+### ✔️ Common
 
 ```csharp
 public record ResultModel<T>(T Data, bool IsError = false, string? ErrorMessage = default);
@@ -152,7 +327,7 @@ public interface ICommand<T> : IRequest<ResultModel<T>> {}
 public interface IQuery<T> : IRequest<ResultModel<T>> {}
 ```
 
-### [R]etrieve
+### ✔️ [R]etrieve
 
 ```csharp
 // input model for list query (normally using for the table UI control with paging, filtering and sorting)
@@ -179,7 +354,7 @@ public interface IItemQuery<TId, TResponse> : IQuery<TResponse>
 }
 ```
 
-### [C]reate
+### ✔️ [C]reate
 
 ```csharp
 public interface ICreateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxRequest
@@ -188,7 +363,7 @@ public interface ICreateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxR
 }
 ```
 
-### [U]pdate
+### ✔️ [U]pdate
 
 ```csharp
 public interface IUpdateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxRequest
@@ -197,7 +372,7 @@ public interface IUpdateCommand<TRequest, TResponse> : ICommand<TResponse>, ITxR
 }
 ```
 
-### [D]elete
+### ✔️ [D]elete
 
 ```csharp
 public interface IDeleteCommand<TId, TResponse> : ICommand<TResponse> where TId : struct
@@ -206,12 +381,12 @@ public interface IDeleteCommand<TId, TResponse> : ICommand<TResponse> where TId 
 }
 ```
 
-# Dapr components
-## Service Invocation
+## Dapr components
+### ✔️ Service Invocation
 
 - RestEase with Dapr handler. More information is at https://dev.to/thangchung/how-to-make-dapr-client-works-well-with-refit-and-restease-40m
 
-## Event Bus
+### ✔️ Event Bus
 
 ```csharp
 public interface IEventBus
@@ -224,7 +399,7 @@ public interface IEventBus
 
 - Dapr provider
 
-## Transactional Outbox
+### ✔️ Transactional Outbox
 
 ```csharp
 public class OutboxEntity
@@ -260,14 +435,19 @@ public class OutboxEntity
 
 - Dapr provider
 
-# Sample pages
+## Sample pages
 
-> We haven't have enough time to update the front-end API just yet :(
+![](assets/products_blazor_screen.png)
 
-![](assets/products_screen.png)
+# 🎇 Credits
 
-# Refs
+- https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
 - https://github.com/zkavtaskin/Domain-Driven-Design-Example
+- https://github.com/ardalis/CleanArchitecture
+- https://github.com/CanerPatir/aspnet-core-clean-arch
+- https://github.com/jasontaylordev/CleanArchitecture
+- https://github.com/ThreeDotsLabs/wild-workouts-go-ddd-example
+- https://github.com/alibaba/COLA
 - [Ant Design Components](https://ant.design/components/overview)
 - [C4 PlaintUML Model](https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/samples/C4CoreDiagrams.md)
 - [Real world PlantUML](https://real-world-plantuml.com)

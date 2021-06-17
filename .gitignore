@@ -353,3 +353,4 @@ MigrationBackup/
 .devcontainer/certs
 .logs
 out/
+.idea

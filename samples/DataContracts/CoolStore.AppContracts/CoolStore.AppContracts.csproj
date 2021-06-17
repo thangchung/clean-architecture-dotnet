@@ -7,38 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster.Core" Version="1.1.5" />
+    <PackageReference Include="RestEase" Version="1.5.5" />
+    <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.5" />
     <PackageReference Include="RestEase.SourceGenerator" Version="1.5.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Customer\CustomerService.Core\CustomerService.Core.csproj" />
-    <ProjectReference Include="..\..\Product\ProductService.Core\ProductService.Core.csproj" />
-    <ProjectReference Include="..\..\Setting\SettingService.Core\SettingService.Core.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Core\N8T.Core.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Infrastructure.EfCore\N8T.Infrastructure.EfCore.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Infrastructure.OTel\N8T.Infrastructure.OTel.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Infrastructure\N8T.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Generated Include="**\*.g.cs" />
-  </ItemGroup>
-
-  <Target Name="CleanGenerated">
-    <Delete Files="@(Generated)" />
-  </Target>
-
-  <!--<Target Name="Mapster" AfterTargets="AfterBuild">
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n CoolStore.AppContracts.Dtos -o Dtos" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot;  -n CoolStore.AppContracts.Dtos -o Dtos" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot;  -n CoolStore.AppContracts.Mappers -o Mappers\Generated" />
-  </Target>
-  -->
 
 </Project>

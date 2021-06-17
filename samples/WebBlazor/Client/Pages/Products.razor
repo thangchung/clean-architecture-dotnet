@@ -1,0 +1,114 @@
+﻿@page "/products"
+@attribute [Authorize]
+@inject IAppApi _appApi
+
+<h1>Product List</h1>
+
+<DataGrid TItem="ProductDto" @ref="DataGrid"
+          Data="@Items" ReadData="@OnReadData" TotalItems="@TotalItems"
+          Sortable="true" SortMode="DataGridSortMode.Single"
+          Filterable="true"
+          ShowPager="true" PageSize="@PageSize" ShowPageSizes="true" CurrentPage="@CurrentPage"
+          PageChanged="e => CurrentPage = e.Page"
+          PageSizeChanged="e => PageSize = e"
+          Editable="true" EditMode="DataGridEditMode.Popup" RowUpdated="@OnRowUpdated"
+          ValidationsSummaryLabel="@_error">
+  <DataGridCommandColumn TItem="ProductDto" Width="170px">
+    <NewCommandTemplate>
+      <Button Color="Color.Success" Clicked="@context.Clicked">@context.LocalizationString</Button>
+    </NewCommandTemplate>
+    <EditCommandTemplate>
+      <Button Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+    </EditCommandTemplate>
+    <SaveCommandTemplate>
+      <Button Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+    </SaveCommandTemplate>
+    <DeleteCommandTemplate>
+      <Button Color="Color.Danger" Clicked="@context.Clicked">@context.LocalizationString</Button>
+    </DeleteCommandTemplate>
+    <CancelCommandTemplate>
+      <Button Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+    </CancelCommandTemplate>
+  </DataGridCommandColumn>
+  <DataGridColumn TItem="ProductDto" Field="@nameof(ProductDto.Name)" Caption="Name" Sortable="true" Editable="true">
+    <FilterTemplate>
+      <TextEdit Placeholder="Search name" Text="@context.SearchValue" TextChanged="@(v=> context.TriggerFilterChange(v))" />
+    </FilterTemplate>
+  </DataGridColumn>
+  <DataGridNumericColumn TItem="ProductDto" Field="@nameof(ProductDto.Cost)" Caption="Cost" Sortable="true" Editable="true" Filterable="false"></DataGridNumericColumn >
+  <DataGridNumericColumn TItem="ProductDto" Field="@nameof(ProductDto.Quantity)" Caption="Quantity" Sortable="true" Editable="true" Filterable="false"></DataGridNumericColumn >
+</DataGrid>
+
+@code {
+  public DataGrid<ProductDto> DataGrid { get; set; }
+  private List<ProductDto> Items { get; set; } = new();
+  private int TotalItems { get; set; }
+  public int PageSize { get; set; } = 10;
+  public int CurrentPage { get; set; } = 1;
+  private string _error;
+
+  readonly JsonSerializerOptions _options = new()
+  {
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+  };
+
+  async Task OnReadData(DataGridReadDataEventArgs<ProductDto> e)
+  {
+    //Console.WriteLine(JsonSerializer.Serialize(e.Columns));
+
+    if (!e.CancellationToken.IsCancellationRequested)
+    {
+      var queryRequest = new QueryDto();
+      foreach (var colInfo in e.Columns)
+      {
+        if (colInfo.SearchValue is not null)
+        {
+          queryRequest.Filters.Add(new FilterDto(colInfo.Field, "Contains", colInfo.SearchValue));
+        }
+
+        switch (colInfo.Direction)
+        {
+          case SortDirection.Descending:
+            queryRequest.Sorts.Add(colInfo.Field + (colInfo.Direction == SortDirection.Descending ? "Desc" : ""));
+            break;
+          case SortDirection.Ascending:
+            queryRequest.Sorts.Add(colInfo.Field);
+            break;
+          case SortDirection.None:
+            break;
+          default:
+            throw new ArgumentOutOfRangeException();
+        }
+      }
+
+      queryRequest.Page = e.Page;
+      queryRequest.PageSize = e.PageSize;
+
+      //Console.WriteLine(JsonSerializer.Serialize(criterionRequest, _options));
+
+      try
+      {
+        var (listResponseModel, isError, errorMessage) = await _appApi.GetProductsAsync(JsonSerializer.Serialize(queryRequest, _options));
+        if (isError)
+        {
+          _error = $"Error contacting API: {errorMessage}";
+        }
+
+        Items = listResponseModel.Items;
+        TotalItems = (int) listResponseModel.TotalItems;
+      }
+      catch (ApiException ex)
+      {
+        _error = $"Error contacting API: {ex.Message}";
+      }
+
+      StateHasChanged();
+    }
+  }
+
+  void OnRowUpdated(SavedRowItem<ProductDto, Dictionary<string, object>> e)
+  {
+    Console.WriteLine(JsonSerializer.Serialize(e, _options));
+    DataGrid.Reload();
+  }
+}

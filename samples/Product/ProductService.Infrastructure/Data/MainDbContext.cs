@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using N8T.Infrastructure.EfCore;
-using ProductService.Core.Entities;
+using ProductService.AppCore.Core;
 
 namespace ProductService.Infrastructure.Data
 {

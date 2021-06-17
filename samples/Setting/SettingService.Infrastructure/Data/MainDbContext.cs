@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using N8T.Infrastructure.EfCore;
-using SettingService.Core.Entities;
+using SettingService.AppCore.Core.Entities;
 
 namespace SettingService.Infrastructure.Data
 {

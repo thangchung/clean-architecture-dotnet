@@ -1,0 +1,25 @@
+@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4">
+            <AuthorizeView>
+                <Authorized>
+                    <strong>Hello, @context.User.Identity?.Name!</strong>
+                    <a href="@context.User.FindFirst("bff:logout_url")?.Value">Log out</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="bff/login">Log in</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>
