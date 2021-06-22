@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -14,7 +14,6 @@ using N8T.Infrastructure.Swagger;
 using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
 using ProductService.Infrastructure.Data;
-using Serilog;
 using AppCoreAnchor = ProductService.AppCore.Anchor;
 
 namespace ProductService.Infrastructure
