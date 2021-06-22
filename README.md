@@ -266,7 +266,7 @@ $ tye run
 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
 >
-> Play around at [restclient.http](restclient.http)
+> Play around at [samples/restclient.http](restclient.http)
 
 <table>
   <thead>
