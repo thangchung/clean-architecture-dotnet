@@ -259,6 +259,7 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
 # 🎇 Starting the APIs
 
 ```
+$ cd samples
 $ tye run
 ```
 
@@ -266,7 +267,7 @@ $ tye run
 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
 >
-> Play around at [restclient.http](restclient.http)
+> Play around at [restclient.http](samples/restclient.http)
 
 <table>
   <thead>
