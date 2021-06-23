@@ -259,6 +259,7 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
 # 🎇 Starting the APIs
 
 ```
+$ cd samples
 $ tye run
 ```
 
