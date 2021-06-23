@@ -47,7 +47,7 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
 
 - [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
 - [nodejs](https://nodejs.org/en/download): v15.5.1
-- [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
+- [tye](https://github.com/dotnet/tye): 0.7.0-alpha.21279.2
 - [dapr](https://dapr.io/): 1.2.0
 - Dev tools:
   - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
