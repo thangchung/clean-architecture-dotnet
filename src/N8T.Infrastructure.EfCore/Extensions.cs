@@ -15,17 +15,20 @@ namespace N8T.Infrastructure.EfCore
     public static class Extensions
     {
         public static IServiceCollection AddPostgresDbContext<TDbContext>(this IServiceCollection services,
-            string connString, Action<IServiceCollection> doMoreActions = null)
+            string connString, Action<DbContextOptionsBuilder> doMoreDbContextOptionsConfigure = null,
+            Action<IServiceCollection> doMoreActions = null)
                 where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
         {
             services.AddDbContext<TDbContext>(options =>
+            {
+                options.UseNpgsql(connString, sqlOptions =>
                 {
-                    options.UseNpgsql(connString, sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.GetName().Name);
-                        sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                    }).UseSnakeCaseNamingConvention();
-                });
+                    sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.GetName().Name);
+                    sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                }).UseSnakeCaseNamingConvention();
+
+                doMoreDbContextOptionsConfigure?.Invoke(options);
+            });
 
             services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
             services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());

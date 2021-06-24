@@ -10,6 +10,7 @@ namespace ProductService.Infrastructure.Data
 
         public MainDbContext(DbContextOptions options) : base(options)
         {
+
         }
 
         public DbSet<Product> Products { get; set; } = default!;

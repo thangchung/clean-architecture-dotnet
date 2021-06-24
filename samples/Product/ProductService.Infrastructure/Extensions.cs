@@ -1,7 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +43,9 @@ namespace ProductService.Infrastructure
 
             services.AddPostgresDbContext<MainDbContext>(
                 config.GetConnectionString(DbName),
-                svc => svc.AddRepository(typeof(Repository<>)));
+                dbOptionsBuilder => dbOptionsBuilder.UseModel(MainDbContextModel.Instance),
+                svc => svc.AddRepository(typeof(Repository<>))
+                );
 
             services.AddAuthentication("token")
                 .AddJwtBearer("token", options =>
@@ -80,11 +81,6 @@ namespace ProductService.Infrastructure
 
         public static IApplicationBuilder UseCoreApplication(this WebApplication app, IWebHostEnvironment env)
         {
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost,
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -45,6 +45,7 @@ namespace CustomerService.Infrastructure
 
             services.AddPostgresDbContext<MainDbContext>(
                 config.GetConnectionString(DbName),
+                dbOptionsBuilder => dbOptionsBuilder.UseModel(MainDbContextModel.Instance),
                 svc => svc.AddRepository(typeof(Repository<>)));
 
             services.AddRestClient(typeof(ICountryApi), AppConstants.SettingAppName,
