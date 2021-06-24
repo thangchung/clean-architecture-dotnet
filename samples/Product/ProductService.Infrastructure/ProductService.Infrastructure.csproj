@@ -29,6 +29,7 @@
   <ItemGroup>
     <Content Include="..\ProductService.Api\appsettings.json">
       <Link>appsettings.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

@@ -23,7 +23,9 @@ namespace ProductService.Application.V1
 
         [HttpPost("CustomerCreated")]
         [Topic("pubsub", "CustomerCreatedIntegrationEvent")]
+#pragma warning disable 1998
         public async Task<ActionResult> HandleCustomerCreatedAsync(CustomerCreatedIntegrationEvent @event,
+#pragma warning restore 1998
             CancellationToken cancellationToken = new())
         {
             _logger.LogInformation($"I received the message with name={@event.GetType().FullName}");

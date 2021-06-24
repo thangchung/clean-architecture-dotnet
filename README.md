@@ -48,10 +48,14 @@ Reference to https://github.com/Sairyss/domain-driven-hexagon
 - [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
 - [nodejs](https://nodejs.org/en/download): v15.5.1
 - [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
+  - [Tan Hoang](https://github.com/cuno92) and [Mohammad AlQuraian](https://github.com/Quraian) have confused about `tye 0.8.0`, and asked to add the guidance so I put it here
+    - Follow the guidance at https://github.com/dotnet/tye/blob/647a608892/docs/getting_started.md#working-with-ci-builds
+    - More specifically, adding `dotnet tool install -g Microsoft.Tye --version "0.8.0-*" --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json` to your terminal
 - [dapr](https://dapr.io/): 1.2.0
 - Dev tools:
   - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
   - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
+  - [vscode Markmap](https://marketplace.visualstudio.com/items?itemName=gera2ld.markmap-vscode) extension
 
 # :hearts: Technical stacks
 - ✔️ **[`.NET Core 6`](https://dotnet.microsoft.com/download)** - .NET Framework and .NET Core, including ASP.NET and ASP.NET Core
@@ -278,7 +282,7 @@ $ tye run
   <tbody>
     <tr>
       <td>1</td>
-      <td>gateway</td>
+      <td>YARP Gateway (downstream)</td>
       <td><a href="http://localhost:5000">http://localhost:5000</a></td>
     </tr>
     <tr>
@@ -305,6 +309,11 @@ $ tye run
       <td>6</td>
       <td>setting (upstream service)</td>
       <td><a href="http://localhost:5005">http://localhost:5005</a></td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <img src="assets/highlevel_components.png">
+      </td>
     </tr>
   </tbody>
 </table>

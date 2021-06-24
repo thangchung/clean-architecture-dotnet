@@ -33,13 +33,12 @@ namespace SettingService.Infrastructure
             services.AddHttpContextAccessor();
             services.AddCustomMediatR(new[] {typeof(AppCoreAnchor)});
             services.AddCustomValidators(new[] {typeof(AppCoreAnchor)});
-            //services.AddDaprClient();
-            services.AddControllers();//.AddMessageBroker(config);
-            //services.AddTransactionalOutbox(config);
+            services.AddControllers();
             services.AddSwagger(apiType);
 
             services.AddPostgresDbContext<MainDbContext>(
                 config.GetConnectionString(DbName),
+                dbOptionsBuilder => dbOptionsBuilder.UseModel(MainDbContextModel.Instance),
                 svc => svc.AddRepository(typeof(Repository<>)));
 
             return services;
@@ -58,7 +57,6 @@ namespace SettingService.Infrastructure
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapSubscribeHandler();
                 endpoints.MapDefaultControllerRoute();
             });
 
