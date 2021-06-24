@@ -10,7 +10,11 @@ In the end of our journey, we would like to give these simplified and effortless
 
 [![Sparkline](https://stars.medv.io/thangchung/clean-architecture-dotnet.svg)](https://stars.medv.io/thangchung/clean-architecture-dotnet)
 
-> Even we're trying to do the best, but make sure you stress test carefully if you want to use these libs in the production environment.
+> ### DISCLAIMER
+> 
+> **IMPORTANT:** Because we are constantly evolving towards newly released technologies, .NET 6 is in the preview state so that it might change a lot in every release by the .NET team. So even we're trying to do the best for this OSS. But be careful if you use it for your project, and make sure that you do a stress test, benchmarking these libraries, and refactor them subsequently to adapt to your business carefully.
+> 
+> **Feedback** with improvements and pull requests from the community will be highly appreciated. Thank you!
 
 # ⭐ Give a star
 
