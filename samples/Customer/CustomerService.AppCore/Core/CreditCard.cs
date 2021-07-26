@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using N8T.Core.Domain;
 
-namespace CustomerService.AppCore.Core.Entities
+namespace CustomerService.AppCore.Core
 {
     public class CreditCard : EntityRootBase
     {

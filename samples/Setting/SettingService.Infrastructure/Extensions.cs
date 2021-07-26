@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Infrastructure;
 using N8T.Infrastructure.EfCore;
-using N8T.Infrastructure.Validator;
 using SettingService.Infrastructure.Data;
 using AppCoreAnchor = SettingService.AppCore.Anchor;
 

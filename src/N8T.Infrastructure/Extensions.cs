@@ -1,20 +1,16 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Core.Domain;
-using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.Logging;
-using N8T.Infrastructure.Swagger;
-using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -24,51 +20,6 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        /*public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration config,
-            Type apiAnchorType, Action<IServiceCollection> doMoreActions = null)
-        {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("api", policy =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                });
-            });
-
-            services.AddHttpContextAccessor();
-            services.AddCustomMediatR(new []{apiAnchorType});
-            services.AddCustomValidators(new[] {apiAnchorType});
-            services.AddDaprClient();
-            services.AddControllers().AddMessageBroker(config);
-            services.AddTransactionalOutbox(config);
-            services.AddSwagger(apiAnchorType);
-
-            doMoreActions?.Invoke(services);
-
-            return services;
-        }
-
-        public static IApplicationBuilder UseAppCore(this WebApplication app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseCors("api");
-            app.UseRouting();
-            app.UseCloudEvents();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapSubscribeHandler();
-                endpoints.MapDefaultControllerRoute();
-            });
-
-            var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
-            return app.UseSwagger(provider);
-        }*/
-
         [DebuggerStepThrough]
         public static IServiceCollection AddCustomMediatR(this IServiceCollection services, Type[] types = null,
             Action<IServiceCollection> doMoreActions = null)
@@ -82,6 +33,17 @@ namespace N8T.Infrastructure
             doMoreActions?.Invoke(services);
 
             return services;
+        }
+
+        public static IServiceCollection AddCustomValidators(this IServiceCollection services, Type[] types)
+        {
+            /*return services.Scan(scan => scan
+                .FromAssembliesOf(types)
+                .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());*/
+
+            return services.AddValidatorsFromAssemblies(types.Select(t => t.Assembly));
         }
 
         [DebuggerStepThrough]

@@ -1,4 +1,4 @@
-using CustomerService.AppCore.Core.Entities;
+using CustomerService.AppCore.Core;
 using Microsoft.EntityFrameworkCore;
 using N8T.Infrastructure.EfCore;
 

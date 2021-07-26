@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using CustomerService.AppCore.Core.Entities;
+using CustomerService.AppCore.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using N8T.Core.Domain;

@@ -1,8 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace N8T.Infrastructure.Validator
 {
@@ -10,7 +8,7 @@ namespace N8T.Infrastructure.Validator
     {
         private static ValidationResultModel ToValidationResultModel(this ValidationResult validationResult)
         {
-            return new ValidationResultModel(validationResult);
+            return new(validationResult);
         }
 
         /// <summary>
@@ -23,15 +21,6 @@ namespace N8T.Infrastructure.Validator
             {
                 throw new ValidationException(validationResult.ToValidationResultModel());
             }
-        }
-
-        public static IServiceCollection AddCustomValidators(this IServiceCollection services, Type[] types)
-        {
-            return services.Scan(scan => scan
-                .FromAssembliesOf(types)
-                .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
         }
     }
 }

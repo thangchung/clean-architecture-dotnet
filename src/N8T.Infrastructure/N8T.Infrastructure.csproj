@@ -25,9 +25,6 @@
   
   <ItemGroup>
     <PackageReference Include="Dapr.AspNetCore" Version="1.2.0" />
-    <PackageReference Include="FluentValidation" Version="10.3.0" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="Scrutor" Version="3.3.0" />

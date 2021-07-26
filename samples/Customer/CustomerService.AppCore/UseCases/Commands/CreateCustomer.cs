@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.AppContracts.Dtos;
 using CoolStore.AppContracts.RestApi;
-using CustomerService.AppCore.Core.Entities;
+using CustomerService.AppCore.Core;
 using CustomerService.AppCore.Core.Specs;
 using FluentValidation;
 using MediatR;

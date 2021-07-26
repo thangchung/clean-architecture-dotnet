@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using CustomerService.AppCore.Core.Entities;
 using N8T.Core.Specification;
 
 namespace CustomerService.AppCore.Core.Specs

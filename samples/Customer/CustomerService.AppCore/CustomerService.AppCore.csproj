@@ -12,8 +12,4 @@
     <ProjectReference Include="..\..\DataContracts\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.3.0" />
-  </ItemGroup>
-
 </Project>

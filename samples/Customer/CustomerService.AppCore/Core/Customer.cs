@@ -5,7 +5,7 @@ using CoolStore.IntegrationEvents.Customer;
 using CustomerService.AppCore.Core.Specs;
 using N8T.Core.Domain;
 
-namespace CustomerService.AppCore.Core.Entities
+namespace CustomerService.AppCore.Core
 {
     public class Customer : EntityRootBase
     {
