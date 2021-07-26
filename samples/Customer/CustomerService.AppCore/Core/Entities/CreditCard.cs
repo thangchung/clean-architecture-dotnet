@@ -10,7 +10,7 @@ namespace CustomerService.AppCore.Core.Entities
         public string CardNumber { get; protected set; } = default!;
         public bool Active { get; protected set; }
         public DateTime Expiry { get; protected set; }
-        public Customer Customer { get; protected set; }
+        public Customer Customer { get; protected set; } = default!;
 
         public static CreditCard Create(Customer customer, string name, string cardNum, DateTime expiry)
         {

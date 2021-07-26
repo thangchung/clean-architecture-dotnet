@@ -1,7 +1,5 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
-using N8T.Infrastructure.Swagger;
 using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
 using ProductService.Infrastructure.Data;
@@ -23,7 +20,7 @@ namespace ProductService.Infrastructure
         private const string DbName = "postgres";
 
         public static IServiceCollection AddCoreServices(this IServiceCollection services,
-            IConfiguration config, IWebHostEnvironment env, Type apiType)
+            IConfiguration config, IWebHostEnvironment env)
         {
             services.AddCors(options =>
             {
@@ -33,13 +30,15 @@ namespace ProductService.Infrastructure
                 });
             });
 
+            services.AddEndpointsApiExplorer();
             services.AddHttpContextAccessor();
+
             services.AddCustomMediatR(new[] {typeof(AppCoreAnchor)});
             services.AddCustomValidators(new[] {typeof(AppCoreAnchor)});
+
             services.AddDaprClient();
-            services.AddControllers().AddMessageBroker(config);
+            services.AddMessageBroker(config);
             services.AddTransactionalOutbox(config);
-            services.AddSwagger(apiType);
 
             services.AddPostgresDbContext<MainDbContext>(
                 config.GetConnectionString(DbName),
@@ -50,7 +49,7 @@ namespace ProductService.Infrastructure
             services.AddAuthentication("token")
                 .AddJwtBearer("token", options =>
                 {
-                    options.Authority = "https://localhost:5001";
+                    options.Authority = "https://localhost:5001"; //todo: remove hard-code
                     options.MapInboundClaims = false;
 
                     options.TokenValidationParameters = new TokenValidationParameters()
@@ -76,6 +75,8 @@ namespace ProductService.Infrastructure
                 });
             });
 
+            services.AddSwaggerGen();
+
             return services;
         }
 
@@ -90,17 +91,12 @@ namespace ProductService.Infrastructure
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseCloudEvents();
+            app.UseEndpoints(endpoints => endpoints.MapSubscribeHandler());
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapSubscribeHandler();
-                endpoints.MapControllers()
-                    .RequireAuthorization("ApiCaller");
-            });
-
-            var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
-            return app.UseSwagger(provider);
+            app.UseSwagger();
+            return app.UseSwaggerUI();
         }
     }
 }

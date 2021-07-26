@@ -45,7 +45,7 @@ namespace CustomerService.AppCore.Core.Entities
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException("email");
 
-            if (countryId == null)
+            if (countryId.Equals(Guid.Empty))
                 throw new ArgumentNullException("country");
 
             Customer customer = new()

@@ -24,7 +24,7 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration config,
+        /*public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration config,
             Type apiAnchorType, Action<IServiceCollection> doMoreActions = null)
         {
             services.AddCors(options =>
@@ -67,7 +67,7 @@ namespace N8T.Infrastructure
 
             var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
             return app.UseSwagger(provider);
-        }
+        }*/
 
         [DebuggerStepThrough]
         public static IServiceCollection AddCustomMediatR(this IServiceCollection services, Type[] types = null,

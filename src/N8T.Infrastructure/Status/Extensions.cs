@@ -27,21 +27,20 @@ namespace N8T.Infrastructure.Status
 
             model.OsArchitecture = !RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-                    ? "Linux or OSX"
+                    ? $"{nameof(OSPlatform.Linux)} or {nameof(OSPlatform.OSX)}"
                     : "Others"
-                : "Windows";
+                : nameof(OSPlatform.Windows);
 
             model.OsDescription = RuntimeInformation.OSDescription;
 
-            model.ProcessArchitecture = RuntimeInformation.ProcessArchitecture == Architecture.Arm
-                ? "Arm"
-                : RuntimeInformation.ProcessArchitecture == Architecture.Arm64
-                    ? "Arm64"
-                    : RuntimeInformation.ProcessArchitecture == Architecture.X64
-                        ? "x64"
-                        : RuntimeInformation.ProcessArchitecture == Architecture.X86
-                            ? "x86"
-                            : "Others";
+            model.ProcessArchitecture = RuntimeInformation.ProcessArchitecture switch
+            {
+                Architecture.Arm => nameof(Architecture.Arm),
+                Architecture.Arm64 => nameof(Architecture.Arm64),
+                Architecture.X64 => nameof(Architecture.X64),
+                Architecture.X86 => nameof(Architecture.X86),
+                _ => "Others"
+            };
 
             model.RuntimeFramework = PlatformServices.Default.Application.RuntimeFramework.ToString();
             model.FrameworkDescription = RuntimeInformation.FrameworkDescription;

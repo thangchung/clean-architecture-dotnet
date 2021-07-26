@@ -1,17 +1,14 @@
-﻿using System;
-using CoolStore.AppContracts;
+﻿using CoolStore.AppContracts;
 using CoolStore.AppContracts.RestApi;
 using CustomerService.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
-using N8T.Infrastructure.Swagger;
 using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.Validator;
 using N8T.Infrastructure.ServiceInvocation.Dapr;
@@ -25,7 +22,7 @@ namespace CustomerService.Infrastructure
         private const string DbName = "postgres";
 
         public static IServiceCollection AddCoreServices(this IServiceCollection services,
-            IConfiguration config, IWebHostEnvironment env, Type apiType)
+            IConfiguration config, IWebHostEnvironment env)
         {
             services.AddCors(options =>
             {
@@ -35,13 +32,15 @@ namespace CustomerService.Infrastructure
                 });
             });
 
+            services.AddEndpointsApiExplorer();
             services.AddHttpContextAccessor();
+
             services.AddCustomMediatR(new[] {typeof(AppCoreAnchor)});
             services.AddCustomValidators(new[] {typeof(AppCoreAnchor)});
+
             services.AddDaprClient();
-            services.AddControllers().AddMessageBroker(config);
+            services.AddMessageBroker(config);
             services.AddTransactionalOutbox(config);
-            services.AddSwagger(apiType);
 
             services.AddPostgresDbContext<MainDbContext>(
                 config.GetConnectionString(DbName),
@@ -50,6 +49,8 @@ namespace CustomerService.Infrastructure
 
             services.AddRestClient(typeof(ICountryApi), AppConstants.SettingAppName,
                 config.GetValue("Services:SettingApp:Port", 5005));
+
+            services.AddSwaggerGen();
 
             return services;
         }
@@ -63,16 +64,12 @@ namespace CustomerService.Infrastructure
 
             app.UseCors(CorsName);
             app.UseRouting();
+
             app.UseCloudEvents();
+            app.UseEndpoints(endpoints => endpoints.MapSubscribeHandler());
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapSubscribeHandler();
-                endpoints.MapDefaultControllerRoute();
-            });
-
-            var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
-            return app.UseSwagger(provider);
+            app.UseSwagger();
+            return app.UseSwaggerUI();
         }
     }
 }

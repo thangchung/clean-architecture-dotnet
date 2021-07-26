@@ -1,0 +1,17 @@
+﻿global using System;
+global using System.Threading.Tasks;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
+global using CoolStore.AppContracts.Dtos;
+global using CoolStore.IntegrationEvents.Customer;
+global using MediatR;
+global using N8T.Core.Domain;
+global using N8T.Infrastructure;
+global using N8T.Infrastructure.TransactionalOutbox.Dapr;
+global using ProductService.AppCore.UseCases.Commands;
+global using ProductService.AppCore.UseCases.Queries;
+global using ProductService.Infrastructure;
+global using static N8T.Infrastructure.Result.ResultMapper;

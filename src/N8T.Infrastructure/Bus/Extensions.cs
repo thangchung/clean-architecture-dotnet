@@ -22,5 +22,20 @@ namespace N8T.Infrastructure.Bus
 
             return mvcBuilder.Services;
         }
+
+        public static IServiceCollection AddMessageBroker(this IServiceCollection services,
+            IConfiguration config,
+            string messageBrokerType = "dapr")
+        {
+            switch (messageBrokerType)
+            {
+                case "dapr":
+                    services.Configure<DaprEventBusOptions>(config.GetSection(DaprEventBusOptions.Name));
+                    services.AddScoped<IEventBus, DaprEventBus>();
+                    break;
+            }
+
+            return services;
+        }
     }
 }

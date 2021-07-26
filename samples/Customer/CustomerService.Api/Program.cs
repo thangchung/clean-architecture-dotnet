@@ -1,11 +1,23 @@
+using CustomerService.AppCore.UseCases.Commands;
 using Microsoft.AspNetCore.Builder;
 using CustomerService.Infrastructure;
-using ApiAnchor = CustomerService.Application.V1.Anchor;
+using MediatR;
+using N8T.Infrastructure.TransactionalOutbox.Dapr;
+using static N8T.Infrastructure.Result.ResultMapper;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCoreServices(builder.Configuration, builder.Environment, typeof(ApiAnchor));
+builder.Services.AddCoreServices(builder.Configuration, builder.Environment);
 
-var app = builder.Build();
+await using var app = builder.Build();
 app.UseCoreApplication(builder.Environment);
 
-app.Run();
+app.MapPost("/api/v1/customers",
+    async (CreateCustomer.Command request, ISender sender) => Ok(await sender.Send(request)));
+
+app.MapPost("/CustomerOutboxCron",
+    async (ITransactionalOutboxProcessor outboxProcessor) =>
+        await outboxProcessor.HandleAsync(typeof(CoolStore.IntegrationEvents.Anchor)));
+
+await app.RunAsync();
+
+
