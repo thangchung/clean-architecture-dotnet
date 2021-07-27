@@ -23,7 +23,7 @@ namespace CustomerService.Infrastructure
 
             AddAnnotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
             AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-            AddAnnotation("ProductVersion", "6.0.0-preview.5.21301.9");
+            AddAnnotation("ProductVersion", "6.0.0-preview.6.21352.1");
             AddAnnotation("Relational:MaxIdentifierLength", 63);
         }
     }

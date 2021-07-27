@@ -7,14 +7,14 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using N8T.Core.Domain;
 
-namespace N8T.Infrastructure.TransactionalOutbox.Dapr.Internal
+namespace N8T.Infrastructure.TxOutbox.Dapr.Internal
 {
-    internal class LocalDispatchedHandler : INotificationHandler<EventWrapper>
+    internal class DaprLocalDispatchedHandler : INotificationHandler<EventWrapper>
     {
         private readonly DaprClient _daprClient;
-        private readonly IOptions<DaprTransactionalOutboxOptions> _options;
+        private readonly IOptions<DaprTxOutboxOptions> _options;
 
-        public LocalDispatchedHandler(DaprClient daprClient, IOptions<DaprTransactionalOutboxOptions> options)
+        public DaprLocalDispatchedHandler(DaprClient daprClient, IOptions<DaprTxOutboxOptions> options)
         {
             _daprClient = daprClient ?? throw new ArgumentNullException(nameof(daprClient));
             _options = options ?? throw new ArgumentNullException(nameof(options));

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using N8T.Core.Domain;
 using Newtonsoft.Json;
 
-namespace N8T.Infrastructure.TransactionalOutbox
+namespace N8T.Infrastructure.TxOutbox
 {
     public class OutboxEntity
     {

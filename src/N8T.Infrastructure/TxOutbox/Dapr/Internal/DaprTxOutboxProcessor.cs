@@ -7,16 +7,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using N8T.Infrastructure.Bus;
 
-namespace N8T.Infrastructure.TransactionalOutbox.Dapr.Internal
+namespace N8T.Infrastructure.TxOutbox.Dapr.Internal
 {
-    internal class TransactionalOutboxProcessor : ITransactionalOutboxProcessor
+    internal class DaprTxOutboxProcessor : ITxOutboxProcessor
     {
         private readonly DaprClient _daprClient;
         private readonly IEventBus _eventBus;
-        private readonly IOptions<DaprTransactionalOutboxOptions> _options;
-        private readonly ILogger<TransactionalOutboxProcessor> _logger;
+        private readonly IOptions<DaprTxOutboxOptions> _options;
+        private readonly ILogger<DaprTxOutboxProcessor> _logger;
 
-        public TransactionalOutboxProcessor(DaprClient daprClient, IEventBus eventBus, IOptions<DaprTransactionalOutboxOptions> options, ILogger<TransactionalOutboxProcessor> logger)
+        public DaprTxOutboxProcessor(DaprClient daprClient, IEventBus eventBus, IOptions<DaprTxOutboxOptions> options, ILogger<DaprTxOutboxProcessor> logger)
         {
             _daprClient = daprClient ?? throw new ArgumentNullException(nameof(daprClient));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
@@ -26,7 +26,7 @@ namespace N8T.Infrastructure.TransactionalOutbox.Dapr.Internal
 
         public async Task HandleAsync(Type integrationAssemblyType, CancellationToken cancellationToken = new ())
         {
-            _logger.LogTrace("{TransactionalOutboxProcessor}: Cron @{DateTime}", nameof(TransactionalOutboxProcessor), DateTime.UtcNow);
+            _logger.LogTrace("{TransactionalOutboxProcessor}: Cron @{DateTime}", nameof(DaprTxOutboxProcessor), DateTime.UtcNow);
 
             var events = await _daprClient.GetStateEntryAsync<List<OutboxEntity>>(_options.Value.StateStoreName, _options.Value.OutboxName, cancellationToken: cancellationToken);
 

@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
-using N8T.Infrastructure.TransactionalOutbox;
+using N8T.Infrastructure.TxOutbox;
 using ProductService.Infrastructure.Data;
 using AppCoreAnchor = ProductService.AppCore.Anchor;
 

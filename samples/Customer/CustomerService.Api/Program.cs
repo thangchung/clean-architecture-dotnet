@@ -2,7 +2,7 @@ using CustomerService.AppCore.UseCases.Commands;
 using Microsoft.AspNetCore.Builder;
 using CustomerService.Infrastructure;
 using MediatR;
-using N8T.Infrastructure.TransactionalOutbox.Dapr;
+using N8T.Infrastructure.TxOutbox;
 using static N8T.Infrastructure.Result.ResultMapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +15,7 @@ app.MapPost("/api/v1/customers",
     async (CreateCustomer.Command request, ISender sender) => Ok(await sender.Send(request)));
 
 app.MapPost("/CustomerOutboxCron",
-    async (ITransactionalOutboxProcessor outboxProcessor) =>
+    async (ITxOutboxProcessor outboxProcessor) =>
         await outboxProcessor.HandleAsync(typeof(CoolStore.IntegrationEvents.Anchor)));
 
 await app.RunAsync();

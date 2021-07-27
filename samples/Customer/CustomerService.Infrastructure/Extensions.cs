@@ -9,8 +9,8 @@ using Microsoft.Extensions.Hosting;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Bus;
 using N8T.Infrastructure.EfCore;
-using N8T.Infrastructure.TransactionalOutbox;
 using N8T.Infrastructure.ServiceInvocation.Dapr;
+using N8T.Infrastructure.TxOutbox;
 using AppCoreAnchor = CustomerService.AppCore.Anchor;
 
 namespace CustomerService.Infrastructure

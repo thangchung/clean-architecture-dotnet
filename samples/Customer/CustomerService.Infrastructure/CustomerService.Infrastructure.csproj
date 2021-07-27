@@ -33,4 +33,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\CompiledModels" />
+  </ItemGroup>
+
 </Project>

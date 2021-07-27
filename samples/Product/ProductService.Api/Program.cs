@@ -30,7 +30,7 @@ app.MapPost("/api/v1/products",
     }).RequireAuthorization("ApiCaller");
 
 app.MapPost("/CustomerCreated",
-        async (CustomerCreatedIntegrationEvent @event) =>
+        (CustomerCreatedIntegrationEvent @event) =>
         {
             Console.WriteLine($"I received the message with name={@event.GetType().FullName}");
             return Ok("Subscribed");
@@ -38,7 +38,7 @@ app.MapPost("/CustomerCreated",
     .WithTopic("pubsub", "CustomerCreatedIntegrationEvent");
 
 app.MapPost("/ProductOutboxCron",
-    async (ITransactionalOutboxProcessor outboxProcessor) =>
+    async (ITxOutboxProcessor outboxProcessor) =>
         await outboxProcessor.HandleAsync(typeof(CoolStore.IntegrationEvents.Anchor)));
 
 await app.RunAsync();

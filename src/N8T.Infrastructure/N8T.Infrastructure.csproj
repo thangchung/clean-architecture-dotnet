@@ -43,8 +43,4 @@
     <ProjectReference Include="..\N8T.Core\N8T.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TransactionalOutbox\InMemory" />
-  </ItemGroup>
-
 </Project>

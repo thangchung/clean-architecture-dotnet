@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace N8T.Infrastructure.TransactionalOutbox.Dapr
+namespace N8T.Infrastructure.TxOutbox
 {
-    public interface ITransactionalOutboxProcessor
+    public interface ITxOutboxProcessor
     {
         Task HandleAsync(Type integrationAssemblyType, CancellationToken cancellationToken = new());
     }

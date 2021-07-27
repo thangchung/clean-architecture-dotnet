@@ -10,7 +10,7 @@ global using CoolStore.IntegrationEvents.Customer;
 global using MediatR;
 global using N8T.Core.Domain;
 global using N8T.Infrastructure;
-global using N8T.Infrastructure.TransactionalOutbox.Dapr;
+global using N8T.Infrastructure.TxOutbox;
 global using ProductService.AppCore.UseCases.Commands;
 global using ProductService.AppCore.UseCases.Queries;
 global using ProductService.Infrastructure;

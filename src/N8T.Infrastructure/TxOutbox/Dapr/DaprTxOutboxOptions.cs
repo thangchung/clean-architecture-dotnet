@@ -1,6 +1,6 @@
-namespace N8T.Infrastructure.TransactionalOutbox.Dapr
+namespace N8T.Infrastructure.TxOutbox.Dapr
 {
-    public class DaprTransactionalOutboxOptions
+    public class DaprTxOutboxOptions
     {
         public static string Name = "DaprTransactionalOutbox";
         public string StateStoreName { get; set; } = "statestore";

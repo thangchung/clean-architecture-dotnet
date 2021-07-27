@@ -37,13 +37,13 @@ namespace N8T.Infrastructure
 
         public static IServiceCollection AddCustomValidators(this IServiceCollection services, Type[] types)
         {
-            /*return services.Scan(scan => scan
+            return services.Scan(scan => scan
                 .FromAssembliesOf(types)
                 .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
                 .AsImplementedInterfaces()
-                .WithTransientLifetime());*/
+                .WithTransientLifetime());
 
-            return services.AddValidatorsFromAssemblies(types.Select(t => t.Assembly));
+            //return services.AddValidatorsFromAssemblies(types.Select(t => t.Assembly));
         }
 
         [DebuggerStepThrough]

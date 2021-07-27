@@ -15,7 +15,7 @@ namespace CustomerService.Infrastructure
         public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType? baseEntityType = null)
         {
             var runtimeEntityType = model.AddEntityType(
-                "CustomerService.AppCore.Core.Entities.Customer",
+                "CustomerService.AppCore.Core.Customer",
                 typeof(Customer),
                 baseEntityType);
 
