@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using N8T.Core.Domain;
 
@@ -12,6 +13,7 @@ namespace N8T.Core.Specification
         public List<string> IncludeStrings { get; } = new();
         public Expression<Func<T, object>> OrderBy { get; private set; }
         public Expression<Func<T, object>> OrderByDescending { get; private set; }
+        public Expression<Func<T, object>> ThenByDescending { get; private set; }
         public Expression<Func<T, object>> GroupBy { get; private set; }
 
         public int Take { get; private set; }
@@ -74,20 +76,38 @@ namespace N8T.Core.Specification
         protected void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression) =>
             OrderByDescending = orderByDescendingExpression;
 
+        protected void ApplyThenOrderByDescending(Expression<Func<T, object>> thenByDescendingExpression) =>
+            ThenByDescending = thenByDescendingExpression;
+
         protected void ApplyGroupBy(Expression<Func<T, object>> groupByExpression) =>
             GroupBy = groupByExpression;
 
         protected void ApplySortingList(IEnumerable<string> sorts)
         {
-            foreach (var sort in sorts)
+            if (!sorts.Any()) return;
+
+            //  Get first sort item and remove it from sorts list
+            var firstSortingItem = sorts.First();
+            var tempSorts = sorts.Where(s => !s.Contains(firstSortingItem));
+
+            //  Apply OrderBy to first item
+            ApplySorting(firstSortingItem);
+
+            //  Apply ThenBy to subsequent items
+            foreach (var sort in tempSorts)
             {
-                ApplySorting(sort);
+                ApplyThenBySorting(sort);
             }
         }
 
         protected void ApplySorting(string sort)
         {
             this.ApplySorting(sort, nameof(ApplyOrderBy), nameof(ApplyOrderByDescending));
+        }
+
+        protected void ApplyThenBySorting(string sort)
+        {
+            this.ApplySorting(sort, nameof(ApplyThenOrderByDescending), nameof(ApplyThenOrderByDescending));
         }
     }
 }

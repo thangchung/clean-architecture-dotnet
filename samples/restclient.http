@@ -1,23 +1,39 @@
 @host = http://localhost:5000
+@idphost = https://localhost:5001
+
+###
+# @name auth
+POST {{idphost}}/connect/token HTTP/1.1
+content-type: application/x-www-form-urlencoded
+
+grant_type=password
+&client_id=restclient.password
+&client_secret=49C1A7E1-0C79-4A89-A3D6-A37998FB86B0
+&username=bob
+&password=bob
 
 ###
 GET {{host}}/product-api/v1/products HTTP/1.1
-content-type: {{contentType}}
-x-query: {"filters":[{"fieldName": "Name", "comparision": "Contains", "fieldValue": "test"}],"sorts":["NameDesc"],"page":1,"pageSize":20}
+content-type: application/json
+authorization: bearer {{auth.response.body.access_token}}
+x-query: {"filters":[{"fieldName": "Name", "comparision": "Contains", "fieldValue": "test"}],"sorts":["Name", "QuantityDesc"],"page":1,"pageSize":20}
 
 ###
 @id = 23537dac-303f-446f-be2a-1dbea22b3eba
 GET {{host}}/product-api/v1/products/{{id}} HTTP/1.1
-content-type: {{contentType}}
+content-type: application/json
+authorization: bearer {{auth.response.body.access_token}}
 
 ###
 @country-id = 18a4a8ae-3338-484a-a4ed-6e64d13d84dc
 GET {{host}}/setting-api/v1/countries/{{country-id}} HTTP/1.1
-content-type: {{contentType}}
+content-type: application/json
+authorization: bearer {{auth.response.body.access_token}}
 
 ###
 POST {{host}}/product-api/v1/products HTTP/1.1
-content-type: {{contentType}}
+content-type: application/json
+authorization: bearer {{auth.response.body.access_token}}
 
 {
   "model": {
@@ -30,7 +46,8 @@ content-type: {{contentType}}
 
 ###
 POST {{host}}/customer-api/v1/customers HTTP/1.1
-content-type: {{contentType}}
+content-type: application/json
+authorization: bearer {{auth.response.body.access_token}}
 
 {
   "model": {

@@ -11,9 +11,9 @@ In the end of our journey, we would like to give these simplified and effortless
 [![Sparkline](https://stars.medv.io/thangchung/clean-architecture-dotnet.svg)](https://stars.medv.io/thangchung/clean-architecture-dotnet)
 
 > ### DISCLAIMER
-> 
+>
 > **IMPORTANT:** Because we are constantly evolving towards newly released technologies, .NET 6 is in the preview state so that it might change a lot in every release by the .NET team. So even we're trying to do the best for this OSS. But be careful if you use it for your project, and make sure that you do a stress test, benchmarking these libraries, and refactor them subsequently to adapt to your business carefully.
-> 
+>
 > **Feedback** with improvements and pull requests from the community will be highly appreciated. Thank you!
 
 # ⭐ Give a star
@@ -46,6 +46,49 @@ If you're using this repository for your learning, samples, workshop, or your pr
 
 ![](assets/DomainDrivenHexagon.png)
 Reference to https://github.com/Sairyss/domain-driven-hexagon
+
+## Design Overview
+
+![](assets/design_overview.png)
+
+On the top of the above picture on the left (purple color), we can see we have several types of hosts in our project:
+
+- REST API (ASP.NET Web API with controllers, .NET Routing, or GraphQL)
+- gRPC Server
+- Subscriber (Dapr pub/sub)
+- Background Jobs (Dapr cron job binding)
+
+And on the right box (white color), we can see several external services that we use for the project:
+
+- Message Broker (Redis Stream)
+- Cache Server (Redis Cache)
+- Database server (PostgresQL)
+
+Let explanation a bit about what CQRS means in the application as below:
+
+### Query side
+
+1. When end-user submits a query request - `Query DTO`, the end-user will need to compose the JSON object and submit it to these host endpoints above
+2. The application uses `MediatR` to send `Query DTO` into the Query handler
+3. The application then injects a `Query Repository` to help them query the projection data of this query. In this step, we can compose the criterion using the `Specification` pattern.
+4. The application composes some of the `Domain Entity` to aggregate the data needs. But notice that we can use some of the technologies such as de-normalize data, materialized view in this step.
+
+### Command side
+
+5. When end-user submits a command request - `Command DTO`, the end-user will need to compose the JSON object and submit it to these host endpoints above
+6. The application uses `MediatR` to send `Command DTO` into the Command handler
+7. Because we can only mutate the domain entity via `Root Aggregate Object` so that we need to identify and query the `Root Aggregate Object` out
+8. Then we acquire the `Unit of Work` or `Transaction Scope` of the current database in code
+9. We persist it into the database
+10. The state of the root aggregate and its belong will be persisted into the database in one transaction
+11. We add some of `Domain Event` into the `Root Aggregate Object` just persisted and return it into Repository
+12. These ' Domain events` will subsequently propagate up to `Command handler`
+13. The `Command handler` will dispatch the event into the `Event Dispatcher` (this makes the core and application layer are not dependent on a specific Message Broker)
+14. The `Event Dispatcher` will store the `Domain Event` into the database or in-memory
+15. In around every 1 second, we have a `Background Jobs` to trigger and compose the `Command DTO`, and uses `MediatR` to send the request to `Command handler`
+16. The `Command handler` will query all the `Domain Event` in the database (Step 14), and loop through it to publish to the `Message Broker`
+
+> Notes: Steps 13, 14, 15, 15 are the `Transactional Outbox Pattern` which makes the message transportation is more reliable.
 
 # 💎 Prerequisites
 
@@ -322,7 +365,8 @@ $ tye run
   </tbody>
 </table>
 
-# 🎇 Additional parts
+# 🎇 Others
+
 ## Public CRUD interface
 
 In medium and large software projects, we normally implement the CRUD actions over and over again. And it might take around 40-50% codebase just to do CRUD in the projects. The question is can we make standardized CRUD APIs, then we can use them in potential projects in the future? That is in my mind for a long time when I started and finished many projects, and I decide to take time to research and define the public interfaces for it as below

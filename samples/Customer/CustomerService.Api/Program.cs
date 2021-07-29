@@ -11,12 +11,11 @@ builder.Services.AddCoreServices(builder.Configuration, builder.Environment);
 await using var app = builder.Build();
 app.UseCoreApplication(builder.Environment);
 
-app.MapPost("/api/v1/customers",
-    async (CreateCustomer.Command request, ISender sender) => Ok(await sender.Send(request)));
+app.MapPost("/api/v1/customers", async (CreateCustomer.Command request, ISender sender) =>
+    Ok(await sender.Send(request)));
 
-app.MapPost("/CustomerOutboxCron",
-    async (ITxOutboxProcessor outboxProcessor) =>
-        await outboxProcessor.HandleAsync(typeof(CoolStore.IntegrationEvents.Anchor)));
+app.MapPost("/CustomerOutboxCron", async (ITxOutboxProcessor outboxProcessor) =>
+    await outboxProcessor.HandleAsync(typeof(CoolStore.IntegrationEvents.Anchor)));
 
 await app.RunAsync();
 

@@ -27,16 +27,15 @@ namespace N8T.Core.Specification
 
         public static void ApplySorting(this IRootSpecification gridSpec,
             string sort,
-            string orderByDescendingMethodName,
-            string groupByMethodName)
+            string orderByMethodName,
+            string orderByDescendingMethodName)
         {
             if (string.IsNullOrEmpty(sort)) return;
 
             const string descendingSuffix = "Desc";
 
             var descending = sort.EndsWith(descendingSuffix, StringComparison.Ordinal);
-            var propertyName = sort.Substring(0, 1).ToUpperInvariant() +
-                               sort.Substring(1, sort.Length - 1 - (descending ? descendingSuffix.Length : 0));
+            var propertyName = string.Concat(sort[..1].ToUpperInvariant(), sort.AsSpan(1, sort.Length - 1 - (descending ? descendingSuffix.Length : 0)));
 
             var specificationType = gridSpec.GetType().BaseType;
             var targetType = specificationType?.GenericTypeArguments[0];
@@ -61,7 +60,7 @@ namespace N8T.Core.Specification
             else
             {
                 specificationType?.GetMethod(
-                        groupByMethodName,
+                        orderByMethodName,
                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                     ?.Invoke(gridSpec, new object[]{propertyReturningExpression});
             }

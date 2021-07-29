@@ -6,7 +6,7 @@ using N8T.Core.Specification;
 
 namespace ProductService.AppCore.Core.Specs
 {
-    public sealed class ProductByIdQuerySpec<TResponse> : SpecificationBase<Product>
+    public sealed class ProductByIdQuerySpec<TResponse> : SpecificationBase<Product> where TResponse : notnull
     {
         private readonly Guid _id;
 

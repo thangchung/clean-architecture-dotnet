@@ -3,7 +3,7 @@ using N8T.Core.Specification;
 
 namespace ProductService.AppCore.Core.Specs
 {
-    public sealed class ProductListQuerySpec<TResponse> : GridSpecificationBase<Product>
+    public sealed class ProductListQuerySpec<TResponse> : GridSpecificationBase<Product> where TResponse : notnull
     {
         public ProductListQuerySpec(IListQuery<ListResultModel<TResponse>> gridQueryInput)
         {

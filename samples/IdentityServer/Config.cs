@@ -25,7 +25,7 @@ namespace IdentityServerHost
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-                new Client
+                new()
                 {
                     ClientId = "spa",
                     ClientSecrets = { new Secret("secret".Sha256()) },
@@ -42,6 +42,15 @@ namespace IdentityServerHost
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "api" }
                 },
+
+                // password flow
+                new()
+                {
+                    ClientId = "restclient.password",
+                    ClientSecrets = {new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256())},
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    AllowedScopes = { "openid", "profile", "api" }
+                }
             };
     }
 }
