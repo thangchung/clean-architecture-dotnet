@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\N8T.Core\N8T.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\src\N8T.Core\N8T.Core.csproj" />
     <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
     <ProjectReference Include="..\..\DataContracts\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj" />
   </ItemGroup>

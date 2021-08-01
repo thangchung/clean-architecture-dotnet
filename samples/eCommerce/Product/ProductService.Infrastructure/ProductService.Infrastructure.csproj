@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\Scripts\20210303044435_SeedInitData.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Data\Scripts\20210303044435_SeedInitData.sql" />
+    <ProjectReference Include="..\..\..\..\src\N8T.Core\N8T.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\src\N8T.Infrastructure.EfCore\N8T.Infrastructure.EfCore.csproj" />
+    <ProjectReference Include="..\..\..\..\src\N8T.Infrastructure.OTel\N8T.Infrastructure.OTel.csproj" />
+    <ProjectReference Include="..\..\..\..\src\N8T.Infrastructure\N8T.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" />
+    <ProjectReference Include="..\ProductService.AppCore\ProductService.AppCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,22 +27,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\N8T.Core\N8T.Core.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Infrastructure.EfCore\N8T.Infrastructure.EfCore.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Infrastructure.OTel\N8T.Infrastructure.OTel.csproj" />
-    <ProjectReference Include="..\..\..\src\N8T.Infrastructure\N8T.Infrastructure.csproj" />
-    <ProjectReference Include="..\SettingService.AppCore\SettingService.AppCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\SettingService.Api\appsettings.json">
+    <Content Include="..\ProductService.Api\appsettings.json">
       <Link>appsettings.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\CompiledModels" />
+    <None Remove="Data\Scripts\20210129104438_SeedInitData.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Scripts\20210129104438_SeedInitData.sql">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>20210129104438_SeedInitData.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

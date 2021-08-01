@@ -309,7 +309,7 @@ Let explanation a bit about what CQRS means in the application as below:
 # 🎇 Starting the APIs
 
 ```
-$ cd samples
+$ cd samples/eCommerce
 $ tye run
 ```
 
@@ -317,7 +317,7 @@ $ tye run
 
 > Tye Dashboard: [http://localhost:8000](http://localhost:8000)
 >
-> Play around at [restclient.http](samples/restclient.http)
+> Play around at [restclient.http](samples/eCommerce/restclient.http)
 
 <table>
   <thead>

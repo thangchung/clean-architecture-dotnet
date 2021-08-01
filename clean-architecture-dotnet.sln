@@ -33,37 +33,37 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Infrastructure.EfCore",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Infrastructure.OTel", "src\N8T.Infrastructure.OTel\N8T.Infrastructure.OTel.csproj", "{29C07DD9-A626-4F47-8193-0B2835F8CE62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.AppContracts", "samples\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj", "{7A6697D1-7DD7-4F67-A3AE-A9621FCD8B4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.AppContracts", "samples\eCommerce\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj", "{7A6697D1-7DD7-4F67-A3AE-A9621FCD8B4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.IntegrationEvents", "samples\DataContracts\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj", "{4F5E8195-DD55-4635-977B-2354082C16ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.IntegrationEvents", "samples\eCommerce\DataContracts\CoolStore.IntegrationEvents\CoolStore.IntegrationEvents.csproj", "{4F5E8195-DD55-4635-977B-2354082C16ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppGateway", "samples\AppGateway\AppGateway.csproj", "{DA1C9C53-8A82-4AA3-8B0F-D4BB3BE79DB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppGateway", "samples\eCommerce\AppGateway\AppGateway.csproj", "{DA1C9C53-8A82-4AA3-8B0F-D4BB3BE79DB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Api", "samples\Product\ProductService.Api\ProductService.Api.csproj", "{71AA0BB2-9F37-415E-9B30-6C838726F4E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Api", "samples\eCommerce\Product\ProductService.Api\ProductService.Api.csproj", "{71AA0BB2-9F37-415E-9B30-6C838726F4E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.AppCore", "samples\Product\ProductService.AppCore\ProductService.AppCore.csproj", "{54C3243E-12A5-4508-A5FA-D8FA0C21EDAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.AppCore", "samples\eCommerce\Product\ProductService.AppCore\ProductService.AppCore.csproj", "{54C3243E-12A5-4508-A5FA-D8FA0C21EDAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Infrastructure", "samples\Product\ProductService.Infrastructure\ProductService.Infrastructure.csproj", "{3CE42713-1405-4DCA-BCCB-1B8CF7940BC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Infrastructure", "samples\eCommerce\Product\ProductService.Infrastructure\ProductService.Infrastructure.csproj", "{3CE42713-1405-4DCA-BCCB-1B8CF7940BC8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Api", "samples\Setting\SettingService.Api\SettingService.Api.csproj", "{3A36A208-3881-4603-9A5F-3E29399BC2FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Api", "samples\eCommerce\Setting\SettingService.Api\SettingService.Api.csproj", "{3A36A208-3881-4603-9A5F-3E29399BC2FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.AppCore", "samples\Setting\SettingService.AppCore\SettingService.AppCore.csproj", "{46311C64-D58D-4733-8EC1-C45C3BB6E307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.AppCore", "samples\eCommerce\Setting\SettingService.AppCore\SettingService.AppCore.csproj", "{46311C64-D58D-4733-8EC1-C45C3BB6E307}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Infrastructure", "samples\Setting\SettingService.Infrastructure\SettingService.Infrastructure.csproj", "{12E717F1-D189-484C-88C7-51A2B16370AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingService.Infrastructure", "samples\eCommerce\Setting\SettingService.Infrastructure\SettingService.Infrastructure.csproj", "{12E717F1-D189-484C-88C7-51A2B16370AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Api", "samples\Customer\CustomerService.Api\CustomerService.Api.csproj", "{C72D9A49-F5C0-4943-B3FF-718D2CF8C66F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Api", "samples\eCommerce\Customer\CustomerService.Api\CustomerService.Api.csproj", "{C72D9A49-F5C0-4943-B3FF-718D2CF8C66F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.AppCore", "samples\Customer\CustomerService.AppCore\CustomerService.AppCore.csproj", "{0A20D40F-DCF1-4D92-949B-501EDD76B423}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.AppCore", "samples\eCommerce\Customer\CustomerService.AppCore\CustomerService.AppCore.csproj", "{0A20D40F-DCF1-4D92-949B-501EDD76B423}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Infrastructure", "samples\Customer\CustomerService.Infrastructure\CustomerService.Infrastructure.csproj", "{CB340967-C215-4864-8AB6-C966F9980E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerService.Infrastructure", "samples\eCommerce\Customer\CustomerService.Infrastructure\CustomerService.Infrastructure.csproj", "{CB340967-C215-4864-8AB6-C966F9980E03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebBlazor", "WebBlazor", "{1BC686AA-19F9-438D-B065-2DF7F742ED66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "samples\IdentityServer\IdentityServer.csproj", "{F1EB3422-3868-4256-932F-0374E912E4ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "samples\eCommerce\IdentityServer\IdentityServer.csproj", "{F1EB3422-3868-4256-932F-0374E912E4ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Client", "samples\WebBlazor\Client\Blazor.Client.csproj", "{EE5692BC-78F8-45DB-B1D6-2459937B658A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Client", "samples\eCommerce\WebBlazor\Client\Blazor.Client.csproj", "{EE5692BC-78F8-45DB-B1D6-2459937B658A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Server", "samples\WebBlazor\Server\Blazor.Server.csproj", "{450032D6-68BB-4BB4-A58D-87F4330B68B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Server", "samples\eCommerce\WebBlazor\Server\Blazor.Server.csproj", "{450032D6-68BB-4BB4-A58D-87F4330B68B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
