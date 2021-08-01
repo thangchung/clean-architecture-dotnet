@@ -88,17 +88,16 @@ Let explanation a bit about what CQRS means in the application as below:
 15. In around every 1 second, we have a `Background Jobs` to trigger and compose the `Command DTO`, and uses `MediatR` to send the request to `Command handler`
 16. The `Command handler` will query all the `Domain Event` in the database (Step 14), and loop through it to publish to the `Message Broker`
 
-> Notes: Steps 13, 14, 15, 15 are the `Transactional Outbox Pattern` which makes the message transportation is more reliable.
+> Notes: Steps 13, 14, 15, 16 are the `Transactional Outbox Pattern` which makes the message transportation is more reliable.
 
 # 💎 Prerequisites
 
-- [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.100-preview.5.21271.2
-- [nodejs](https://nodejs.org/en/download): v15.5.1
+- [.NET SDK](https://dotnet.microsoft.com/download/dotnet/6.0): 6.0.*
 - [tye](https://github.com/dotnet/tye): 0.8.0-alpha.21301.1+0fed0b38e730cd07caf0a90287090638c110b77d
   - [Tan Hoang](https://github.com/cuno92) and [Mohammad AlQuraian](https://github.com/Quraian) have confused about `tye 0.8.0`, and asked to add the guidance so I put it here
     - Follow the guidance at https://github.com/dotnet/tye/blob/647a608892/docs/getting_started.md#working-with-ci-builds
     - More specifically, adding `dotnet tool install -g Microsoft.Tye --version "0.8.0-*" --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json` to your terminal
-- [dapr](https://dapr.io/): 1.2.0
+- [dapr](https://dapr.io/): 1.3.0
 - Dev tools:
   - [vscode tye](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-tye) extension
   - [vscode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension
