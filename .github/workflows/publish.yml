@@ -31,11 +31,9 @@ jobs:
           useConfigFile: true
           configFilePath: "GitVersion.yml"
 
-      - name: Display GitVersion outputs
+      - name: List out all items in ${{ GITHUB_WORKSPACE }}
         run: |
-          echo "Major: ${{ steps.gitversion.outputs.major }}"
-          echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-          echo "Patch: ${{ steps.gitversion.outputs.patch }}"
+          ls -la ${{ GITHUB_WORKSPACE }}
 
       - run: |
           echo "Major: ${{ steps.gitversion.outputs.major }}"
