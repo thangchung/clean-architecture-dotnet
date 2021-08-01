@@ -31,7 +31,7 @@ jobs:
           useConfigFile: true
           configFilePath: "GitVersion.yml"
 
-      - name: List out all items in ${{ GITHUB_WORKSPACE }}
+      - name: List out all items in $GITHUB_WORKSPACE
         run: |
           ls -la ${{ GITHUB_WORKSPACE }}
 
