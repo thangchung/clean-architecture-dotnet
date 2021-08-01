@@ -19,14 +19,46 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
 
-      - uses: aarnott/nbgv@v0.4.0
-        with:
-          setAllVars: true
+      - name: Use GitVersion
+        id: gitversion # step id used as reference for output values
+        uses: gittools/actions/gitversion/execute@v0.9
+
+      - run: |
+          echo "Major: ${{ steps.gitversion.outputs.major }}"
+          echo "Minor: ${{ steps.gitversion.outputs.minor }}"
+          echo "Patch: ${{ steps.gitversion.outputs.patch }}"
+          echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}"
+          echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}"
+          echo "PreReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}"
+          echo "PreReleaseNumber: ${{ steps.gitversion.outputs.preReleaseNumber }}"
+          echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.weightedPreReleaseNumber }}"
+          echo "BuildMetaData: ${{ steps.gitversion.outputs.buildMetaData }}"
+          echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.buildMetaDataPadded }}"
+          echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}"
+          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+          echo "LegacySemVer: ${{ steps.gitversion.outputs.legacySemVer }}"
+          echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.legacySemVerPadded }}"
+          echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
+          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
+          echo "BranchName: ${{ steps.gitversion.outputs.branchName }}"
+          echo "Sha: ${{ steps.gitversion.outputs.sha }}"
+          echo "ShortSha: ${{ steps.gitversion.outputs.shortSha }}"
+          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
+          echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
+          echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.nuGetPreReleaseTagV2 }}"
+          echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.nuGetPreReleaseTag }}"
+          echo "VersionSourceSha: ${{ steps.gitversion.outputs.versionSourceSha }}"
+          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
+          echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}"
+          echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
       - name: Setup .NET Core @ Latest
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.*
+          dotnet-version: '6.0.x'
           include-prerelease: true
         #   source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         # env:
