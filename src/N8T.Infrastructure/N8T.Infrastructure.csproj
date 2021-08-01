@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\packages.props" />
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>preview</LangVersion>
@@ -22,7 +24,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0-preview.6.21352.12" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Dapr.AspNetCore" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
