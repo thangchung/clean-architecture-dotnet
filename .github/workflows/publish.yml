@@ -74,7 +74,7 @@ jobs:
           include-prerelease: true
         #   source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         # env:
-        #   NUGET_AUTH_TOKEN: ${{ secrets.CLEAN_DDD_PKG_TOKEN }}
+        #   NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
 
       - name: Restore
         run: dotnet restore $GITHUB_WORKSPACE
@@ -88,13 +88,13 @@ jobs:
           dotnet pack $GITHUB_WORKSPACE/src/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }}
           dotnet pack $GITHUB_WORKSPACE/src/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }}
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.CLEAN_DDD_PKG_TOKEN }}
+          NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
 
       - name: Push generated package to GitHub registry
         run: |
-          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Core/bin/Release/N8T.Core.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.CLEAN_DDD_PKG_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
-          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Infrastructure/bin/Release/N8T.Infrastructure.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.CLEAN_DDD_PKG_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
-          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Infrastructure.EfCore/bin/Release/N8T.Infrastructure.EfCore.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.CLEAN_DDD_PKG_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
-          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Infrastructure.OTel/bin/Release/N8T.Infrastructure.OTel.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.CLEAN_DDD_PKG_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Core/bin/Release/N8T.Core.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Infrastructure/bin/Release/N8T.Infrastructure.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Infrastructure.EfCore/bin/Release/N8T.Infrastructure.EfCore.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push /home/runner/work/clean-architecture-dotnet/clean-architecture-dotnet/src/N8T.Infrastructure.OTel/bin/Release/N8T.Infrastructure.OTel.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.CLEAN_DDD_PKG_TOKEN }}
+          NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
