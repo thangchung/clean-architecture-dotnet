@@ -87,12 +87,14 @@ jobs:
           dotnet pack $GITHUB_WORKSPACE/src/N8T.Infrastructure/N8T.Infrastructure.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }}
           dotnet pack $GITHUB_WORKSPACE/src/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }}
           dotnet pack $GITHUB_WORKSPACE/src/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }}
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
 
       - name: Push generated package to GitHub registry
         run: |
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Core/bin/Release/N8T.Core.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate --no-symbols true
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure/bin/Release/N8T.Infrastructure.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate --no-symbols true
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.EfCore/bin/Release/N8T.Infrastructure.EfCore.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate --no-symbols true
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.OTel/bin/Release/N8T.Infrastructure.OTel.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate --no-symbols true
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Core/bin/Release/N8T.Core.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure/bin/Release/N8T.Infrastructure.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.EfCore/bin/Release/N8T.Infrastructure.EfCore.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.OTel/bin/Release/N8T.Infrastructure.OTel.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
