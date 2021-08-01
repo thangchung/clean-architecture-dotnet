@@ -33,7 +33,7 @@ jobs:
 
       - name: List out all items in $GITHUB_WORKSPACE
         run: |
-          echo "${{ GITHUB_WORKSPACE }}" | ls -la
+          echo "$GITHUB_WORKSPACE" | ls -la
 
       - run: |
           echo "Major: ${{ steps.gitversion.outputs.major }}"
