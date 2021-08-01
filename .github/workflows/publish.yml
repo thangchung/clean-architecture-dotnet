@@ -33,7 +33,7 @@ jobs:
 
       - name: List out all items in $GITHUB_WORKSPACE
         run: |
-          ls -la ${{ GITHUB_WORKSPACE }}
+          ls -la "${{ GITHUB_WORKSPACE }}"
 
       - run: |
           echo "Major: ${{ steps.gitversion.outputs.major }}"
@@ -77,7 +77,7 @@ jobs:
         #   NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
 
       - name: Restore
-        run: dotnet restore $GITHUB_WORKSPACE/src
+        run: dotnet restore $GITHUB_WORKSPACE
 
       - name: Build solution and generate NuGet package
         run: |
