@@ -1,13 +1,13 @@
 mode: MainLine
 assembly-informational-format: "{NugetVersion}"
 branches:
-master:
+  master:
     tag: ""
-feature:
+  feature:
     tag: feature-{BranchName}
     increment: Minor
-hotfix:
+  hotfix:
     tag: hotfix-{BranchName}
     increment: Patch
 ignore:
-sha: []
+  sha: []
