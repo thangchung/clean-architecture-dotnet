@@ -82,10 +82,10 @@ jobs:
         run: |
           printenv
           echo "${{ env.PackageVersion}}"
-          dotnet pack src/N8T.Core/N8T.Core.csproj -c Release --include-symbols --include-source -p:PackageVersion=$(PackageVersion) -o out
-          dotnet pack src/N8T.Infrastructure/N8T.Infrastructure.csproj -c Release --include-symbols --include-source -p:PackageVersion=$(PackageVersion) -o out
-          dotnet pack src/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release --include-symbols --include-source -p:PackageVersion=$(PackageVersion) -o out
-          dotnet pack src/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release --include-symbols --include-source -p:PackageVersion=$(PackageVersion) -o out
+          dotnet pack src/N8T.Core/N8T.Core.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} -o out
+          dotnet pack src/N8T.Infrastructure/N8T.Infrastructure.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} -o out
+          dotnet pack src/N8T.Infrastructure.EfCore/N8T.Infrastructure.EfCore.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} -o out
+          dotnet pack src/N8T.Infrastructure.OTel/N8T.Infrastructure.OTel.csproj -c Release --include-symbols --include-source -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} -o out
 
       - name: Push generated package to GitHub registry
         run: dotnet nuget push /home/runner/work/practical-clean-ddd/practical-clean-ddd/out/*.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
