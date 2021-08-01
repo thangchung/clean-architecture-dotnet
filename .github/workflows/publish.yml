@@ -92,9 +92,9 @@ jobs:
 
       - name: Push generated package to GitHub registry
         run: |
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Core/bin/Release/N8T.Core.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure/bin/Release/N8T.Infrastructure.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.EfCore/bin/Release/N8T.Infrastructure.EfCore.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
-          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.OTel/bin/Release/N8T.Infrastructure.OTel.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} --skip-duplicate
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Core/bin/Release/N8T.Core.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure/bin/Release/N8T.Infrastructure.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.EfCore/bin/Release/N8T.Infrastructure.EfCore.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+          dotnet nuget push $GITHUB_WORKSPACE/src/N8T.Infrastructure.OTel/bin/Release/N8T.Infrastructure.OTel.${{ steps.gitversion.outputs.semVer }}.nupkg --api-key ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.PRACTICAL_CLEAN_DDD_TOKEN }}
