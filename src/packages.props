@@ -6,7 +6,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/thangchung/clean-architecture-dotnet.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/thangchung/clean-architecture-dotnet</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/thangchung/clean-architecture-dotnet/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>https://github.com/thangchung/clean-architecture-dotnet/blob/master/LICENSE</PackageLicense>
     <Copyright>Copyright (c) Thang Chung - 2021</Copyright>
   </PropertyGroup>
 
