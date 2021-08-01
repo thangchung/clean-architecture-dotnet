@@ -35,7 +35,7 @@ namespace ProductService.AppCore.UseCases.Queries
                 }
             }
 
-            internal class Handler : IRequestHandler<Query, N8T.Core.Domain.ResultModel<ListResultModel<ProductDto>>>
+            internal class Handler : IRequestHandler<Query, ResultModel<ListResultModel<ProductDto>>>
             {
                 private readonly IGridRepository<Product> _productRepository;
 
@@ -71,7 +71,7 @@ namespace ProductService.AppCore.UseCases.Queries
                     var resultModel = ListResultModel<ProductDto>.Create(
                         productModels.ToList(), totalProducts, request.Page, request.PageSize);
 
-                    return N8T.Core.Domain.ResultModel<ListResultModel<ProductDto>>.Create(resultModel);
+                    return ResultModel<ListResultModel<ProductDto>>.Create(resultModel);
                 }
             }
         }

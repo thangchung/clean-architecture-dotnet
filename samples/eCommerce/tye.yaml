@@ -60,11 +60,11 @@ services:
   tags:
   - id
 
-- name: webblazor
-  project: WebBlazor/Server/Blazor.Server.csproj
-  bindings:
-  - port: 5002
-    protocol: https
+# - name: webblazor
+#   project: WebBlazor/Server/Blazor.Server.csproj
+#   bindings:
+#   - port: 5002
+#     protocol: https
 
 - name: gatewayapp
   project: AppGateway/AppGateway.csproj

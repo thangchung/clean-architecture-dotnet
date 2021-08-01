@@ -1,0 +1,64 @@
+﻿<Modal Title="Create Product"
+       Visible="@Visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel">
+  <Form Model="_formModal">
+    <FormItem Label="Name">
+      <Input @bind-Value="@_formModal.Name" placeholder="product name" />
+    </FormItem>
+    <FormItem Label="Quantity">
+      <Input @bind-Value="@_formModal.Quantity" placeholder="quantity" />
+    </FormItem>
+    <FormItem Label="Cost">
+      <Input @bind-Value="@_formModal.Cost" placeholder="product cost" />
+    </FormItem>
+    <FormItem Label="Code">
+      <Input @bind-Value="@_formModal.ProductCode" placeholder="product code" />
+    </FormItem>
+  </Form>
+</Modal>
+
+@code {
+
+  class CreateProductModal
+  {
+    public string Name { get; set; }
+    public int Quantity { get; set; }
+    public decimal Cost { get; set; }
+    public string ProductCode { get; set; }
+  }
+
+  [Parameter]
+  public bool Visible { get; set; }
+
+  [Parameter]
+  public EventCallback<bool> OnClose { get; set; }
+
+  private CreateProductModal _formModal;
+
+  protected override void OnParametersSet()
+  {
+    _formModal = new CreateProductModal
+    {
+      Name = "demo",
+      Quantity = 100,
+      Cost = 1000,
+      ProductCode = "DEMO"
+    };
+    StateHasChanged();
+  }
+
+  private async Task HandleOk(MouseEventArgs e)
+  {
+    Console.WriteLine(e);
+    Visible = false;
+    await OnClose.InvokeAsync(Visible);
+  }
+
+  private async Task HandleCancel(MouseEventArgs e)
+  {
+    Console.WriteLine(e);
+    Visible = false;
+    await OnClose.InvokeAsync(Visible);
+  }
+}

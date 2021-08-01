@@ -2,113 +2,126 @@
 @attribute [Authorize]
 @inject IAppApi _appApi
 
-<h1>Product List</h1>
+@using AntDesign.TableModels;
 
-<DataGrid TItem="ProductDto" @ref="DataGrid"
-          Data="@Items" ReadData="@OnReadData" TotalItems="@TotalItems"
-          Sortable="true" SortMode="DataGridSortMode.Single"
-          Filterable="true"
-          ShowPager="true" PageSize="@PageSize" ShowPageSizes="true" CurrentPage="@CurrentPage"
-          PageChanged="e => CurrentPage = e.Page"
-          PageSizeChanged="e => PageSize = e"
-          Editable="true" EditMode="DataGridEditMode.Popup" RowUpdated="@OnRowUpdated"
-          ValidationsSummaryLabel="@_error">
-  <DataGridCommandColumn TItem="ProductDto" Width="170px">
-    <NewCommandTemplate>
-      <Button Color="Color.Success" Clicked="@context.Clicked">@context.LocalizationString</Button>
-    </NewCommandTemplate>
-    <EditCommandTemplate>
-      <Button Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-    </EditCommandTemplate>
-    <SaveCommandTemplate>
-      <Button Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-    </SaveCommandTemplate>
-    <DeleteCommandTemplate>
-      <Button Color="Color.Danger" Clicked="@context.Clicked">@context.LocalizationString</Button>
-    </DeleteCommandTemplate>
-    <CancelCommandTemplate>
-      <Button Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-    </CancelCommandTemplate>
-  </DataGridCommandColumn>
-  <DataGridColumn TItem="ProductDto" Field="@nameof(ProductDto.Name)" Caption="Name" Sortable="true" Editable="true">
-    <FilterTemplate>
-      <TextEdit Placeholder="Search name" Text="@context.SearchValue" TextChanged="@(v=> context.TriggerFilterChange(v))" />
-    </FilterTemplate>
-  </DataGridColumn>
-  <DataGridNumericColumn TItem="ProductDto" Field="@nameof(ProductDto.Cost)" Caption="Cost" Sortable="true" Editable="true" Filterable="false"></DataGridNumericColumn >
-  <DataGridNumericColumn TItem="ProductDto" Field="@nameof(ProductDto.Quantity)" Caption="Quantity" Sortable="true" Editable="true" Filterable="false"></DataGridNumericColumn >
-</DataGrid>
+<Button OnClick="@Create">Create</Button>
+
+<Table DataSource="Items" TItem="ProductDto"
+       @bind-PageIndex="CurrentPage" @bind-PageSize="PageSize" Total="TotalItems"
+       Loading="Loading" OnChange="HandleTableChange" RemoteDataSource>
+  <Column TData="Guid"
+          @bind-Field="context.Id"
+          Hidden="true" />
+
+  <Column TData="string"
+          @bind-Field="context.Name"
+          SorterCompare="@((a,b)=> string.CompareOrdinal(a,b))"
+          SortDirections="new[] { SortDirection.Descending }"
+          SorterMultiple="1"
+          Filterable FilterMultiple="false" />
+
+  <Column TData="decimal"
+          @bind-Field="context.Cost"
+          Sortable SorterMultiple="1" />
+
+  <Column TData="int"
+          @bind-Field="context.Quantity"
+          Sortable SorterMultiple="1" />
+  <ActionColumn>
+    <Space>
+      <SpaceItem><Button OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
+      <SpaceItem><Button Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
+    </Space>
+  </ActionColumn>
+</Table>
+
+<NewProduct Visible="@_openCreateProductModal" OnClose="@OnCreateProductModalClose"></NewProduct>
 
 @code {
-  public DataGrid<ProductDto> DataGrid { get; set; }
   private List<ProductDto> Items { get; set; } = new();
   private int TotalItems { get; set; }
   public int PageSize { get; set; } = 10;
   public int CurrentPage { get; set; } = 1;
+  public bool Loading { get; set; }
   private string _error;
+  private bool _openCreateProductModal;
 
   readonly JsonSerializerOptions _options = new()
   {
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
   };
 
-  async Task OnReadData(DataGridReadDataEventArgs<ProductDto> e)
+  void OnCreateProductModalClose(bool visible)
   {
-    //Console.WriteLine(JsonSerializer.Serialize(e.Columns));
+    _openCreateProductModal = visible;
+  }
 
-    if (!e.CancellationToken.IsCancellationRequested)
+  void Create()
+  {
+    _openCreateProductModal = !_openCreateProductModal;
+  }
+
+  void Edit(Guid id)
+  {
+  }
+
+  void Delete(Guid id)
+  {
+  }
+
+  async Task HandleTableChange(QueryModel<ProductDto> query)
+  {
+    Loading = true;
+    Console.WriteLine(JsonSerializer.Serialize(query));
+    var queryRequest = new QueryDto();
+    foreach (var sortModel in query.SortModel)
     {
-      var queryRequest = new QueryDto();
-      foreach (var colInfo in e.Columns)
-      {
-        if (colInfo.SearchValue is not null)
+  /*if (colInfo.SearchValue is not null)
         {
           queryRequest.Filters.Add(new FilterDto(colInfo.Field, "Contains", colInfo.SearchValue));
-        }
+        }*/
 
-        switch (colInfo.Direction)
-        {
-          case SortDirection.Descending:
-            queryRequest.Sorts.Add(colInfo.Field + (colInfo.Direction == SortDirection.Descending ? "Desc" : ""));
-            break;
-          case SortDirection.Ascending:
-            queryRequest.Sorts.Add(colInfo.Field);
-            break;
-          case SortDirection.None:
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
-      }
-
-      queryRequest.Page = e.Page;
-      queryRequest.PageSize = e.PageSize;
-
-      //Console.WriteLine(JsonSerializer.Serialize(criterionRequest, _options));
-
-      try
+      switch (sortModel.Sort)
       {
-        var (listResponseModel, isError, errorMessage) = await _appApi.GetProductsAsync(JsonSerializer.Serialize(queryRequest, _options));
-        if (isError)
-        {
-          _error = $"Error contacting API: {errorMessage}";
-        }
-
-        Items = listResponseModel.Items;
-        TotalItems = (int) listResponseModel.TotalItems;
+        case "descend":
+          queryRequest.Sorts.Add(sortModel.FieldName + (sortModel.Sort == "descend" ? "Desc" : ""));
+          break;
+        case "ascend":
+          queryRequest.Sorts.Add(sortModel.FieldName);
+          break;
       }
-      catch (ApiException ex)
+    }
+
+    foreach (var filterModel in query.FilterModel)
+    {
+      var filterOperator = filterModel.Filters.FirstOrDefault();
+      queryRequest.Filters.Add(new FilterDto(filterModel.FieldName, "Contains", filterOperator.Value.ToString()));
+    }
+
+    queryRequest.Page = query.PageIndex;
+    queryRequest.PageSize = query.PageSize;
+
+  //Console.WriteLine(JsonSerializer.Serialize(criterionRequest, _options));
+
+    try
+    {
+      var (listResponseModel, isError, errorMessage) = await _appApi.GetProductsAsync(JsonSerializer.Serialize(queryRequest, _options));
+      if (isError)
       {
-        _error = $"Error contacting API: {ex.Message}";
+        _error = $"Error contacting API: {errorMessage}";
       }
 
-      StateHasChanged();
+      Items = listResponseModel.Items;
+      TotalItems = (int) listResponseModel.TotalItems;
+    }
+    catch (ApiException ex)
+    {
+      _error = $"Error contacting API: {ex.Message}";
+    }
+    finally
+    {
+      Loading = false;
     }
   }
 
-  void OnRowUpdated(SavedRowItem<ProductDto, Dictionary<string, object>> e)
-  {
-    Console.WriteLine(JsonSerializer.Serialize(e, _options));
-    DataGrid.Reload();
-  }
 }

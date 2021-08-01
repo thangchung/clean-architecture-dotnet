@@ -107,7 +107,7 @@ namespace N8T.Core.Specification
 
         protected void ApplyThenBySorting(string sort)
         {
-            this.ApplySorting(sort, nameof(ApplyThenOrderByDescending), nameof(ApplyThenOrderByDescending));
+            this.ApplySorting(sort, nameof(ApplyOrderBy), nameof(ApplyThenOrderByDescending));
         }
     }
 }

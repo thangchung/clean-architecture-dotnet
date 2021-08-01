@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AntDesign" Version="0.9.0" />
+    <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210416065052" />
     <PackageReference Include="Blazorise.Bootstrap" Version="0.9.3.8" />
     <PackageReference Include="Blazorise.DataGrid" Version="0.9.3.8" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.3.8" />

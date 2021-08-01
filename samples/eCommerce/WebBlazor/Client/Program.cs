@@ -28,14 +28,16 @@ namespace Blazor.Client
             builder.Services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
             builder.Services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
-            builder.Services.AddBlazorise(options =>
+            /*builder.Services.AddBlazorise(options =>
                 {
                     options.ChangeTextOnKeyPress = false;
                     options.DelayTextOnKeyPress = true;
                     options.DelayTextOnKeyPressInterval = 1000;
                 })
                 .AddBootstrapProviders()
-                .AddFontAwesomeIcons();
+                .AddFontAwesomeIcons();*/
+
+            builder.Services.AddAntDesign();
 
             builder.Services.AddTransient<AntiforgeryHandler>();
 
