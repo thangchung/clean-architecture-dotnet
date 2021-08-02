@@ -9,20 +9,23 @@
     <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210416065052" />
     <PackageReference Include="RestEase" Version="1.5.5" />
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.5" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.6.21355.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0-preview.6.21355.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.6.21355.2" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\DataContracts\CoolStore.AppContracts\CoolStore.AppContracts.csproj" Watch="false" />
   </ItemGroup>
 
-  <!--<ItemGroup>
+  <ItemGroup>
     <Content Update="@(Content)" Watch="false" />
-  </ItemGroup>-->
+    <Content Update="Components\Product\EditProduct.razor">
+      <Watch>false</Watch>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <Watch Include="**\*.razor;**\*.html;**\*.css" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*;" />

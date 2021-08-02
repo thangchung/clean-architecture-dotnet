@@ -52,23 +52,23 @@ services:
   tags:
   - apis
 
-- name: identityserver
-  project: IdentityServer/IdentityServer.csproj
-  bindings:
-  - port: 5001
-    protocol: https
-  tags:
-  - id
-
-# - name: webblazor
-#   project: WebBlazor/Server/Blazor.Server.csproj
-#   bindings:
-#   - port: 5002
-#     protocol: https
-
 - name: gatewayapp
   project: AppGateway/AppGateway.csproj
   bindings:
   - port: 5000
   tags:
   - apis
+
+- name: identityserver
+  project: IdentityServer/IdentityServer.csproj
+  bindings:
+  - port: 5001
+    protocol: https
+  tags:
+  - apis
+
+- name: webblazor
+  project: WebBlazor/Server/Blazor.Server.csproj
+  bindings:
+  - port: 5002
+    protocol: https

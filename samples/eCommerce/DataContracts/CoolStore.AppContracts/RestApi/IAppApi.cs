@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CoolStore.AppContracts.Common;
 using CoolStore.AppContracts.Dtos;
@@ -12,13 +13,25 @@ namespace CoolStore.AppContracts.RestApi
         Task<ResultDto<ListResultDto<ProductDto>>> GetProductsAsync([Header("x-query")] string xQuery);
 
         [Post("api/product-api/v1/products")]
-        Task<ResultDto<ProductDto>> CreateProduct([Body] CreateProductModel model);
+        Task<ResultDto<ProductDto>> CreateProductAsync([Body] CreateProductContainer model);
+
+        [Get("api/product-api/v1/products/{id}")]
+        Task<ResultDto<ProductDto>> GetProductAsync([Path] Guid id);
     }
 
-    public record CreateProductModel(CreateProductDto Model);
+    public record CreateProductContainer(CreateProductModel Model);
 
-    public class CreateProductDto
+    public class CreateProductModel
     {
+        [Required] public string Name { get; set; } = default!;
+        [Required] public int Quantity { get; set; }
+        [Required] public decimal Cost { get; set; }
+        [Required] public string ProductCodeName { get; set; } = default!;
+    }
+
+    public class EditProductModel
+    {
+        [Required] public Guid Id { get; set; }
         [Required] public string Name { get; set; } = default!;
         [Required] public int Quantity { get; set; }
         [Required] public decimal Cost { get; set; }

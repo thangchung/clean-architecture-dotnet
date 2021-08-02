@@ -4,6 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <RootNamespace>CustomerService.Application</RootNamespace>
+    <!-- enable Crossgen2 -->
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,19 +1,31 @@
 ﻿@page "/products"
 @attribute [Authorize]
+@inject ModalService _modalService
 @inject IAppApi _appApi
 
 @using AntDesign.TableModels;
 
 <PageHeader Ghost="false">
   <PageHeaderTitle>Products</PageHeaderTitle>
+
   <PageHeaderExtra>
-    <Button Type="primary" OnClick="@Create">Create</Button>
+    <Button Type="@ButtonType.Primary" OnClick="@Create">Create</Button>
+    <Popconfirm Title="Are you sure delete this items?"
+                OnConfirm="DeleteAll"
+                OkText="Yes"
+                CancelText="No">
+      <Button Danger Disabled="@(_selectedItems == null || !_selectedItems.Any())">Delete All</Button>
+    </Popconfirm>
   </PageHeaderExtra>
+
   <PageHeaderContent>
     <p>@_errorMessage</p>
     <Table @ref="_table" DataSource="Items" TItem="ProductDto"
            @bind-PageIndex="CurrentPage" @bind-PageSize="PageSize" Total="TotalItems"
+           @bind-SelectedRows="_selectedItems"
            Loading="Loading" OnChange="HandleTableChange" RemoteDataSource>
+      <Selection Key="@(context.Id.ToString())" />
+
       <Column TData="Guid"
               @bind-Field="context.Id"
               Hidden="true"/>
@@ -32,56 +44,136 @@
       <Column TData="int"
               @bind-Field="context.Quantity"
               Sortable SorterMultiple="1"/>
+
       <ActionColumn>
         <Space>
           <SpaceItem><Button OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
-          <SpaceItem><Button Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
+          <SpaceItem>
+            <Popconfirm Title="Are you sure delete this item?"
+                        OnConfirm="() => Delete(context.Id)"
+                        OkText="Yes"
+                        CancelText="No">
+                <Button Danger>Delete</Button>
+            </Popconfirm>
+          </SpaceItem>
         </Space>
       </ActionColumn>
     </Table>
   </PageHeaderContent>
 </PageHeader>
 
-<NewProduct Visible="@_openCreateProductModal" OnClose="@OnCreateProductModalClose"></NewProduct>
+<NewProduct
+  Model="@_createModel"
+  Visible="@_openCreateProductModal"
+  OnSave="@(async model => await _appApi.CreateProductAsync(new CreateProductContainer(model)))"
+  OnClose="@(delegate((bool, bool) args) { var (visible, reload) = args;
+                                           return OnCreateProductModalClose(visible, reload); })"></NewProduct>
+
+<EditProduct
+  Model="@_editModel"
+  Visible="@_openEditProductModal"
+  OnClose="@(delegate((bool, bool) args) { var (visible, reload) = args;
+                                           return OnEditProductModalClose(visible, reload); })"></EditProduct>
 
 @code {
   private List<ProductDto> Items { get; set; } = new();
+  private IEnumerable<ProductDto> _selectedItems;
+
   private int TotalItems { get; set; }
   public int PageSize { get; set; } = 10;
   public int CurrentPage { get; set; } = 1;
   public bool Loading { get; set; }
+
   private string _errorMessage;
-  private bool _openCreateProductModal;
-  private ITable  _table;
+  private ITable _table;
 
   readonly JsonSerializerOptions _options = new()
   {
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
   };
 
-  async Task OnCreateProductModalClose(bool visible)
+  // add product
+  private bool _openCreateProductModal;
+  private CreateProductModel _createModel;
+
+  // edit product
+  private bool _openEditProductModal;
+  private EditProductModel _editModel;
+
+  async Task OnCreateProductModalClose(bool visible, bool reload)
   {
     _openCreateProductModal = visible;
-    await HandleTableChange(_table.GetQueryModel() as QueryModel<ProductDto>);
+    if (reload)
+    {
+      await HandleTableChange(_table.GetQueryModel() as QueryModel<ProductDto>);
+    }
   }
 
   void Create()
   {
+    _createModel = new CreateProductModel
+    {
+      Name = "demo",
+      Quantity = 10,
+      Cost = 1000,
+      ProductCodeName = "DEMO"
+    };
+
     _openCreateProductModal = !_openCreateProductModal;
   }
 
-  void Edit(Guid id)
+  void DeleteAll()
   {
+    foreach (var selectedItem in _selectedItems)
+    {
+      Console.WriteLine($"Id: {selectedItem.Id.ToString()}");
+    }
+  }
+
+  async Task OnEditProductModalClose(bool visible, bool reload)
+  {
+    _openEditProductModal = visible;
+    if (reload)
+    {
+      await HandleTableChange(_table.GetQueryModel() as QueryModel<ProductDto>);
+    }
+  }
+
+  async Task Edit(Guid id)
+  {
+    Console.WriteLine($"Id: {id}");
+
+    var (result, isError, _) = await _appApi.GetProductAsync(id);
+    if (!isError)
+    {
+      _editModel = new EditProductModel
+      {
+        Id = result.Id,
+        Name = result.Name,
+        Cost = result.Cost,
+        Quantity = result.Quantity,
+        ProductCodeName = result.Code?.Name
+      };
+
+      _openEditProductModal = !_openEditProductModal;
+    }
   }
 
   void Delete(Guid id)
   {
+    Console.WriteLine($"Id: {id}");
+    /*var isTrue = await _modalService.ConfirmAsync(new ConfirmOptions
+    {
+      Title = "Are you sure delete this task?",
+      Content = "Some descriptions",
+    });*/
   }
 
   async Task HandleTableChange(QueryModel<ProductDto> query)
   {
-    Loading = true;
     Console.WriteLine(JsonSerializer.Serialize(query));
+
+    Loading = true;
     var queryRequest = new QueryDto();
     foreach (var sortModel in query.SortModel)
     {

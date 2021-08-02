@@ -1,4 +1,4 @@
-﻿<Modal Title="Create Product" Visible="@Visible" Closable="false" Footer="null">
+﻿<Modal Title="Edit Product" Visible="@Visible" Closable="false" Footer="null">
   <p>@_errorMessage</p>
   <Form @ref="_form" Model="@Model" ValidateMode="@FormValidateMode.Default" ValidateOnChange="@true"
         LabelColSpan="8" WrapperColSpan="16">
@@ -54,22 +54,22 @@
   public bool Visible { get; set; }
 
   [Parameter]
-  public CreateProductModel Model { get; set; }
+  public EditProductModel Model { get; set; }
 
   [Parameter]
   public EventCallback<(bool, bool)> OnClose { get; set; }
 
   [Parameter]
-  public Func<CreateProductModel, Task<ResultDto<ProductDto>>> OnSave { get; set; }
+  public Func<EditProductModel, Task<ResultDto<ProductDto>>> OnSave { get; set; }
 
-  private Form<CreateProductModel> _form;
+  private Form<EditProductModel> _form;
   private string _errorMessage;
 
   private async Task Save()
   {
     if (_form.Validate())
     {
-      var (_, isError, errorMessage) = await OnSave.Invoke(_form.Model);
+      /*var (_, isError, errorMessage) = await OnSave.Invoke(_form.Model);
       if (!isError)
       {
         Visible = false;
@@ -78,7 +78,7 @@
       else
       {
         _errorMessage = errorMessage;
-      }
+      }*/
     }
   }
 
