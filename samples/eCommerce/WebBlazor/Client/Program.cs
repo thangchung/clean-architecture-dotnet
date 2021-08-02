@@ -5,14 +5,14 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazor.Client.Services;
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
 using CoolStore.AppContracts.RestApi;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using RestEase.HttpClientFactory;
 
 namespace Blazor.Client
@@ -28,15 +28,6 @@ namespace Blazor.Client
             builder.Services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
             builder.Services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
-            /*builder.Services.AddBlazorise(options =>
-                {
-                    options.ChangeTextOnKeyPress = false;
-                    options.DelayTextOnKeyPress = true;
-                    options.DelayTextOnKeyPressInterval = 1000;
-                })
-                .AddBootstrapProviders()
-                .AddFontAwesomeIcons();*/
-
             builder.Services.AddAntDesign();
 
             builder.Services.AddTransient<AntiforgeryHandler>();
@@ -46,7 +37,12 @@ namespace Blazor.Client
                 .AddHttpMessageHandler<AntiforgeryHandler>();
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("backend"));
 
-            builder.Services.AddRestEaseClient<IAppApi>(builder.HostEnvironment.BaseAddress)
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Converters = { new StringEnumConverter() }
+            };
+            builder.Services.AddRestEaseClient<IAppApi>(builder.HostEnvironment.BaseAddress, client => client.JsonSerializerSettings = settings)
                 .AddHttpMessageHandler<AntiforgeryHandler>();
 
             builder.RootComponents.Add<App>("#app");

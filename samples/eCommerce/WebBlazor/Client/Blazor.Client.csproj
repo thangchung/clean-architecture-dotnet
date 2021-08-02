@@ -7,16 +7,13 @@
   <ItemGroup>
     <PackageReference Include="AntDesign" Version="0.9.0" />
     <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-210416065052" />
-    <PackageReference Include="Blazorise.Bootstrap" Version="0.9.3.8" />
-    <PackageReference Include="Blazorise.DataGrid" Version="0.9.3.8" />
-    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.3.8" />
     <PackageReference Include="RestEase" Version="1.5.5" />
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.4" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

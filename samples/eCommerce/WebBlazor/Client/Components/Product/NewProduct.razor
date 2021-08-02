@@ -1,63 +1,104 @@
-﻿<Modal Title="Create Product"
-       Visible="@Visible"
-       OnOk="@HandleOk"
-       OnCancel="@HandleCancel">
-  <Form Model="_formModal">
-    <FormItem Label="Name">
-      <Input @bind-Value="@_formModal.Name" placeholder="product name" />
+﻿@using System.ComponentModel.DataAnnotations;
+@inject IAppApi _appApi
+
+<Modal Title="Create Product" Visible="@Visible" Footer="null">
+  <p>@_errorMessage</p>
+  <Form @ref="_form" Model="@_model" ValidateMode="@FormValidateMode.Default" ValidateOnChange="@true"
+        LabelColSpan="8" WrapperColSpan="16">
+    <FormItem>
+      <LabelTemplate>
+        <label class="ant-form-item-required" for="name">Name</label>
+      </LabelTemplate>
+      <ChildContent>
+        <Input id="name" @bind-Value="@context.Name" placeholder="product name"/>
+      </ChildContent>
     </FormItem>
-    <FormItem Label="Quantity">
-      <Input @bind-Value="@_formModal.Quantity" placeholder="quantity" />
+
+    <FormItem>
+      <LabelTemplate>
+        <label class="ant-form-item-required" for="quantity">Quantity</label>
+      </LabelTemplate>
+      <ChildContent>
+        <AntDesign.InputNumber id="quantity" @bind-Value="@context.Quantity" Min="1" Max="1000"/>
+      </ChildContent>
     </FormItem>
-    <FormItem Label="Cost">
-      <Input @bind-Value="@_formModal.Cost" placeholder="product cost" />
+
+    <FormItem>
+      <LabelTemplate>
+        <label class="ant-form-item-required" for="cost">Cost</label>
+      </LabelTemplate>
+      <ChildContent>
+        <AntDesign.InputNumber id="cost" @bind-Value="@context.Cost" Min="1000"/>
+      </ChildContent>
     </FormItem>
-    <FormItem Label="Code">
-      <Input @bind-Value="@_formModal.ProductCode" placeholder="product code" />
+
+    <FormItem>
+      <LabelTemplate>
+        <label class="ant-form-item-required" for="product-code">Cost</label>
+      </LabelTemplate>
+      <ChildContent>
+        <Input id="product-code" @bind-Value="@context.ProductCodeName" placeholder="product code name"/>
+      </ChildContent>
+    </FormItem>
+
+    <FormItem WrapperColOffset="8" WrapperColSpan="16">
+      <Button Type="@ButtonType.Primary" OnClick="OnSave">
+        Save
+      </Button>
+      <Button Type="@ButtonType.Default" OnClick="OnCancel">
+        Cancel
+      </Button>
     </FormItem>
   </Form>
 </Modal>
 
 @code {
-
-  class CreateProductModal
-  {
-    public string Name { get; set; }
-    public int Quantity { get; set; }
-    public decimal Cost { get; set; }
-    public string ProductCode { get; set; }
-  }
-
   [Parameter]
   public bool Visible { get; set; }
 
   [Parameter]
   public EventCallback<bool> OnClose { get; set; }
 
-  private CreateProductModal _formModal;
+  private CreateProductDto _model;
+  private Form<CreateProductDto> _form;
+  private string _errorMessage;
+
+  readonly JsonSerializerOptions _options = new()
+  {
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+  };
 
   protected override void OnParametersSet()
   {
-    _formModal = new CreateProductModal
+    _model = new CreateProductDto
     {
       Name = "demo",
-      Quantity = 100,
+      Quantity = 10,
       Cost = 1000,
-      ProductCode = "DEMO"
+      ProductCodeName = "DEMO"
     };
     StateHasChanged();
   }
 
-  private async Task HandleOk(MouseEventArgs e)
+  private async Task OnSave()
   {
-    Console.WriteLine(e);
-    Visible = false;
-    await OnClose.InvokeAsync(Visible);
+    if (_form.Validate())
+    {
+      var (_, isError, errorMessage) = await _appApi.CreateProduct(new CreateProductModel(_form.Model));
+      if (!isError)
+      {
+        Visible = false;
+        await OnClose.InvokeAsync(Visible);
+      }
+      else
+      {
+        _errorMessage = errorMessage;
+      }
+    }
   }
 
-  private async Task HandleCancel(MouseEventArgs e)
+  private async Task OnCancel()
   {
-    Console.WriteLine(e);
     Visible = false;
     await OnClose.InvokeAsync(Visible);
   }

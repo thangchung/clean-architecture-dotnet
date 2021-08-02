@@ -4,36 +4,43 @@
 
 @using AntDesign.TableModels;
 
-<Button OnClick="@Create">Create</Button>
+<PageHeader Ghost="false">
+  <PageHeaderTitle>Products</PageHeaderTitle>
+  <PageHeaderExtra>
+    <Button Type="primary" OnClick="@Create">Create</Button>
+  </PageHeaderExtra>
+  <PageHeaderContent>
+    <p>@_errorMessage</p>
+    <Table @ref="_table" DataSource="Items" TItem="ProductDto"
+           @bind-PageIndex="CurrentPage" @bind-PageSize="PageSize" Total="TotalItems"
+           Loading="Loading" OnChange="HandleTableChange" RemoteDataSource>
+      <Column TData="Guid"
+              @bind-Field="context.Id"
+              Hidden="true"/>
 
-<Table DataSource="Items" TItem="ProductDto"
-       @bind-PageIndex="CurrentPage" @bind-PageSize="PageSize" Total="TotalItems"
-       Loading="Loading" OnChange="HandleTableChange" RemoteDataSource>
-  <Column TData="Guid"
-          @bind-Field="context.Id"
-          Hidden="true" />
+      <Column TData="string"
+              @bind-Field="context.Name"
+              SorterCompare="@((a, b) => string.CompareOrdinal(a, b))"
+              SortDirections="new[] {SortDirection.Descending}"
+              SorterMultiple="1"
+              Filterable FilterMultiple="false"/>
 
-  <Column TData="string"
-          @bind-Field="context.Name"
-          SorterCompare="@((a,b)=> string.CompareOrdinal(a,b))"
-          SortDirections="new[] { SortDirection.Descending }"
-          SorterMultiple="1"
-          Filterable FilterMultiple="false" />
+      <Column TData="decimal"
+              @bind-Field="context.Cost"
+              Sortable SorterMultiple="1"/>
 
-  <Column TData="decimal"
-          @bind-Field="context.Cost"
-          Sortable SorterMultiple="1" />
-
-  <Column TData="int"
-          @bind-Field="context.Quantity"
-          Sortable SorterMultiple="1" />
-  <ActionColumn>
-    <Space>
-      <SpaceItem><Button OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
-      <SpaceItem><Button Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
-    </Space>
-  </ActionColumn>
-</Table>
+      <Column TData="int"
+              @bind-Field="context.Quantity"
+              Sortable SorterMultiple="1"/>
+      <ActionColumn>
+        <Space>
+          <SpaceItem><Button OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
+          <SpaceItem><Button Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
+        </Space>
+      </ActionColumn>
+    </Table>
+  </PageHeaderContent>
+</PageHeader>
 
 <NewProduct Visible="@_openCreateProductModal" OnClose="@OnCreateProductModalClose"></NewProduct>
 
@@ -43,17 +50,19 @@
   public int PageSize { get; set; } = 10;
   public int CurrentPage { get; set; } = 1;
   public bool Loading { get; set; }
-  private string _error;
+  private string _errorMessage;
   private bool _openCreateProductModal;
+  private ITable  _table;
 
   readonly JsonSerializerOptions _options = new()
   {
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
   };
 
-  void OnCreateProductModalClose(bool visible)
+  async Task OnCreateProductModalClose(bool visible)
   {
     _openCreateProductModal = visible;
+    await HandleTableChange(_table.GetQueryModel() as QueryModel<ProductDto>);
   }
 
   void Create()
@@ -76,11 +85,6 @@
     var queryRequest = new QueryDto();
     foreach (var sortModel in query.SortModel)
     {
-  /*if (colInfo.SearchValue is not null)
-        {
-          queryRequest.Filters.Add(new FilterDto(colInfo.Field, "Contains", colInfo.SearchValue));
-        }*/
-
       switch (sortModel.Sort)
       {
         case "descend":
@@ -101,14 +105,12 @@
     queryRequest.Page = query.PageIndex;
     queryRequest.PageSize = query.PageSize;
 
-  //Console.WriteLine(JsonSerializer.Serialize(criterionRequest, _options));
-
     try
     {
       var (listResponseModel, isError, errorMessage) = await _appApi.GetProductsAsync(JsonSerializer.Serialize(queryRequest, _options));
       if (isError)
       {
-        _error = $"Error contacting API: {errorMessage}";
+        _errorMessage = $"Error contacting API: {errorMessage}";
       }
 
       Items = listResponseModel.Items;
@@ -116,11 +118,12 @@
     }
     catch (ApiException ex)
     {
-      _error = $"Error contacting API: {ex.Message}";
+      _errorMessage = $"Error contacting API: {ex.Message}";
     }
     finally
     {
       Loading = false;
+      StateHasChanged();
     }
   }
 
