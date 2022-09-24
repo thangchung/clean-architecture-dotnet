@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,13 +16,13 @@ namespace N8T.Infrastructure.Validator
         where TRequest : notnull, IRequest<TResponse>
         where TResponse : notnull
     {
-        private readonly IValidator<TRequest> _validator;
+        private readonly IEnumerable<IValidator<TRequest>> _validators;
         private readonly ILogger<RequestValidationBehavior<TRequest, TResponse>> _logger;
 
-        public RequestValidationBehavior(IValidator<TRequest> validator,
+        public RequestValidationBehavior(IEnumerable<IValidator<TRequest>>? validators,
             ILogger<RequestValidationBehavior<TRequest, TResponse>> logger)
         {
-            _validator = validator ?? throw new ArgumentNullException(nameof(validator));
+            _validators = validators ?? throw new ArgumentNullException(nameof(validators));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -34,12 +36,16 @@ namespace N8T.Infrastructure.Validator
 
             _logger.LogDebug($"Handling {typeof(TRequest).FullName} with content {JsonSerializer.Serialize(request)}");
 
-            await _validator.HandleValidation(request);
-
-            var response = await next();
+            if (_validators.Any())
+            {
+                var context = new ValidationContext<TRequest>(request);
+                await Task.WhenAll(_validators.Select(v => v.HandleValidation(request)));
+            }
+            TResponse? response = await next();
 
             _logger.LogInformation($"Handled {typeof(TRequest).FullName}");
             return response;
+
         }
     }
 }
